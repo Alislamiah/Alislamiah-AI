@@ -1405,6 +1405,22 @@ onclick="window.location.href='chat.html'">
 })();
 </script>
 
+<!-- بطاقة Outhub -->
+<div class="promo-card outhub" style="background-color: #87CEEB; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+  <div class="card-image">
+    <video src="outhub.mp4" controls playsinline style="width: 100%; display: block; object-fit: cover;"></video>
+  </div>
+  <div class="card-content" style="padding: 16px 18px;">
+    <span class="card-label" style="font-size: 12px; color: #0D47A1; font-weight: 500;">مادة إعلانية</span>
+    <h3 class="card-title" style="margin: 8px 0 6px; font-size: 18px; color: #01579B;">Outhub</h3>
+    <p class="card-desc" style="margin: 0 0 14px; font-size: 14px; line-height: 1.5; color: #0277BD;">طور تطبيقاتك مواقعك بواسطتنا Alislamiah</p>
+    <a href="https://mohamedmadoui5195.github.io/Alislamiah-AI/results.html?q=Outhub" class="card-btn" style="display: inline-block; background: #0288D1; color: #FFFFFF; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500;">
+      ← عرض النتائج
+    </a>
+  </div>
+</div>
+
+
 <!-- بطاقة مداد -->
 <div class="promo-card madad" style="background-color: #FFF8DC; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
   <div class="card-image">
