@@ -57,8 +57,18 @@ textarea{flex:1;height:45px;resize:none;border:none;outline:none;background:tran
 <script>
 // ===== مفتاح Gemini (برمجياً) =====
 const GEMINI_API_KEY = "AQ.Ab8RN6IeFUlFbso5M8ry5FbzGnSBCf0w2wcSnHK6wZZuNIRJ6Q";
-const GEMINI_MODEL = "gemini-2.0-flash";
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+// قائمة نماذج بالترتيب (إن فشل واحد يجرب التالي)
+const GEMINI_MODELS = [
+  "gemini-2.5-flash",
+  "gemini-3.8-flash",
+  "gemini-3.0-flash",
+  "gemini-2.5-pro",
+  "gemini-flash-latest",
+  "gemini-2.0-flash",
+  "gemini-1.5-flash",
+  "gemini-1.5-flash-latest",
+  "gemini-pro"
+];
 
 // قاعدة البيانات المحلية
 const chatKnowledge = [
@@ -212,21 +222,36 @@ async function askGemini(userText) {
         }
     };
 
-    const res = await fetch(GEMINI_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-    });
-
-    if (!res.ok) {
-        const errText = await res.text().catch(() => "");
-        throw new Error("Gemini error " + res.status + ": " + errText.slice(0, 200));
+    let lastError = null;
+    for (const model of GEMINI_MODELS) {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
+        try {
+            const res = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+            if (!res.ok) {
+                const errText = await res.text().catch(() => "");
+                lastError = new Error("Gemini error " + res.status + " (" + model + "): " + errText.slice(0, 180));
+                // إذا النموذج غير موجود جرب التالي
+                if (res.status === 404) continue;
+                throw lastError;
+            }
+            const data = await res.json();
+            const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (!text) {
+                lastError = new Error("لا توجد إجابة من " + model);
+                continue;
+            }
+            return text.trim();
+        } catch (e) {
+            lastError = e;
+            // جرب النموذج التالي
+            continue;
+        }
     }
-
-    const data = await res.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text) throw new Error("لا توجد إجابة من Gemini");
-    return text.trim();
+    throw lastError || new Error("تعذر الاتصال بـ Gemini");
 }
 
 async function handleSend() {
