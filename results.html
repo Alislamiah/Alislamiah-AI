@@ -226,6 +226,22 @@
     </div>
 
     <script>
+        // Alislamiah Search Console analytics. This adds tracking without modifying the existing library/database.
+        const ALISLAMIAH_ANALYTICS_KEY = "alislamiah_search_analytics_v1";
+        function analyticsNormalizeUrl(value) {
+            try { const u = new URL(String(value || "")); u.hash = ""; u.hostname = u.hostname.toLowerCase(); if (u.pathname.length > 1) u.pathname = u.pathname.replace(/\/+$/, ""); return u.href; } catch (_) { return String(value || "").trim(); }
+        }
+        function analyticsRead() { try { const v = JSON.parse(localStorage.getItem(ALISLAMIAH_ANALYTICS_KEY) || "[]"); return Array.isArray(v) ? v : []; } catch (_) { return []; } }
+        function analyticsRecord(type, url, query) {
+            try {
+                const target = analyticsNormalizeUrl(url); if (!target) return;
+                const events = analyticsRead();
+                events.push({ type, url: target, query: String(query || "").trim().slice(0, 180), timestamp: Date.now() });
+                // Keep the latest 20,000 events so the local analytics store remains manageable.
+                localStorage.setItem(ALISLAMIAH_ANALYTICS_KEY, JSON.stringify(events.slice(-20000)));
+            } catch (e) { console.warn("Alislamiah analytics could not be saved", e); }
+        }
+
         const library = [
             { title: "الإسلامية نت", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net/", desc: "المنصة الرسمية لشبكة الإسلامية " },
 
@@ -785,6 +801,14 @@
             const searchInput = document.getElementById('searchInput');
             const query = searchInput.value.trim();
             const resultsList = document.getElementById('resultsList');
+            if (query) {
+                const now = Date.now();
+                if (window.__alislamiahLastTrackedQuery !== query || now - (window.__alislamiahLastTrackedAt || 0) > 2500) {
+                    // Search events are associated with each matching library URL below.
+                    window.__alislamiahLastTrackedQuery = query;
+                    window.__alislamiahLastTrackedAt = now;
+                }
+            }
             const aiContainer = document.getElementById('aiAnswerContainer');
             const aiText = document.getElementById('aiAnswerText');
 
@@ -838,6 +862,16 @@
                        item.url.toLowerCase().includes(q);
             });
 
+            if (query && filtered.length) {
+                const now = Date.now();
+                const signature = query.toLocaleLowerCase() + "|" + filtered.map(item => analyticsNormalizeUrl(item.url)).join(",");
+                if (window.__alislamiahSearchSignature !== signature || now - (window.__alislamiahSearchSignatureAt || 0) > 2500) {
+                    filtered.forEach(item => analyticsRecord("search", item.url, query));
+                    window.__alislamiahSearchSignature = signature;
+                    window.__alislamiahSearchSignatureAt = now;
+                }
+            }
+
             if (filtered.length === 0) {
                 resultsList.innerHTML = `
                     <div class="result-card p-6 rounded-2xl text-center text-slate-400">
@@ -863,6 +897,18 @@
                 </div>`;
             }).join('');
         }
+
+        // Track clicks/visits on result cards while keeping the existing open behavior intact.
+        document.getElementById('resultsList').addEventListener('click', function(event) {
+            const card = event.target.closest('.result-card[data-url]');
+            if (!card) return;
+            const targetUrl = card.getAttribute('data-url');
+            if (targetUrl) {
+                const query = (document.getElementById('searchInput') || {}).value || '';
+                analyticsRecord('click', targetUrl, query);
+                analyticsRecord('visit', targetUrl, query);
+            }
+        }, true);
 
         let currentOpenUrl = '';
 
