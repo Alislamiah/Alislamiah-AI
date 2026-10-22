@@ -1521,13 +1521,15 @@ function addToHistory(title, url, icon) {
 
 /* تحديث أيقونة AI حسب محرك البحث */
 function updateMainAiLogo() {
-    const engine = localStorage.getItem("searchEngine") || "Alislamiah";
+    const engine = localStorage.getItem("searchEngine") || "Alislamiah AI";
     const logoContainer = document.getElementById("mainAiLogo");
 
     if (!logoContainer) return;
 
-    if (engine === "Alislamiah") {
-        logoContainer.innerHTML = '<img src="icon.png" alt="Alislamiah">';
+    if (engine === "Alislamiah AI") {
+        logoContainer.innerHTML = '<img src="icon.png" alt="Alislamiah AI">';
+    } else if (engine === "Alislamiah") {
+        logoContainer.innerHTML = '<img src="icon.jpg" alt="Alislamiah">';
     } else if (engine === "Google") {
         logoContainer.innerHTML = '<img src="https://www.google.com/favicon.ico" alt="Google" style="width:70px; height:70px; object-fit:contain;">';
     } else if (engine === "Microsoft Bing") {
@@ -1559,9 +1561,13 @@ function performSearch(){
     if(query === ""){ input.focus(); return; }
 
     const targetUrl = RESULTS_PAGE + "?q=" + encodeURIComponent(query);
-    const engine = localStorage.getItem("searchEngine") || "Alislamiah";
+    const engine = localStorage.getItem("searchEngine") || "Alislamiah AI";
 
-    addToHistory(query, targetUrl, engine === "Google" ? "https://www.google.com/favicon.ico" : (engine === "Microsoft Bing" ? "https://www.bing.com/favicon.ico" : "icon.png"));
+    let histIcon = "icon.png";
+    if (engine === "Google") histIcon = "https://www.google.com/favicon.ico";
+    else if (engine === "Microsoft Bing") histIcon = "https://www.bing.com/favicon.ico";
+    else if (engine === "Alislamiah") histIcon = "icon.jpg";
+    addToHistory(query, targetUrl, histIcon);
 
     window.location.href = targetUrl;
 }
