@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المفضلة | Alislamiah AI</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+body { margin: 0; background: #060c16; color: #fff; font-family: sans-serif; min-height: 100vh; }
+.header {
+    position: sticky; top: 0; z-index: 50;
+    background: #081321; border-bottom: 1px solid #17283e;
+    padding: 14px 16px;
+}
+.card {
+    background: #0a1525; border: 1px solid #17283e;
+    border-radius: 16px; padding: 14px 16px;
+    display: flex; align-items: flex-start; gap: 12px;
+    transition: .2s;
+}
+.card:hover { border-color: #214f8f; background: #0f1e31; }
+.fav-remove {
+    background: none; border: none; font-size: 20px;
+    cursor: pointer; flex-shrink: 0; opacity: 1;
+}
+.empty {
+    text-align: center; color: #788aa3; padding: 60px 20px;
+}
+.open-btn {
+    margin-top: 8px;
+    display: inline-block;
+    background: linear-gradient(90deg, #833ab4, #fd1d1d, #fcb045);
+    color: #fff; font-size: 12px; font-weight: 600;
+    padding: 6px 14px; border-radius: 20px; text-decoration: none;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+    <div class="max-w-2xl mx-auto flex items-center justify-between">
+        <button onclick="history.back()" class="p-2 text-white" title="رجوع">
+            <i class="fas fa-arrow-right text-xl"></i>
+        </button>
+        <h1 class="font-bold text-lg">المفضلة ❤️</h1>
+        <button onclick="window.location.href='index.html'" class="p-2 text-white" title="الرئيسية">
+            <i class="fas fa-home text-xl"></i>
+        </button>
+    </div>
+</header>
+
+<main class="p-4 max-w-2xl mx-auto space-y-3" id="list"></main>
+
+<script>
+const FAVORITES_KEY = "alislamiah_favorites";
+
+function getFavorites() {
+    try {
+        const list = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
+        return Array.isArray(list) ? list : [];
+    } catch (e) { return []; }
+}
+
+function removeFavorite(url) {
+    let list = getFavorites().filter(f => f.url !== url);
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(list));
+    render();
+}
+
+function getFavicon(url) {
+    try {
+        const domain = new URL(url).hostname;
+        return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+    } catch (e) {
+        return "https://www.google.com/favicon.ico";
+    }
+}
+
+function render() {
+    const list = getFavorites();
+    const el = document.getElementById("list");
+    if (!list.length) {
+        el.innerHTML = `
+            <div class="empty">
+                <div style="font-size:48px;margin-bottom:12px;">💔</div>
+                <p>لا توجد مواقع في المفضلة بعد.</p>
+                <p style="font-size:13px;margin-top:8px;">اضغط ❤️ بجانب أي نتيجة بحث لإضافتها هنا.</p>
+                <a href="index.html" class="open-btn" style="margin-top:20px;">البحث الآن</a>
+            </div>`;
+        return;
+    }
+    el.innerHTML = list.map(item => {
+        const safeUrl = (item.url || "").replace(/"/g, "&quot;");
+        return `
+        <div class="card">
+            <button type="button" class="fav-remove" title="إزالة" onclick="removeFavorite('${safeUrl.replace(/'/g, "\\'")}')">❤️</button>
+            <img src="${getFavicon(item.url)}" class="w-10 h-10 rounded-xl bg-white/5 p-1 flex-shrink-0 object-contain" onerror="this.src='https://www.google.com/favicon.ico'">
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-xs bg-[#17283e] text-[#fcb045] px-2 py-0.5 rounded-md font-medium">${item.type || "موقع"}</span>
+                </div>
+                <h2 class="font-bold text-base text-white mb-1 truncate">${item.title || item.url}</h2>
+                <p class="text-sm text-slate-300 line-clamp-2">${item.desc || ""}</p>
+                <a class="open-btn" href="${safeUrl}" target="_blank" rel="noopener">فتح الموقع</a>
+            </div>
+        </div>`;
+    }).join("");
+}
+
+render();
+window.addEventListener("storage", function(e) {
+    if (e.key === FAVORITES_KEY) render();
+});
+</script>
+</body>
+</html>
