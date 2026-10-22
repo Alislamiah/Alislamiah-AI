@@ -21,16 +21,23 @@
         }
         .result-card { background: #0a1525; border: 1px solid #17283e; transition: .2s; cursor: pointer; }
         .result-card:hover { border-color: #214f8f; background: #0f1e31; }
+        .fav-btn {
+            background: none; border: none; font-size: 20px; cursor: pointer;
+            padding: 2px 4px; line-height: 1; flex-shrink: 0;
+            filter: grayscale(1); opacity: 0.45; transition: .15s;
+        }
+        .fav-btn:hover { transform: scale(1.12); opacity: 0.85; }
+        .fav-btn.active { filter: none; opacity: 1; }
 
         .ai-answer-box {
-            background: linear-gradient(145deg, rgba(8, 127, 255, 0.12), rgba(8, 185, 239, 0.05));
-            border: 1px solid rgba(8, 127, 255, 0.3);
+            background: linear-gradient(135deg, rgba(131, 58, 180, 0.28) 0%, rgba(253, 29, 29, 0.18) 50%, rgba(252, 176, 69, 0.16) 100%);
+            border: 1px solid rgba(225, 48, 108, 0.5);
             border-radius: 20px;
             padding: 20px 22px;
             margin-bottom: 16px;
             direction: rtl;
             text-align: right;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25), 0 0 28px rgba(225, 48, 108, 0.15);
         }
 
         .ai-answer-header {
@@ -39,12 +46,13 @@
             gap: 10px;
             margin-bottom: 10px;
             font-weight: 700;
-            color: #08b9ef;
+            color: #fcb045;
             font-size: 16px;
+            flex-wrap: wrap;
         }
 
         .ai-answer-header span {
-            background: #087fff;
+            background: linear-gradient(90deg, #833ab4, #fd1d1d, #fcb045);
             color: #ffffff;
             font-size: 11px;
             padding: 3px 10px;
@@ -53,9 +61,30 @@
         }
 
         .ai-answer-content {
-            color: #e2e8f0;
+            color: #f5e6ff;
             font-size: 14.5px;
             line-height: 1.8;
+        }
+
+        .ai-mode-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(90deg, #833ab4, #fd1d1d, #fcb045);
+            box-shadow: 0 6px 18px rgba(225, 48, 108, 0.35);
+            transition: transform 0.15s, box-shadow 0.15s;
+            text-decoration: none;
+        }
+        .ai-mode-btn:active {
+            transform: scale(0.97);
         }
 
         /* إطار الموقع تحت الشريط */
@@ -247,6 +276,9 @@
                 <span>Alislamiah AI</span>
             </div>
             <div id="aiAnswerText" class="ai-answer-content"></div>
+            <a href="chat.html" class="ai-mode-btn" id="aiModeBtn">
+                🤖 الانتقال إلى AI mode
+            </a>
         </div>
 
         <div id="resultsList" class="space-y-3"></div>
@@ -851,6 +883,10 @@
                 aiContainer.style.display = 'none';
             } else {
                 aiContainer.style.display = 'block';
+                const aiModeBtn = document.getElementById('aiModeBtn');
+                if (aiModeBtn) {
+                    aiModeBtn.href = 'chat.html?q=' + encodeURIComponent(query);
+                }
                 const q = query.toLowerCase();
 
                 if (q.includes('الإسلامية') || q.includes('alislamiah')) {
@@ -918,8 +954,12 @@
 
             resultsList.innerHTML = filtered.map(item => {
                 const safeUrl = (item.url || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+                const safeTitle = String(item.title || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                const safeDesc = String(item.desc || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                const isFav = isFavorite(item.url);
                 return `
-                <div class="result-card p-4 rounded-2xl flex items-start gap-4 block" data-url="${safeUrl}" role="button">
+                <div class="result-card p-4 rounded-2xl flex items-start gap-3 block" data-url="${safeUrl}" role="button">
+                    <button type="button" class="fav-btn ${isFav ? 'active' : ''}" data-fav-url="${safeUrl}" data-fav-title="${safeTitle}" data-fav-desc="${safeDesc}" data-fav-type="${(item.type || 'موقع').replace(/"/g, '')}" title="المفضلة">❤️</button>
                     <img src="${getFavicon(item.url)}" class="w-10 h-10 rounded-xl bg-white/5 p-1 flex-shrink-0 object-contain" onerror="this.src='https://www.google.com/favicon.ico'">
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-2 mb-1">
@@ -933,8 +973,47 @@
             }).join('');
         }
 
+        const FAVORITES_KEY = "alislamiah_favorites";
+        function getFavorites() {
+            try {
+                const list = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
+                return Array.isArray(list) ? list : [];
+            } catch (e) { return []; }
+        }
+        function isFavorite(url) {
+            try {
+                const norm = analyticsNormalizeUrl(url);
+                return getFavorites().some(f => analyticsNormalizeUrl(f.url) === norm);
+            } catch (e) { return false; }
+        }
+        function toggleFavorite(btn) {
+            const url = btn.getAttribute("data-fav-url");
+            if (!url) return;
+            let list = getFavorites();
+            const norm = analyticsNormalizeUrl(url);
+            const idx = list.findIndex(f => analyticsNormalizeUrl(f.url) === norm);
+            if (idx >= 0) {
+                list.splice(idx, 1);
+                btn.classList.remove("active");
+                showToast("تمت الإزالة من المفضلة");
+            } else {
+                list.unshift({
+                    title: btn.getAttribute("data-fav-title") || url,
+                    url: url,
+                    desc: btn.getAttribute("data-fav-desc") || "",
+                    type: btn.getAttribute("data-fav-type") || "موقع",
+                    time: Date.now()
+                });
+                if (list.length > 200) list = list.slice(0, 200);
+                btn.classList.add("active");
+                showToast("تمت الإضافة إلى المفضلة ❤️");
+            }
+            localStorage.setItem(FAVORITES_KEY, JSON.stringify(list));
+        }
+
         // Track clicks/visits on result cards while keeping the existing open behavior intact.
         document.getElementById('resultsList').addEventListener('click', function(event) {
+            if (event.target.closest('.fav-btn')) return;
             const card = event.target.closest('.result-card[data-url]');
             if (!card) return;
             const targetUrl = card.getAttribute('data-url');
@@ -1196,6 +1275,13 @@
 
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.more-wrap') && !e.target.closest('.more-menu')) closeMoreMenu();
+            const favBtn = e.target.closest('.fav-btn');
+            if (favBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleFavorite(favBtn);
+                return;
+            }
             const card = e.target.closest('.result-card[data-url]');
             if (card) {
                 const url = card.getAttribute('data-url');
