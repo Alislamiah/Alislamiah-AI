@@ -1487,7 +1487,7 @@ onclick="window.location.href='chat.html'">
 
         <button class="menu-item" type="button" onclick="window.location.href='index.html'; closeMenu();">🏠 الرئيسية</button>
         <button class="menu-item" type="button" onclick="searchShortcut('Quran', ''); closeMenu();">📖 Quran</button>
-        <button class="menu-item" type="button" onclick="searchShortcut('Favorites', ''); closeMenu();">⭐ Favorites</button>
+        <button class="menu-item" type="button" onclick="window.location.href='favorite.html'; closeMenu();">⭐ Favorites</button>
         <button class="menu-item" type="button" onclick="searchShortcut('AI Assistant', ''); closeMenu();">🤖 AI</button>
         <button class="menu-item" type="button" onclick="window.location.href='Settings.html'">⚙️ Settings</button>
         <button class="menu-item" type="button" onclick="searchShortcut('Alislamiah', 'icon.png'); closeMenu();">🌐 Alislamiah</button>
