@@ -618,7 +618,7 @@ body{
                     <h2>Search Engine</h2>
 
                     <p id="currentEngine">
-                        Alislamiah
+                        Alislamiah AI
                     </p>
 
                 </div>
@@ -703,6 +703,37 @@ body{
 
                 <div class="option-name">
                     Alislamiah AI
+                </div>
+
+            </div>
+
+            <div class="check">
+                ✓
+            </div>
+
+        </div>
+
+
+
+        <!-- ALISLAMIAH -->
+
+        <div
+            class="option"
+            data-engine="Alislamiah"
+            onclick="selectEngine('Alislamiah')">
+
+            <div class="option-left">
+
+                <div class="option-icon">
+
+                    <img
+                        src="icon.jpg"
+                        alt="Alislamiah">
+
+                </div>
+
+                <div class="option-name">
+                    Alislamiah
                 </div>
 
             </div>
@@ -1005,7 +1036,7 @@ function updateCurrentEngine(){
     const engine =
         localStorage.getItem(
             "searchEngine"
-        ) || "Alislamiah";
+        ) || "Alislamiah AI";
 
 
     document.getElementById(
@@ -1019,10 +1050,17 @@ function updateCurrentEngine(){
         );
 
 
-    if(engine === "Alislamiah"){
+    if(engine === "Alislamiah AI"){
 
         icon.innerHTML =
-            '<img src="icon.png" alt="Alislamiah">';
+            '<img src="icon.png" alt="Alislamiah AI">';
+
+    }
+
+    else if(engine === "Alislamiah"){
+
+        icon.innerHTML =
+            '<img src="icon.jpg" alt="Alislamiah">';
 
     }
 
@@ -1048,7 +1086,7 @@ function updateEngineSelection(){
     const engine =
         localStorage.getItem(
             "searchEngine"
-        ) || "Alislamiah";
+        ) || "Alislamiah AI";
 
 
     document
