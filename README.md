@@ -1615,7 +1615,34 @@ document.addEventListener("keydown", function(event){
     window.location.href = "signin.html";
   }
 })();
+/* =========================================
+   نظام اللغة الموحد - Alislamiah
+========================================= */
 
+function getLanguage() {
+    return localStorage.getItem("appLanguage") || "en";
+}
+
+function applyLanguage(lang) {
+    // ضبط اتجاه الصفحة
+    document.documentElement.lang = lang;
+    document.documentElement.dir = (lang === "ar") ? "rtl" : "ltr";
+
+    // يمكنك هنا إضافة أي تعديلات خاصة بكل صفحة
+    // مثال: تغيير نصوص معينة
+}
+
+// عند فتح الصفحة
+document.addEventListener("DOMContentLoaded", function () {
+    applyLanguage(getLanguage());
+});
+
+// عند تغيير اللغة من صفحة الإعدادات
+window.addEventListener("storage", function (e) {
+    if (e.key === "appLanguage") {
+        applyLanguage(e.newValue || "en");
+    }
+});
 
 </script>
 
