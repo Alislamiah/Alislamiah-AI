@@ -17,6 +17,17 @@ h1{font-size:24px;margin-bottom:6px}
 .input-group input{width:100%;padding:14px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);border-radius:12px;color:#fff;font-size:15px;outline:none}
 .input-group input:focus{border-color:#00c3ff}
 .btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#0077ff,#00c3ff);color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px}
+
+/* فاصل بين طرق الدخول */
+.divider{display:flex;align-items:center;margin:20px 0;color:#7a93b4;font-size:13px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.15)}
+.divider span{padding:0 12px}
+
+/* زر GitHub */
+.btn-github{width:100%;padding:13px;border:1px solid rgba(255,255,255,.2);border-radius:12px;background:#24292e;color:#fff;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s ease}
+.btn-github:hover{background:#2f363d;border-color:rgba(255,255,255,.4)}
+.btn-github svg{width:20px;height:20px;fill:currentColor}
+
 .message{margin-top:14px;font-size:14px;min-height:20px}
 .message.error{color:#ff6b6b}.message.success{color:#4ade80}
 .links{margin-top:22px;font-size:14px;color:#9fb8e0}
@@ -53,6 +64,14 @@ h1{font-size:24px;margin-bottom:6px}
   </div>
 
   <button class="btn" id="loginBtn">دخول</button>
+
+  <div class="divider"><span>أو</span></div>
+
+  <button class="btn-github" id="githubBtn">
+    <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+    Continue with GitHub
+  </button>
+
   <div class="message" id="msg"></div>
 
   <div class="links">
@@ -74,7 +93,7 @@ h1{font-size:24px;margin-bottom:6px}
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+  import { getAuth, signInWithEmailAndPassword, signInWithPopup, GithubAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBrv1ky0Br5nLb68uvdXE3o6QdzTKpIU4g",
@@ -88,6 +107,7 @@ h1{font-size:24px;margin-bottom:6px}
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const githubProvider = new GithubAuthProvider();
 
   let tempData = null;
 
@@ -143,6 +163,27 @@ h1{font-size:24px;margin-bottom:6px}
     }
   }
 
+  // تسجيل الدخول بـ GitHub
+  async function loginWithGitHub() {
+    const msg = document.getElementById("msg");
+    msg.textContent = "";
+    msg.className = "message";
+
+    try {
+      const result = await signInWithPopup(auth, githubProvider);
+      const user = result.user;
+      setCurrentUser({ id: user.uid, name: user.displayName || user.email?.split('@')[0] || "مستخدم GitHub", email: user.email });
+      window.location.href = "index.html";
+    } catch (error) {
+      msg.className = "message error";
+      if (error.code === "auth/account-exists-with-different-credential") {
+        msg.textContent = "هذا البريد مسجل بالفعل بأسلوب دخول آخر";
+      } else {
+        msg.textContent = "حدث خطأ أثناء تسجيل الدخول بـ GitHub: " + error.message;
+      }
+    }
+  }
+
   function saveYes() {
     if (!tempData) return;
 
@@ -170,6 +211,7 @@ h1{font-size:24px;margin-bottom:6px}
 
   // ربط الأحداث والأزرار
   document.getElementById("loginBtn").addEventListener("click", login);
+  document.getElementById("githubBtn").addEventListener("click", loginWithGitHub);
   document.getElementById("saveYesBtn").addEventListener("click", saveYes);
   document.getElementById("saveNoBtn").addEventListener("click", saveNo);
   document.getElementById("password").addEventListener("keypress", function(e) {
