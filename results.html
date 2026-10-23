@@ -30,14 +30,20 @@
         .fav-btn.active { filter: none; opacity: 1; }
 
         .ai-answer-box {
-            background: linear-gradient(135deg, rgba(131, 58, 180, 0.28) 0%, rgba(253, 29, 29, 0.18) 50%, rgba(252, 176, 69, 0.16) 100%);
-            border: 1px solid rgba(225, 48, 108, 0.5);
+            /* مساحة البطاقة كاملة بألوان إنستغرام */
+            background: linear-gradient(135deg,
+                #833ab4 0%,
+                #c13584 25%,
+                #e1306c 50%,
+                #fd1d1d 75%,
+                #fcb045 100%);
+            border: none;
             border-radius: 20px;
             padding: 20px 22px;
             margin-bottom: 16px;
             direction: rtl;
             text-align: right;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25), 0 0 28px rgba(225, 48, 108, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35), 0 0 28px rgba(225, 48, 108, 0.25);
         }
 
         .ai-answer-header {
@@ -46,24 +52,27 @@
             gap: 10px;
             margin-bottom: 10px;
             font-weight: 700;
-            color: #fcb045;
+            color: #ffffff;
             font-size: 16px;
             flex-wrap: wrap;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.25);
         }
 
         .ai-answer-header span {
-            background: linear-gradient(90deg, #833ab4, #fd1d1d, #fcb045);
+            background: rgba(255, 255, 255, 0.25);
             color: #ffffff;
             font-size: 11px;
             padding: 3px 10px;
             border-radius: 20px;
             font-weight: 600;
+            backdrop-filter: blur(4px);
         }
 
         .ai-answer-content {
-            color: #f5e6ff;
+            color: #ffffff;
             font-size: 14.5px;
             line-height: 1.8;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
         .ai-mode-btn {
@@ -77,9 +86,9 @@
             cursor: pointer;
             font-size: 14px;
             font-weight: 700;
-            color: #fff;
-            background: linear-gradient(90deg, #833ab4, #fd1d1d, #fcb045);
-            box-shadow: 0 6px 18px rgba(225, 48, 108, 0.35);
+            color: #1a1a1a;
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
             transition: transform 0.15s, box-shadow 0.15s;
             text-decoration: none;
         }
