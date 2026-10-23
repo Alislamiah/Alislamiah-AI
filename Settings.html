@@ -663,6 +663,36 @@ body{
 
         </div>
 
+
+        <!-- LANGUAGE -->
+        <div
+            class="setting"
+            onclick="openLanguage()">
+
+            <div class="setting-left">
+
+                <div class="icon">
+                    🌐
+                </div>
+
+                <div class="text">
+
+                    <h2 id="langTitle">Language</h2>
+
+                    <p id="currentLanguage">
+                        English
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="arrow">
+                ›
+            </div>
+
+        </div>
+
     </div>
 
 </main>
@@ -944,6 +974,67 @@ body{
 
 
 
+<!-- =========================================
+     LANGUAGE POPUP
+========================================= -->
+
+<div class="popup" id="languagePopup">
+
+    <div class="popup-box">
+
+        <div class="popup-title" id="langPopupTitle">
+            Language
+        </div>
+
+        <!-- العربية -->
+        <div
+            class="option"
+            data-lang="ar"
+            onclick="selectLanguage('ar')">
+
+            <div class="option-left">
+                <div class="option-icon">ع</div>
+                <div class="option-name">العربية</div>
+            </div>
+            <div class="check">✓</div>
+        </div>
+
+        <!-- Français -->
+        <div
+            class="option"
+            data-lang="fr"
+            onclick="selectLanguage('fr')">
+
+            <div class="option-left">
+                <div class="option-icon">Fr</div>
+                <div class="option-name">Français</div>
+            </div>
+            <div class="check">✓</div>
+        </div>
+
+        <!-- English -->
+        <div
+            class="option"
+            data-lang="en"
+            onclick="selectLanguage('en')">
+
+            <div class="option-left">
+                <div class="option-icon">En</div>
+                <div class="option-name">English</div>
+            </div>
+            <div class="check">✓</div>
+        </div>
+
+        <button class="close" onclick="closeLanguage()" id="langCloseBtn">
+            Cancel
+        </button>
+
+    </div>
+
+</div>
+
+
+
 <script>
 
 /* =========================================
@@ -958,7 +1049,7 @@ function openHistory(){
 
 
 /* =========================================
-   DESKTOP SITE (تم التعديل هنا لتفعيل الزر وتطبيق الشاشة)
+   DESKTOP SITE
 ========================================= */
 
 function saveDesktopSite(){
@@ -1245,6 +1336,138 @@ function updateBrowserSelection(){
 
 
 /* =========================================
+   LANGUAGE
+========================================= */
+
+const translations = {
+    ar: {
+        pageTitle: "الإعدادات | الإسلامية",
+        headerTitle: "الإعدادات",
+        sectionTitle: "الإعدادات",
+        history: "السجل",
+        historyDesc: "عرض سجل التصفح",
+        passwords: "مدير كلمات المرور الإسلامية",
+        passwordsDesc: "عرض وإدارة كلمات المرور المحفوظة",
+        desktop: "موقع سطح المكتب",
+        desktopDesc: "طلب نسخة سطح المكتب من المواقع",
+        searchEngine: "محرك البحث",
+        defaultBrowser: "المتصفح الافتراضي",
+        language: "اللغة",
+        cancel: "إلغاء",
+        langPopupTitle: "اللغة",
+        langNames: { ar: "العربية", fr: "Français", en: "English" }
+    },
+    fr: {
+        pageTitle: "Paramètres | Alislamiah",
+        headerTitle: "Paramètres",
+        sectionTitle: "PARAMÈTRES",
+        history: "Historique",
+        historyDesc: "Voir l'historique de navigation",
+        passwords: "Gestionnaire de mots de passe Alislamiah",
+        passwordsDesc: "Voir et gérer les mots de passe enregistrés",
+        desktop: "Site de bureau",
+        desktopDesc: "Demander la version bureau des sites",
+        searchEngine: "Moteur de recherche",
+        defaultBrowser: "Navigateur par défaut",
+        language: "Langue",
+        cancel: "Annuler",
+        langPopupTitle: "Langue",
+        langNames: { ar: "العربية", fr: "Français", en: "English" }
+    },
+    en: {
+        pageTitle: "Settings | Alislamiah",
+        headerTitle: "Settings",
+        sectionTitle: "SETTINGS",
+        history: "History",
+        historyDesc: "View browsing history",
+        passwords: "Alislamiah password manager",
+        passwordsDesc: "View and manage saved passwords",
+        desktop: "Desktop site",
+        desktopDesc: "Request desktop version of websites",
+        searchEngine: "Search Engine",
+        defaultBrowser: "Default browser",
+        language: "Language",
+        cancel: "Cancel",
+        langPopupTitle: "Language",
+        langNames: { ar: "العربية", fr: "Français", en: "English" }
+    }
+};
+
+function openLanguage() {
+    document.getElementById("languagePopup").style.display = "flex";
+    updateLanguageSelection();
+}
+
+function closeLanguage() {
+    document.getElementById("languagePopup").style.display = "none";
+}
+
+function selectLanguage(lang) {
+    localStorage.setItem("appLanguage", lang);
+    applyLanguage(lang);
+    updateLanguageSelection();
+    closeLanguage();
+}
+
+function updateLanguageSelection() {
+    const current = localStorage.getItem("appLanguage") || "en";
+
+    document.querySelectorAll("#languagePopup .option").forEach(function(option) {
+        option.classList.remove("selected");
+        if (option.dataset.lang === current) {
+            option.classList.add("selected");
+        }
+    });
+}
+
+function applyLanguage(lang) {
+    const t = translations[lang] || translations.en;
+
+    // اتجاه الصفحة
+    document.documentElement.lang = lang;
+    document.documentElement.dir = (lang === "ar") ? "rtl" : "ltr";
+
+    // عنوان الصفحة
+    document.title = t.pageTitle;
+
+    // الهيدر
+    document.querySelector(".header h1").textContent = t.headerTitle;
+
+    // عنوان القسم
+    document.querySelector(".section-title").textContent = t.sectionTitle;
+
+    // الإعدادات
+    const settings = document.querySelectorAll(".setting");
+    
+    // History
+    settings[0].querySelector("h2").textContent = t.history;
+    settings[0].querySelector("p").textContent = t.historyDesc;
+
+    // Passwords
+    settings[1].querySelector("h2").textContent = t.passwords;
+    settings[1].querySelector("p").textContent = t.passwordsDesc;
+
+    // Desktop site
+    settings[2].querySelector("h2").textContent = t.desktop;
+    settings[2].querySelector("p").textContent = t.desktopDesc;
+
+    // Search Engine
+    settings[3].querySelector("h2").textContent = t.searchEngine;
+
+    // Default browser
+    settings[4].querySelector("h2").textContent = t.defaultBrowser;
+
+    // Language
+    document.getElementById("langTitle").textContent = t.language;
+    document.getElementById("currentLanguage").textContent = t.langNames[lang];
+
+    // نافذة اللغة
+    document.getElementById("langPopupTitle").textContent = t.langPopupTitle;
+    document.getElementById("langCloseBtn").textContent = t.cancel;
+}
+
+
+/* =========================================
    LOAD SETTINGS
 ========================================= */
 
@@ -1278,6 +1501,11 @@ window.addEventListener(
             "defaultBrowserText"
         ).textContent = browser;
 
+        // Language
+        const lang = localStorage.getItem("appLanguage") || "en";
+        applyLanguage(lang);
+        updateLanguageSelection();
+
     }
 );
 
@@ -1308,6 +1536,11 @@ window.addEventListener(
                 desktopToggle.checked = isDesktop;
             }
             applyDesktopSiteMode(isDesktop);
+        }
+
+        if(event.key === "appLanguage"){
+            applyLanguage(event.newValue || "en");
+            updateLanguageSelection();
         }
 
     }
