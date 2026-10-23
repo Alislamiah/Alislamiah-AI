@@ -83,7 +83,7 @@ h1{font-size:24px;margin-bottom:6px}
 <div class="modal-overlay" id="saveModal">
   <div class="modal">
     <h3>هل تريد حفظ كلمة المرور؟</h3>
-    <p>سيتم حفظها في صفحة كلمات المرور المحفوظة حتى تتمكن من استرجاعها لاحقاً إذا نسيتها.</p>
+    <p>سيتم حفظها في صفحة كلمات المرور المحفوظة حتى تتمكن من استرجاعها لاحقاً.</p>
     <div class="modal-btns">
       <button class="btn-yes" id="saveYesBtn">نعم، احفظها</button>
       <button class="btn-no" id="saveNoBtn">لا</button>
@@ -93,7 +93,7 @@ h1{font-size:24px;margin-bottom:6px}
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, signInWithPopup, GithubAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+  import { getAuth, signInWithEmailAndPassword, signInWithPopup, GithubAuthProvider } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBrv1ky0Br5nLb68uvdXE3o6QdzTKpIU4g",
@@ -119,14 +119,7 @@ h1{font-size:24px;margin-bottom:6px}
     localStorage.setItem("alislamiah_current_user", JSON.stringify(user));
   }
 
-  // التوجيه التلقائي إذا كان الحساب مسجلاً مسبقاً
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setCurrentUser({ id: user.uid, name: user.displayName || user.email.split('@')[0], email: user.email });
-      window.location.href = "index.html";
-    }
-  });
-
+  // 1. تسجيل الدخول بالبريد وكلمة المرور
   async function login() {
     const email = document.getElementById("email").value.trim().toLowerCase();
     const password = document.getElementById("password").value;
@@ -146,12 +139,12 @@ h1{font-size:24px;margin-bottom:6px}
       const user = userCredential.user;
 
       tempData = { 
+        id: user.uid,
         name: user.displayName || email.split('@')[0], 
         email: user.email, 
         password: password 
       };
 
-      setCurrentUser({ id: user.uid, name: tempData.name, email: user.email });
       document.getElementById("saveModal").classList.add("show");
     } catch (error) {
       msg.className = "message error";
@@ -163,7 +156,7 @@ h1{font-size:24px;margin-bottom:6px}
     }
   }
 
-  // تسجيل الدخول بـ GitHub
+  // 2. تسجيل الدخول بواسطة GitHub
   async function loginWithGitHub() {
     const msg = document.getElementById("msg");
     msg.textContent = "";
@@ -172,8 +165,15 @@ h1{font-size:24px;margin-bottom:6px}
     try {
       const result = await signInWithPopup(auth, githubProvider);
       const user = result.user;
-      setCurrentUser({ id: user.uid, name: user.displayName || user.email?.split('@')[0] || "مستخدم GitHub", email: user.email });
-      window.location.href = "index.html";
+
+      tempData = { 
+        id: user.uid,
+        name: user.displayName || user.email?.split('@')[0] || "مستخدم GitHub", 
+        email: user.email || "حساب GitHub", 
+        password: "تسجيل عبر GitHub" 
+      };
+
+      document.getElementById("saveModal").classList.add("show");
     } catch (error) {
       msg.className = "message error";
       if (error.code === "auth/account-exists-with-different-credential") {
@@ -184,8 +184,11 @@ h1{font-size:24px;margin-bottom:6px}
     }
   }
 
+  // عند النقر على "نعم، احفظها" -> الحفظ والتحويل المباشر لـ saved.passwords.html
   function saveYes() {
     if (!tempData) return;
+
+    setCurrentUser({ id: tempData.id, name: tempData.name, email: tempData.email });
 
     const saved = getSavedPasswords();
     const exists = saved.find(s => s.email === tempData.email);
@@ -201,12 +204,17 @@ h1{font-size:24px;margin-bottom:6px}
     }
 
     document.getElementById("saveModal").classList.remove("show");
-    window.location.href = "index.html";
+    window.location.href = "saved.passwords.html"; 
   }
 
+  // عند النقر على "لا" -> التحويل للرئيسية index.html
   function saveNo() {
+    if (!tempData) return;
+
+    setCurrentUser({ id: tempData.id, name: tempData.name, email: tempData.email });
+
     document.getElementById("saveModal").classList.remove("show");
-    window.location.href = "index.html";
+    window.location.href = "index.html"; 
   }
 
   // ربط الأحداث والأزرار
