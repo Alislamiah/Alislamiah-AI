@@ -1,230 +1,181 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تسجيل الدخول - Alislamiah AI</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial,sans-serif}
-body{background:#0b1020;color:#fff;min-height:100vh;display:flex;justify-content:center;align-items:center}
-.bg{position:fixed;inset:0;background:radial-gradient(circle at 15% 20%,rgba(0,119,255,.35),transparent 35%),radial-gradient(circle at 85% 25%,rgba(0,195,255,.25),transparent 30%),#0b1020;z-index:0}
-.container{position:relative;z-index:1;width:92%;max-width:400px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:28px;padding:40px 30px;backdrop-filter:blur(20px);box-shadow:0 25px 50px rgba(0,0,0,.45);text-align:center}
-.logo{width:75px;height:75px;margin:0 auto 20px;border-radius:20px;background:linear-gradient(135deg,#0077ff,#00c3ff);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;box-shadow:0 8px 25px rgba(0,150,255,.4)}
-h1{font-size:24px;margin-bottom:6px}
-.subtitle{color:#9fb8e0;font-size:14px;margin-bottom:28px}
-.input-group{margin-bottom:16px;text-align:right}
-.input-group label{display:block;font-size:13px;color:#a0b8d8;margin-bottom:6px}
-.input-group input{width:100%;padding:14px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);border-radius:12px;color:#fff;font-size:15px;outline:none}
-.input-group input:focus{border-color:#00c3ff}
-.btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#0077ff,#00c3ff);color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlIslamiah AI - تسجيل الدخول</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-color: #f8fafc;
+      --accent-color: #3b82f6;
+      --google-bg: #ffffff;
+      --google-text: #334155;
+    }
 
-/* فاصل بين طرق الدخول */
-.divider{display:flex;align-items:center;margin:20px 0;color:#7a93b4;font-size:13px}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.15)}
-.divider span{padding:0 12px}
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-/* زر GitHub */
-.btn-github{width:100%;padding:13px;border:1px solid rgba(255,255,255,.2);border-radius:12px;background:#24292e;color:#fff;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s ease}
-.btn-github:hover{background:#2f363d;border-color:rgba(255,255,255,.4)}
-.btn-github svg{width:20px;height:20px;fill:currentColor}
+    .login-card {
+      background-color: var(--card-bg);
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
 
-.message{margin-top:14px;font-size:14px;min-height:20px}
-.message.error{color:#ff6b6b}.message.success{color:#4ade80}
-.links{margin-top:22px;font-size:14px;color:#9fb8e0}
-.links a{color:#00c3ff;text-decoration:none;font-weight:600}
+    h2 {
+      margin-bottom: 24px;
+      font-size: 24px;
+    }
 
-/* نافذة حفظ كلمة المرور */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;justify-content:center;align-items:center;z-index:100}
-.modal-overlay.show{display:flex}
-.modal{background:#12182b;border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:28px;width:90%;max-width:360px;text-align:center}
-.modal h3{margin-bottom:10px;font-size:18px}
-.modal p{color:#9fb8e0;font-size:14px;margin-bottom:22px;line-height:1.5}
-.modal-btns{display:flex;gap:12px}
-.modal-btns button{flex:1;padding:12px;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer}
-.btn-yes{background:linear-gradient(135deg,#0077ff,#00c3ff);color:#fff}
-.btn-no{background:rgba(255,255,255,.1);color:#ccc}
-</style>
+    /* زر Google الاحترافي */
+    .google-btn {
+      background-color: var(--google-bg);
+      color: var(--google-text);
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: background-color 0.2s, box-shadow 0.2s;
+    }
+
+    .google-btn:hover {
+      background-color: #f1f5f9;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* نافذة حفظ كلمة المرور المنبثقة (Modal) */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background-color: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      width: 90%;
+      max-width: 350px;
+      border: 1px solid #334155;
+    }
+
+    .modal-content button {
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-<div class="bg"></div>
 
-<div class="container">
-  <div class="logo">AI</div>
-  <h1>تسجيل الدخول</h1>
-  <p class="subtitle">مرحباً بك مجدداً في متصفح الإسلامية الذكي</p>
-
-  <div class="input-group">
-    <label>البريد الإلكتروني</label>
-    <input type="email" id="email" placeholder="example@email.com">
+  <div class="login-card">
+    <h2>تسجيل الدخول إلى AlIslamiah AI</h2>
+    
+    <!-- زر Google المحدث -->
+    <button onclick="loginWithGoogle()" class="google-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24">
+        <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+        <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.14C3.17 21.36 7.31 24 12 24z"/>
+        <path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.62H1.18C.43 8.14 0 9.87 0 12s.43 3.86 1.18 5.38l4.09-3.14z"/>
+        <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.17 2.64 1.18 6.62l4.09 3.14c.95-2.85 3.6-4.96 6.73-4.96z"/>
+      </svg>
+      المتابعة باستخدام Google
+    </button>
   </div>
 
-  <div class="input-group">
-    <label>كلمة المرور</label>
-    <input type="password" id="password" placeholder="••••••••">
-  </div>
-
-  <button class="btn" id="loginBtn">دخول</button>
-
-  <div class="divider"><span>أو</span></div>
-
-  <button class="btn-github" id="githubBtn">
-    <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-    Continue with GitHub
-  </button>
-
-  <div class="message" id="msg"></div>
-
-  <div class="links">
-    ليس لديك حساب؟ <a href="signup.html">إنشاء حساب جديد</a>
-  </div>
-</div>
-
-<!-- سؤال حفظ كلمة المرور -->
-<div class="modal-overlay" id="saveModal">
-  <div class="modal">
-    <h3>هل تريد حفظ كلمة المرور؟</h3>
-    <p>سيتم حفظها في صفحة كلمات المرور المحفوظة حتى تتمكن من استرجاعها لاحقاً.</p>
-    <div class="modal-btns">
-      <button class="btn-yes" id="saveYesBtn">نعم، احفظها</button>
-      <button class="btn-no" id="saveNoBtn">لا</button>
+  <!-- Modal حفظ الحساب أو التوجيه -->
+  <div id="saveModal" class="modal">
+    <div class="modal-content">
+      <h3>تم تسجيل الدخول بنجاح!</h3>
+      <p id="userInfoText"></p>
+      <button onclick="proceedToApp()">متابعة إلى التطبيق</button>
     </div>
   </div>
-</div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, signInWithPopup, GithubAuthProvider } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+  <!-- Firebase SDK والمنطق البرمجي -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBrv1ky0Br5nLb68uvdXE3o6QdzTKpIU4g",
-    authDomain: "alislamiah-ai-34202.firebaseapp.com",
-    projectId: "alislamiah-ai-34202",
-    storageBucket: "alislamiah-ai-34202.firebasestorage.app",
-    messagingSenderId: "683051452829",
-    appId: "1:683051452829:web:e96e40422c7f31e563c774",
-    measurementId: "G-LFQLND010S"
-  };
+    // إعدادات مشروع فايربيس الخاص بك (alislamiah-ai-34202)
+    const firebaseConfig = {
+      apiKey: "YOUR_FIREBASE_API_KEY",
+      authDomain: "alislamiah-ai-34202.firebaseapp.com",
+      projectId: "alislamiah-ai-34202",
+      storageBucket: "alislamiah-ai-34202.appspot.com",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const githubProvider = new GithubAuthProvider();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider();
 
-  let tempData = null;
+    let tempData = null;
 
-  function getSavedPasswords() {
-    return JSON.parse(localStorage.getItem("alislamiah_saved_passwords") || "[]");
-  }
+    // دالة تسجيل الدخول عبر Google
+    window.loginWithGoogle = async function() {
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user;
+        
+        tempData = { 
+          id: user.uid,
+          name: user.displayName || "مستخدم Google", 
+          email: user.email, 
+          provider: "Google" 
+        };
 
-  function setCurrentUser(user) {
-    localStorage.setItem("alislamiah_current_user", JSON.stringify(user));
-  }
+        // عرض بيانات المستخدم في النافذة المنبثقة
+        document.getElementById("userInfoText").innerText = `مرحباً بك، ${tempData.name}`;
+        document.getElementById("saveModal").classList.add("show");
 
-  // 1. تسجيل الدخول بالبريد وكلمة المرور
-  async function login() {
-    const email = document.getElementById("email").value.trim().toLowerCase();
-    const password = document.getElementById("password").value;
-    const msg = document.getElementById("msg");
-
-    msg.textContent = "";
-    msg.className = "message";
-
-    if (!email || !password) {
-      msg.className = "message error";
-      msg.textContent = "يرجى إدخال البريد وكلمة المرور";
-      return;
-    }
-
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      tempData = { 
-        id: user.uid,
-        name: user.displayName || email.split('@')[0], 
-        email: user.email, 
-        password: password 
-      };
-
-      document.getElementById("saveModal").classList.add("show");
-    } catch (error) {
-      msg.className = "message error";
-      if (error.code === "auth/invalid-credential" || error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
-        msg.textContent = "البريد أو كلمة المرور غير صحيحة";
-      } else {
-        msg.textContent = "حدث خطأ أثناء تسجيل الدخول: " + error.message;
+      } function catchError(error) {
+        console.error("خطأ في تسجيل الدخول:", error);
+        alert("فشل تسجيل الدخول: " + error.message);
       }
-    }
-  }
+    };
 
-  // 2. تسجيل الدخول بواسطة GitHub
-  async function loginWithGitHub() {
-    const msg = document.getElementById("msg");
-    msg.textContent = "";
-    msg.className = "message";
+    // دالة المتابعة بعد إغلاق الـ Modal وتوجيه المستخدم
+    window.proceedToApp = function() {
+      // يمكنك توجيهه لصفحة حفظ كلمات المرور أو التطبيق الرئيسي مباشرة حسب رغبتك
+      window.location.href = "index.html"; 
+    };
+  </script>
 
-    try {
-      const result = await signInWithPopup(auth, githubProvider);
-      const user = result.user;
-
-      tempData = { 
-        id: user.uid,
-        name: user.displayName || user.email?.split('@')[0] || "مستخدم GitHub", 
-        email: user.email || "حساب GitHub", 
-        password: "تسجيل عبر GitHub" 
-      };
-
-      document.getElementById("saveModal").classList.add("show");
-    } catch (error) {
-      msg.className = "message error";
-      if (error.code === "auth/account-exists-with-different-credential") {
-        msg.textContent = "هذا البريد مسجل بالفعل بأسلوب دخول آخر";
-      } else {
-        msg.textContent = "حدث خطأ أثناء تسجيل الدخول بـ GitHub: " + error.message;
-      }
-    }
-  }
-
-  // عند النقر على "نعم، احفظها" -> الحفظ والتحويل المباشر لـ saved.passwords.html
-  function saveYes() {
-    if (!tempData) return;
-
-    setCurrentUser({ id: tempData.id, name: tempData.name, email: tempData.email });
-
-    const saved = getSavedPasswords();
-    const exists = saved.find(s => s.email === tempData.email);
-
-    if (!exists) {
-      saved.push({
-        name: tempData.name,
-        email: tempData.email,
-        password: tempData.password,
-        savedAt: new Date().toISOString()
-      });
-      localStorage.setItem("alislamiah_saved_passwords", JSON.stringify(saved));
-    }
-
-    document.getElementById("saveModal").classList.remove("show");
-    window.location.href = "saved.passwords.html"; 
-  }
-
-  // عند النقر على "لا" -> التحويل للرئيسية index.html
-  function saveNo() {
-    if (!tempData) return;
-
-    setCurrentUser({ id: tempData.id, name: tempData.name, email: tempData.email });
-
-    document.getElementById("saveModal").classList.remove("show");
-    window.location.href = "index.html"; 
-  }
-
-  // ربط الأحداث والأزرار
-  document.getElementById("loginBtn").addEventListener("click", login);
-  document.getElementById("githubBtn").addEventListener("click", loginWithGitHub);
-  document.getElementById("saveYesBtn").addEventListener("click", saveYes);
-  document.getElementById("saveNoBtn").addEventListener("click", saveNo);
-  document.getElementById("password").addEventListener("keypress", function(e) {
-    if (e.key === "Enter") login();
-  });
-</script>
 </body>
 </html>
