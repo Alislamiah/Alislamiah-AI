@@ -1414,7 +1414,7 @@ onclick="window.location.href='chat.html'">
     <span class="card-label" style="font-size: 12px; color: #0D47A1; font-weight: 500;">مادة إعلانية</span>
     <h3 class="card-title" style="margin: 8px 0 6px; font-size: 18px; color: #01579B;">Outhub</h3>
     <p class="card-desc" style="margin: 0 0 14px; font-size: 14px; line-height: 1.5; color: #0277BD;">طور تطبيقاتك مواقعك بواسطتنا Alislamiah</p>
-    <a href="https://mohamedmadoui5195.github.io/Alislamiah-AI/results.html?q=Outhub" class="card-btn" style="display: inline-block; background: #0288D1; color: #FFFFFF; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500;">
+    <a href="https://Alislamiah.github.io/Alislamiah-AI/results.html?q=Outhub" class="card-btn" style="display: inline-block; background: #0288D1; color: #FFFFFF; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500;">
       ← عرض النتائج
     </a>
   </div>
@@ -1430,7 +1430,7 @@ onclick="window.location.href='chat.html'">
     <span class="card-label" style="font-size: 12px; color: #8B7355; font-weight: 500;">مادة إعلانية</span>
     <h3 class="card-title" style="margin: 8px 0 6px; font-size: 18px; color: #3D2B1F;">مداد</h3>
     <p class="card-desc" style="margin: 0 0 14px; font-size: 14px; line-height: 1.5; color: #5C4A3A;">حول أفكارك إلى واقع ،منصة مداد. من أقوى منصات صنع المواقع والألعاب.</p>
-    <a href="https://mohamedmadoui5195.github.io/Alislamiah-AI/results.html?q=%D9%85%D8%AF%D8%A7%D8%AF" class="card-btn" style="display: inline-block; background: #E8D5A3; color: #3D2B1F; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500;">
+    <a href="https://Alislamiah.github.io/Alislamiah-AI/results.html?q=%D9%85%D8%AF%D8%A7%D8%AF" class="card-btn" style="display: inline-block; background: #E8D5A3; color: #3D2B1F; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500;">
       ← عرض النتائج
     </a>
   </div>
