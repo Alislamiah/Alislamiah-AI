@@ -322,13 +322,13 @@
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import {
       getAuth,
       signInWithEmailAndPassword,
       signInWithPopup,
       GoogleAuthProvider
-    } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBrv1ky0Br5nLb68uvdXE3o6QdzTKpIU4g",
@@ -363,16 +363,16 @@
       document.getElementById("saveModal").classList.add("show");
     }
 
-    // عند الضغط على "نعم، حفظ": يتم تخزين البيانات باسم الخدمة Alislamiah AI وتوجيهه إلى saved.passwords.html
+    // نعم، حفظ → يحفظ البيانات ثم يروح للرئيسية
     document.getElementById("saveYesBtn").addEventListener("click", () => {
       if (tempUserData) {
         tempUserData.serviceName = "Alislamiah AI";
         localStorage.setItem("saved_auth_user", JSON.stringify(tempUserData));
       }
-      window.location.href = "saved.passwords.html";
+      window.location.href = "index.html";   // ← التوجيه للرئيسية
     });
 
-    // عند الضغط على "لا، تخطي": يذهب للرئيسية مباشرة
+    // لا، تخطي → يروح للرئيسية مباشرة
     document.getElementById("saveNoBtn").addEventListener("click", () => {
       window.location.href = "index.html";
     });
