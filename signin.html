@@ -130,7 +130,7 @@
       transform: scale(0.98);
     }
 
-    .btn-primary:disabled {
+    .btn-primary:disabled, .btn-google:disabled {
       opacity: 0.6;
       cursor: not-allowed;
     }
@@ -173,10 +173,6 @@
       background: rgba(28, 42, 68, 0.95);
     }
 
-    .btn-google svg {
-      flex-shrink: 0;
-    }
-
     .message {
       margin-top: 14px;
       padding: 10px 12px;
@@ -201,6 +197,74 @@
       border: 1px solid #2a6a55;
       color: #8cf0c3;
     }
+
+    /* النافذة المنبثقة (Modal) لحفظ كلمة المرور */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(4, 10, 20, 0.8);
+      backdrop-filter: blur(8px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #0f1e37;
+      border: 1px solid var(--border);
+      padding: 28px 24px;
+      border-radius: 20px;
+      text-align: center;
+      width: 90%;
+      max-width: 340px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    }
+
+    .modal-content h3 {
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .modal-content p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .modal-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      transition: opacity 0.2s;
+    }
+
+    .btn-save {
+      background: linear-gradient(90deg, #1a6ef0, #3b9bff);
+      color: white;
+    }
+
+    .btn-skip {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
   </style>
 </head>
 <body>
@@ -210,7 +274,6 @@
     <h1>تسجيل الدخول</h1>
     <p class="subtitle">مرحباً بك مجدداً في متصفح الإسلامية الذكي</p>
 
-    <!-- تسجيل الدخول -->
     <form id="loginForm">
       <div class="field">
         <label for="email">البريد الإلكتروني</label>
@@ -227,7 +290,7 @@
 
     <div class="divider"><span>أو</span></div>
 
-    <button type="button" class="btn-google" id="googleBtn" onclick="loginWithGoogle()">
+    <button type="button" class="btn-google" id="googleBtn">
       <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
         <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
         <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.14C3.17 21.36 7.31 24 12 24z"/>
@@ -245,14 +308,25 @@
     <div id="msg" class="message"></div>
   </div>
 
+  <!-- Modal حفظ كلمة المرور -->
+  <div id="saveModal" class="modal">
+    <div class="modal-content">
+      <h3>حفظ بيانات الدخول</h3>
+      <p>تم تسجيل الدخول بنجاح! هل تريد الانتقال لصفحة حفظ كلمات المرور؟</p>
+      <div class="modal-actions">
+        <button id="saveYesBtn" class="modal-btn btn-save">حفظ البيانات</button>
+        <button id="saveNoBtn" class="modal-btn btn-skip">تخطي للرئيسية</button>
+      </div>
+    </div>
+  </div>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
     import {
       getAuth,
       signInWithEmailAndPassword,
       signInWithPopup,
-      GoogleAuthProvider,
-      onAuthStateChanged
+      GoogleAuthProvider
     } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 
     const firebaseConfig = {
@@ -269,6 +343,8 @@
     const auth = getAuth(app);
     const googleProvider = new GoogleAuthProvider();
 
+    let tempUserData = null;
+
     function showMsg(text, type) {
       const el = document.getElementById("msg");
       el.textContent = text;
@@ -281,12 +357,22 @@
       el.textContent = "";
     }
 
-    // إذا كان المستخدم مسجلاً مسبقاً
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // وجّه للصفحة الرئيسية بعد تسجيل الدخول
-        // window.location.href = "index.html";
+    function openSaveModal(userData) {
+      tempUserData = userData;
+      document.getElementById("saveModal").classList.add("show");
+    }
+
+    // زر "حفظ البيانات" -> يوجه لـ save.passwords.html
+    document.getElementById("saveYesBtn").addEventListener("click", () => {
+      if (tempUserData) {
+        localStorage.setItem("saved_auth_user", JSON.stringify(tempUserData));
       }
+      window.location.href = "save.passwords.html";
+    });
+
+    // زر "تخطي للرئيسية" -> يوجه لـ index.html
+    document.getElementById("saveNoBtn").addEventListener("click", () => {
+      window.location.href = "index.html";
     });
 
     // تسجيل الدخول بالبريد
@@ -306,9 +392,17 @@
       btn.textContent = "جاري الدخول...";
 
       try {
-        await signInWithEmailAndPassword(auth, email, password);
+        const res = await signInWithEmailAndPassword(auth, email, password);
         showMsg("تم تسجيل الدخول بنجاح.", "success");
-        // window.location.href = "index.html";
+        
+        // إظهار النافذة المنبثقة للتحكم في التوجيه وعدم الذهاب للرئيسية مباشرة
+        openSaveModal({
+          uid: res.user.uid,
+          email: res.user.email,
+          pass: password,
+          provider: "password"
+        });
+
       } catch (err) {
         let msg = "فشل تسجيل الدخول.";
         if (err.code === "auth/invalid-credential" || err.code === "auth/wrong-password" || err.code === "auth/user-not-found") {
@@ -328,15 +422,23 @@
     });
 
     // تسجيل الدخول بـ Google
-    window.loginWithGoogle = async function () {
+    document.getElementById("googleBtn").addEventListener("click", async () => {
       clearMsg();
       const btn = document.getElementById("googleBtn");
       btn.disabled = true;
 
       try {
-        await signInWithPopup(auth, googleProvider);
+        const res = await signInWithPopup(auth, googleProvider);
         showMsg("تم تسجيل الدخول عبر Google بنجاح.", "success");
-        // window.location.href = "index.html";
+
+        // إظهار النافذة المنبثقة للتحكم في التوجيه
+        openSaveModal({
+          uid: res.user.uid,
+          email: res.user.email,
+          name: res.user.displayName,
+          provider: "google"
+        });
+
       } catch (err) {
         let msg = "فشل التسجيل عبر Google.";
         if (err.code === "auth/popup-closed-by-user") {
@@ -350,7 +452,7 @@
       } finally {
         btn.disabled = false;
       }
-    };
+    });
   </script>
 </body>
 </html>
