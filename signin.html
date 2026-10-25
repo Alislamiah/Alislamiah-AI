@@ -1,458 +1,230 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#0a1628">
-  <title>Alislamiah AI — تسجيل الدخول</title>
-  <style>
-    :root {
-      --bg: #0a1628;
-      --card: rgba(15, 30, 55, 0.55);
-      --text: #f0f4ff;
-      --muted: #8fa3c0;
-      --blue: #2b7fff;
-      --blue-dark: #1a5fd4;
-      --input-bg: rgba(20, 35, 60, 0.7);
-      --border: rgba(120, 150, 190, 0.25);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسجيل الدخول - Alislamiah AI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial,sans-serif}
+body{background:#0b1020;color:#fff;min-height:100vh;display:flex;justify-content:center;align-items:center}
+.bg{position:fixed;inset:0;background:radial-gradient(circle at 15% 20%,rgba(0,119,255,.35),transparent 35%),radial-gradient(circle at 85% 25%,rgba(0,195,255,.25),transparent 30%),#0b1020;z-index:0}
+.container{position:relative;z-index:1;width:92%;max-width:400px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:28px;padding:40px 30px;backdrop-filter:blur(20px);box-shadow:0 25px 50px rgba(0,0,0,.45);text-align:center}
+.logo{width:75px;height:75px;margin:0 auto 20px;border-radius:20px;background:linear-gradient(135deg,#0077ff,#00c3ff);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;box-shadow:0 8px 25px rgba(0,150,255,.4)}
+h1{font-size:24px;margin-bottom:6px}
+.subtitle{color:#9fb8e0;font-size:14px;margin-bottom:28px}
+.input-group{margin-bottom:16px;text-align:right}
+.input-group label{display:block;font-size:13px;color:#a0b8d8;margin-bottom:6px}
+.input-group input{width:100%;padding:14px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);border-radius:12px;color:#fff;font-size:15px;outline:none}
+.input-group input:focus{border-color:#00c3ff}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#0077ff,#00c3ff);color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px}
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+/* فاصل بين طرق الدخول */
+.divider{display:flex;align-items:center;margin:20px 0;color:#7a93b4;font-size:13px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.15)}
+.divider span{padding:0 12px}
 
-    body {
-      min-height: 100vh;
-      min-height: 100dvh;
-      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-      background: radial-gradient(ellipse at 50% 20%, #132a4a 0%, #0a1628 55%, #06101c 100%);
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px 16px;
-    }
+/* زر GitHub */
+.btn-github{width:100%;padding:13px;border:1px solid rgba(255,255,255,.2);border-radius:12px;background:#24292e;color:#fff;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s ease}
+.btn-github:hover{background:#2f363d;border-color:rgba(255,255,255,.4)}
+.btn-github svg{width:20px;height:20px;fill:currentColor}
 
-    .card {
-      width: 100%;
-      max-width: 380px;
-      background: var(--card);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--border);
-      border-radius: 28px;
-      padding: 40px 28px 32px;
-      text-align: center;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
-    }
+.message{margin-top:14px;font-size:14px;min-height:20px}
+.message.error{color:#ff6b6b}.message.success{color:#4ade80}
+.links{margin-top:22px;font-size:14px;color:#9fb8e0}
+.links a{color:#00c3ff;text-decoration:none;font-weight:600}
 
-    .logo {
-      width: 72px;
-      height: 72px;
-      margin: 0 auto 22px;
-      border-radius: 18px;
-      background: linear-gradient(145deg, #3b9bff, #1a6ef0);
-      display: grid;
-      place-items: center;
-      font-size: 22px;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: 1px;
-      box-shadow: 0 0 28px rgba(43, 127, 255, 0.55);
-    }
-
-    h1 {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 28px;
-    }
-
-    .field {
-      text-align: right;
-      margin-bottom: 16px;
-    }
-
-    .field label {
-      display: block;
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .field input {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: var(--input-bg);
-      color: var(--text);
-      font-size: 15px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .field input::placeholder {
-      color: #6b7f9c;
-    }
-
-    .field input:focus {
-      border-color: var(--blue);
-    }
-
-    .btn-primary {
-      width: 100%;
-      margin-top: 8px;
-      padding: 15px;
-      border: none;
-      border-radius: 14px;
-      background: linear-gradient(90deg, #1a6ef0, #3b9bff);
-      color: #fff;
-      font-size: 17px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.15s;
-    }
-
-    .btn-primary:hover {
-      opacity: 0.95;
-    }
-
-    .btn-primary:active {
-      transform: scale(0.98);
-    }
-
-    .btn-primary:disabled, .btn-google:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 22px 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .divider::before,
-    .divider::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    .btn-google {
-      width: 100%;
-      padding: 13px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: rgba(18, 28, 48, 0.85);
-      color: #e8eef8;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: background 0.2s;
-    }
-
-    .btn-google:hover {
-      background: rgba(28, 42, 68, 0.95);
-    }
-
-    .message {
-      margin-top: 14px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      font-size: 13px;
-      line-height: 1.5;
-      display: none;
-    }
-
-    .message.show {
-      display: block;
-    }
-
-    .message.error {
-      background: rgba(80, 20, 30, 0.7);
-      border: 1px solid #7a3040;
-      color: #ffb0b8;
-    }
-
-    .message.success {
-      background: rgba(15, 50, 40, 0.7);
-      border: 1px solid #2a6a55;
-      color: #8cf0c3;
-    }
-
-    /* نافذة السؤال (Modal) */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(4, 10, 20, 0.82);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .modal.show {
-      display: flex;
-    }
-
-    .modal-content {
-      background: #0f1e37;
-      border: 1px solid var(--border);
-      padding: 28px 24px;
-      border-radius: 24px;
-      text-align: center;
-      width: 90%;
-      max-width: 340px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-    }
-
-    .modal-content h3 {
-      font-size: 19px;
-      color: #fff;
-      margin-bottom: 8px;
-    }
-
-    .modal-content p {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 22px;
-      line-height: 1.5;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-    }
-
-    .modal-btn {
-      flex: 1;
-      padding: 12px;
-      border-radius: 12px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 700;
-      transition: opacity 0.2s;
-    }
-
-    .btn-save {
-      background: linear-gradient(90deg, #1a6ef0, #3b9bff);
-      color: white;
-    }
-
-    .btn-skip {
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--muted);
-      border: 1px solid var(--border);
-    }
-  </style>
+/* نافذة حفظ كلمة المرور */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;justify-content:center;align-items:center;z-index:100}
+.modal-overlay.show{display:flex}
+.modal{background:#12182b;border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:28px;width:90%;max-width:360px;text-align:center}
+.modal h3{margin-bottom:10px;font-size:18px}
+.modal p{color:#9fb8e0;font-size:14px;margin-bottom:22px;line-height:1.5}
+.modal-btns{display:flex;gap:12px}
+.modal-btns button{flex:1;padding:12px;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer}
+.btn-yes{background:linear-gradient(135deg,#0077ff,#00c3ff);color:#fff}
+.btn-no{background:rgba(255,255,255,.1);color:#ccc}
+</style>
 </head>
 <body>
+<div class="bg"></div>
 
-  <div class="card">
-    <div class="logo">AI</div>
-    <h1>Alislamiah AI</h1>
-    <p class="subtitle">تسجيل الدخول إلى حسابك</p>
+<div class="container">
+  <div class="logo">AI</div>
+  <h1>تسجيل الدخول</h1>
+  <p class="subtitle">مرحباً بك مجدداً في متصفح الإسلامية الذكي</p>
 
-    <form id="loginForm">
-      <div class="field">
-        <label for="email">البريد الإلكتروني</label>
-        <input type="email" id="email" placeholder="example@email.com" required autocomplete="username">
-      </div>
-
-      <div class="field">
-        <label for="password">كلمة المرور</label>
-        <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
-      </div>
-
-      <button type="submit" class="btn-primary" id="loginBtn">دخول</button>
-    </form>
-
-    <div class="divider"><span>أو</span></div>
-
-    <button type="button" class="btn-google" id="googleBtn">
-      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-        <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-        <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.14C3.17 21.36 7.31 24 12 24z"/>
-        <path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.62H1.18C.43 8.14 0 9.87 0 12s.43 3.86 1.18 5.38l4.09-3.14z"/>
-        <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.17 2.64 1.18 6.62l4.09 3.14c.95-2.85 3.6-4.96 6.73-4.96z"/>
-      </svg>
-      المتابعة باستخدام Google
-    </button>
-
-    <p style="margin-top:18px;font-size:13px;color:var(--muted)">
-      ليس لديك حساب؟
-      <a href="signup.html" style="color:#5ba3ff;font-weight:600;text-decoration:underline;padding:0 4px">إنشاء حساب</a>
-    </p>
-
-    <div id="msg" class="message"></div>
+  <div class="input-group">
+    <label>البريد الإلكتروني</label>
+    <input type="email" id="email" placeholder="example@email.com">
   </div>
 
-  <!-- نافذة السؤال عن الحفظ -->
-  <div id="saveModal" class="modal">
-    <div class="modal-content">
-      <h3>حفظ بيانات الدخول؟</h3>
-      <p>تم تسجيل الدخول بنجاح في Alislamiah AI! هل تريد حفظ كلمة المرور؟</p>
-      <div class="modal-actions">
-        <button id="saveYesBtn" class="modal-btn btn-save">نعم، حفظ</button>
-        <button id="saveNoBtn" class="modal-btn btn-skip">لا، تخطي</button>
-      </div>
+  <div class="input-group">
+    <label>كلمة المرور</label>
+    <input type="password" id="password" placeholder="••••••••">
+  </div>
+
+  <button class="btn" id="loginBtn">دخول</button>
+
+  <div class="divider"><span>أو</span></div>
+
+  <button class="btn-github" id="githubBtn">
+    <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+    Continue with GitHub
+  </button>
+
+  <div class="message" id="msg"></div>
+
+  <div class="links">
+    ليس لديك حساب؟ <a href="signup.html">إنشاء حساب جديد</a>
+  </div>
+</div>
+
+<!-- سؤال حفظ كلمة المرور -->
+<div class="modal-overlay" id="saveModal">
+  <div class="modal">
+    <h3>هل تريد حفظ كلمة المرور؟</h3>
+    <p>سيتم حفظها في صفحة كلمات المرور المحفوظة حتى تتمكن من استرجاعها لاحقاً.</p>
+    <div class="modal-btns">
+      <button class="btn-yes" id="saveYesBtn">نعم، احفظها</button>
+      <button class="btn-no" id="saveNoBtn">لا</button>
     </div>
   </div>
+</div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-    import {
-      getAuth,
-      signInWithEmailAndPassword,
-      signInWithPopup,
-      GoogleAuthProvider
-    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, signInWithPopup, GithubAuthProvider } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBrv1ky0Br5nLb68uvdXE3o6QdzTKpIU4g",
-      authDomain: "alislamiah-ai-34202.firebaseapp.com",
-      projectId: "alislamiah-ai-34202",
-      storageBucket: "alislamiah-ai-34202.firebasestorage.app",
-      messagingSenderId: "683051452829",
-      appId: "1:683051452829:web:e96e40422c7f31e563c774",
-      measurementId: "G-LFQLND010S"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyBrv1ky0Br5nLb68uvdXE3o6QdzTKpIU4g",
+    authDomain: "alislamiah-ai-34202.firebaseapp.com",
+    projectId: "alislamiah-ai-34202",
+    storageBucket: "alislamiah-ai-34202.firebasestorage.app",
+    messagingSenderId: "683051452829",
+    appId: "1:683051452829:web:e96e40422c7f31e563c774",
+    measurementId: "G-LFQLND010S"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const googleProvider = new GoogleAuthProvider();
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const githubProvider = new GithubAuthProvider();
 
-    let tempUserData = null;
+  let tempData = null;
 
-    function showMsg(text, type) {
-      const el = document.getElementById("msg");
-      el.textContent = text;
-      el.className = "message show " + type;
+  function getSavedPasswords() {
+    return JSON.parse(localStorage.getItem("alislamiah_saved_passwords") || "[]");
+  }
+
+  function setCurrentUser(user) {
+    localStorage.setItem("alislamiah_current_user", JSON.stringify(user));
+  }
+
+  // 1. تسجيل الدخول بالبريد وكلمة المرور
+  async function login() {
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const password = document.getElementById("password").value;
+    const msg = document.getElementById("msg");
+
+    msg.textContent = "";
+    msg.className = "message";
+
+    if (!email || !password) {
+      msg.className = "message error";
+      msg.textContent = "يرجى إدخال البريد وكلمة المرور";
+      return;
     }
 
-    function clearMsg() {
-      const el = document.getElementById("msg");
-      el.className = "message";
-      el.textContent = "";
-    }
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-    function askToSavePassword(data) {
-      tempUserData = data;
+      tempData = { 
+        id: user.uid,
+        name: user.displayName || email.split('@')[0], 
+        email: user.email, 
+        password: password 
+      };
+
       document.getElementById("saveModal").classList.add("show");
+    } catch (error) {
+      msg.className = "message error";
+      if (error.code === "auth/invalid-credential" || error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
+        msg.textContent = "البريد أو كلمة المرور غير صحيحة";
+      } else {
+        msg.textContent = "حدث خطأ أثناء تسجيل الدخول: " + error.message;
+      }
+    }
+  }
+
+  // 2. تسجيل الدخول بواسطة GitHub
+  async function loginWithGitHub() {
+    const msg = document.getElementById("msg");
+    msg.textContent = "";
+    msg.className = "message";
+
+    try {
+      const result = await signInWithPopup(auth, githubProvider);
+      const user = result.user;
+
+      tempData = { 
+        id: user.uid,
+        name: user.displayName || user.email?.split('@')[0] || "مستخدم GitHub", 
+        email: user.email || "حساب GitHub", 
+        password: "تسجيل عبر GitHub" 
+      };
+
+      document.getElementById("saveModal").classList.add("show");
+    } catch (error) {
+      msg.className = "message error";
+      if (error.code === "auth/account-exists-with-different-credential") {
+        msg.textContent = "هذا البريد مسجل بالفعل بأسلوب دخول آخر";
+      } else {
+        msg.textContent = "حدث خطأ أثناء تسجيل الدخول بـ GitHub: " + error.message;
+      }
+    }
+  }
+
+  // عند النقر على "نعم، احفظها" -> الحفظ والتحويل المباشر لـ saved.passwords.html
+  function saveYes() {
+    if (!tempData) return;
+
+    setCurrentUser({ id: tempData.id, name: tempData.name, email: tempData.email });
+
+    const saved = getSavedPasswords();
+    const exists = saved.find(s => s.email === tempData.email);
+
+    if (!exists) {
+      saved.push({
+        name: tempData.name,
+        email: tempData.email,
+        password: tempData.password,
+        savedAt: new Date().toISOString()
+      });
+      localStorage.setItem("alislamiah_saved_passwords", JSON.stringify(saved));
     }
 
-    // نعم، حفظ → يحفظ البيانات ثم يروح للرئيسية
-    document.getElementById("saveYesBtn").addEventListener("click", () => {
-      if (tempUserData) {
-        tempUserData.serviceName = "Alislamiah AI";
-        localStorage.setItem("saved_auth_user", JSON.stringify(tempUserData));
-      }
-      window.location.href = "index.html";   // ← التوجيه للرئيسية
-    });
+    document.getElementById("saveModal").classList.remove("show");
+    window.location.href = "saved.passwords.html"; 
+  }
 
-    // لا، تخطي → يروح للرئيسية مباشرة
-    document.getElementById("saveNoBtn").addEventListener("click", () => {
-      window.location.href = "index.html";
-    });
+  // عند النقر على "لا" -> التحويل للرئيسية index.html
+  function saveNo() {
+    if (!tempData) return;
 
-    // 1. تسجيل الدخول بالبريد
-    document.getElementById("loginForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      clearMsg();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-      const btn = document.getElementById("loginBtn");
+    setCurrentUser({ id: tempData.id, name: tempData.name, email: tempData.email });
 
-      if (!email || !password) {
-        showMsg("أدخل البريد وكلمة المرور.", "error");
-        return;
-      }
+    document.getElementById("saveModal").classList.remove("show");
+    window.location.href = "index.html"; 
+  }
 
-      btn.disabled = true;
-      btn.textContent = "جاري الدخول...";
-
-      try {
-        const res = await signInWithEmailAndPassword(auth, email, password);
-        showMsg("تم تسجيل الدخول بنجاح.", "success");
-
-        askToSavePassword({
-          uid: res.user.uid,
-          email: res.user.email,
-          pass: password,
-          service: "Alislamiah AI",
-          provider: "password"
-        });
-
-      } catch (err) {
-        let msg = "فشل تسجيل الدخول.";
-        if (err.code === "auth/invalid-credential" || err.code === "auth/wrong-password" || err.code === "auth/user-not-found") {
-          msg = "البريد أو كلمة المرور غير صحيحة.";
-        } else if (err.code === "auth/invalid-email") {
-          msg = "صيغة البريد غير صحيحة.";
-        } else if (err.code === "auth/too-many-requests") {
-          msg = "محاولات كثيرة. حاول لاحقاً.";
-        } else {
-          msg = err.message || msg;
-        }
-        showMsg(msg, "error");
-        btn.disabled = false;
-        btn.textContent = "دخول";
-      }
-    });
-
-    // 2. تسجيل الدخول بـ Google
-    document.getElementById("googleBtn").addEventListener("click", async () => {
-      clearMsg();
-      const btn = document.getElementById("googleBtn");
-      btn.disabled = true;
-
-      try {
-        const res = await signInWithPopup(auth, googleProvider);
-        showMsg("تم تسجيل الدخول عبر Google بنجاح.", "success");
-
-        askToSavePassword({
-          uid: res.user.uid,
-          email: res.user.email,
-          name: res.user.displayName,
-          service: "Alislamiah AI",
-          provider: "google"
-        });
-
-      } catch (err) {
-        let msg = "فشل التسجيل عبر Google.";
-        if (err.code === "auth/popup-closed-by-user") {
-          msg = "تم إغلاق النافذة.";
-        } else if (err.code === "auth/popup-blocked") {
-          msg = "المتصفح منع النافذة المنبثقة.";
-        } else {
-          msg = err.message || msg;
-        }
-        showMsg(msg, "error");
-        btn.disabled = false;
-      }
-    });
-  </script>
+  // ربط الأحداث والأزرار
+  document.getElementById("loginBtn").addEventListener("click", login);
+  document.getElementById("githubBtn").addEventListener("click", loginWithGitHub);
+  document.getElementById("saveYesBtn").addEventListener("click", saveYes);
+  document.getElementById("saveNoBtn").addEventListener("click", saveNo);
+  document.getElementById("password").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") login();
+  });
+</script>
 </body>
 </html>
