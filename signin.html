@@ -2,16 +2,19 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AlIslamiah AI - تسجيل الدخول</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1628">
+  <title>تسجيل الدخول — متصفح الإسلامية الذكي</title>
   <style>
     :root {
-      --bg-color: #0f172a;
-      --card-bg: #1e293b;
-      --text-color: #f8fafc;
-      --accent-color: #3b82f6;
-      --input-bg: #334155;
-      --border-color: #475569;
+      --bg: #0a1628;
+      --card: rgba(15, 30, 55, 0.55);
+      --text: #f0f4ff;
+      --muted: #8fa3c0;
+      --blue: #2b7fff;
+      --blue-dark: #1a5fd4;
+      --input-bg: rgba(20, 35, 60, 0.7);
+      --border: rgba(120, 150, 190, 0.25);
     }
 
     * {
@@ -21,200 +24,211 @@
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      display: flex;
-      justify-content: center;
-      align-items: center;
       min-height: 100vh;
-      padding: 20px;
+      min-height: 100dvh;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      background: radial-gradient(ellipse at 50% 20%, #132a4a 0%, #0a1628 55%, #06101c 100%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
     }
 
-    .login-card {
-      background-color: var(--card-bg);
-      padding: 35px 30px;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    .card {
       width: 100%;
-      max-width: 400px;
+      max-width: 380px;
+      background: var(--card);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 40px 28px 32px;
       text-align: center;
-      border: 1px solid var(--border-color);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
     }
 
-    .login-card h2 {
-      margin-bottom: 20px;
-      font-size: 22px;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-      text-align: right;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 14px;
-      color: #94a3b8;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      background-color: var(--input-bg);
+    .logo {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 22px;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #3b9bff, #1a6ef0);
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+      font-weight: 800;
       color: #fff;
+      letter-spacing: 1px;
+      box-shadow: 0 0 28px rgba(43, 127, 255, 0.55);
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .field {
+      text-align: right;
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--input-bg);
+      color: var(--text);
       font-size: 15px;
       outline: none;
       transition: border-color 0.2s;
     }
 
-    .form-group input:focus {
-      border-color: var(--accent-color);
+    .field input::placeholder {
+      color: #6b7f9c;
     }
 
-    .btn-submit {
+    .field input:focus {
+      border-color: var(--blue);
+    }
+
+    .btn-primary {
       width: 100%;
-      padding: 12px;
-      border-radius: 8px;
+      margin-top: 8px;
+      padding: 15px;
       border: none;
-      background-color: var(--accent-color);
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
+      border-radius: 14px;
+      background: linear-gradient(90deg, #1a6ef0, #3b9bff);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
       cursor: pointer;
-      margin-top: 10px;
-      transition: background-color 0.2s;
+      transition: opacity 0.2s, transform 0.15s;
     }
 
-    .btn-submit:hover {
-      background-color: #2563eb;
+    .btn-primary:hover {
+      opacity: 0.95;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     .divider {
       display: flex;
       align-items: center;
-      margin: 20px 0;
-      color: #64748b;
+      gap: 12px;
+      margin: 22px 0;
+      color: var(--muted);
       font-size: 13px;
     }
 
-    .divider::before, .divider::after {
+    .divider::before,
+    .divider::after {
       content: "";
       flex: 1;
       height: 1px;
-      background-color: var(--border-color);
+      background: var(--border);
     }
 
-    .divider span {
-      padding: 0 10px;
-    }
-
-    /* زر Google */
-    .google-btn {
-      background-color: #ffffff;
-      color: #334155;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      padding: 11px;
+    .btn-google {
+      width: 100%;
+      padding: 13px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(18, 28, 48, 0.85);
+      color: #e8eef8;
       font-size: 15px;
       font-weight: 600;
       cursor: pointer;
-      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      transition: background-color 0.2s;
+      transition: background 0.2s;
     }
 
-    .google-btn:hover {
-      background-color: #f8fafc;
+    .btn-google:hover {
+      background: rgba(28, 42, 68, 0.95);
     }
 
-    /* النافذة المنبثقة (Modal) */
-    .modal {
+    .btn-google svg {
+      flex-shrink: 0;
+    }
+
+    .message {
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.5;
       display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
     }
 
-    .modal.show {
-      display: flex;
+    .message.show {
+      display: block;
     }
 
-    .modal-content {
-      background-color: var(--card-bg);
-      padding: 25px;
-      border-radius: 12px;
-      text-align: center;
-      width: 90%;
-      max-width: 320px;
-      border: 1px solid var(--border-color);
+    .message.error {
+      background: rgba(80, 20, 30, 0.7);
+      border: 1px solid #7a3040;
+      color: #ffb0b8;
     }
 
-    .modal-content h3 {
-      margin-bottom: 10px;
-      color: #38bdf8;
+    .message.success {
+      background: rgba(15, 50, 40, 0.7);
+      border: 1px solid #2a6a55;
+      color: #8cf0c3;
     }
-
-    .modal-content p {
-      font-size: 14px;
-      margin-bottom: 20px;
-      color: #cbd5e1;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-    }
-
-    .modal-btn {
-      padding: 8px 16px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .btn-save { background-color: #22c55e; color: white; }
-    .btn-skip { background-color: #64748b; color: white; }
   </style>
 </head>
 <body>
 
-  <div class="login-card">
-    <h2>AlIslamiah AI</h2>
-    
-    <!-- نموذج الدخول بالبريد/الهاتف وكلمة المرور -->
-    <form id="loginForm" onsubmit="handleEmailLogin(event)">
-      <div class="form-group">
-        <label>البريد الإلكتروني أو رقم الهاتف</label>
-        <input type="text" id="userInput" placeholder="example@mail.com أو 0600000000" required>
+  <div class="card">
+    <div class="logo">AI</div>
+    <h1>تسجيل الدخول</h1>
+    <p class="subtitle">مرحباً بك مجدداً في متصفح الإسلامية الذكي</p>
+
+    <!-- تسجيل الدخول -->
+    <form id="loginForm">
+      <div class="field">
+        <label for="email">البريد الإلكتروني</label>
+        <input type="email" id="email" placeholder="example@email.com" required autocomplete="username">
       </div>
 
-      <div class="form-group">
-        <label>كلمة المرور</label>
-        <input type="password" id="passwordInput" placeholder="••••••••" required>
+      <div class="field">
+        <label for="password">كلمة المرور</label>
+        <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
       </div>
 
-      <button type="submit" class="btn-submit">تسجيل الدخول</button>
+      <button type="submit" class="btn-primary" id="loginBtn">دخول</button>
     </form>
 
-    <div class="divider">
-      <span>أو</span>
-    </div>
+    <div class="divider"><span>أو</span></div>
 
-    <!-- زر Google المباشر -->
-    <button onclick="loginWithGoogle()" class="google-btn">
-      <svg width="18" height="18" viewBox="0 0 24 24">
+    <button type="button" class="btn-google" id="googleBtn" onclick="loginWithGoogle()">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
         <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
         <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.14C3.17 21.36 7.31 24 12 24z"/>
         <path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.62H1.18C.43 8.14 0 9.87 0 12s.43 3.86 1.18 5.38l4.09-3.14z"/>
@@ -222,90 +236,121 @@
       </svg>
       المتابعة باستخدام Google
     </button>
+
+    <p style="margin-top:18px;font-size:13px;color:var(--muted)">
+      ليس لديك حساب؟
+      <a href="signup.html" style="color:#5ba3ff;font-weight:600;text-decoration:underline;padding:0 4px">إنشاء حساب</a>
+    </p>
+
+    <div id="msg" class="message"></div>
   </div>
 
-  <!-- النافذة المنبثقة (Modal) لحفظ كلمة المرور -->
-  <div id="saveModal" class="modal">
-    <div class="modal-content">
-      <h3>نجح تسجيل الدخول!</h3>
-      <p>هل تريد حفظ بيانات الدخول لهذه الجلسة؟</p>
-      <div class="modal-actions">
-        <button onclick="redirectWithSave(true)" class="modal-btn btn-save">حفظ وتوجيه</button>
-        <button onclick="redirectWithSave(false)" class="modal-btn btn-skip">تخطي</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Firebase & Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      signInWithPopup,
+      GoogleAuthProvider,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 
     const firebaseConfig = {
-      apiKey: "YOUR_FIREBASE_API_KEY",
+      apiKey: "AIzaSyBrv1ky0Br5nLb68uvdXE3o6QdzTKpIU4g",
       authDomain: "alislamiah-ai-34202.firebaseapp.com",
       projectId: "alislamiah-ai-34202",
-      storageBucket: "alislamiah-ai-34202.appspot.com",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      storageBucket: "alislamiah-ai-34202.firebasestorage.app",
+      messagingSenderId: "683051452829",
+      appId: "1:683051452829:web:e96e40422c7f31e563c774",
+      measurementId: "G-LFQLND010S"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const googleProvider = new GoogleAuthProvider();
 
-    window.tempUserData = null;
+    function showMsg(text, type) {
+      const el = document.getElementById("msg");
+      el.textContent = text;
+      el.className = "message show " + type;
+    }
 
-    // 1. الدخول بالبريد/الهاتف
-    window.handleEmailLogin = async function(e) {
+    function clearMsg() {
+      const el = document.getElementById("msg");
+      el.className = "message";
+      el.textContent = "";
+    }
+
+    // إذا كان المستخدم مسجلاً مسبقاً
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // وجّه للصفحة الرئيسية بعد تسجيل الدخول
+        // window.location.href = "index.html";
+      }
+    });
+
+    // تسجيل الدخول بالبريد
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const userVal = document.getElementById("userInput").value;
-      const passVal = document.getElementById("passwordInput").value;
+      clearMsg();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const btn = document.getElementById("loginBtn");
+
+      if (!email || !password) {
+        showMsg("أدخل البريد وكلمة المرور.", "error");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "جاري الدخول...";
 
       try {
-        // إذا كان بريد إلكتروني نستخدم Firebase Auth
-        if(userVal.includes("@")) {
-          const res = await signInWithEmailAndPassword(auth, userVal, passVal);
-          window.tempUserData = { email: res.user.email, pass: passVal };
+        await signInWithEmailAndPassword(auth, email, password);
+        showMsg("تم تسجيل الدخول بنجاح.", "success");
+        // window.location.href = "index.html";
+      } catch (err) {
+        let msg = "فشل تسجيل الدخول.";
+        if (err.code === "auth/invalid-credential" || err.code === "auth/wrong-password" || err.code === "auth/user-not-found") {
+          msg = "البريد أو كلمة المرور غير صحيحة.";
+        } else if (err.code === "auth/invalid-email") {
+          msg = "صيغة البريد غير صحيحة.";
+        } else if (err.code === "auth/too-many-requests") {
+          msg = "محاولات كثيرة. حاول لاحقاً.";
         } else {
-          // التعامل مع رقم الهاتف كاسم مستخدم يدوي
-          window.tempUserData = { phone: userVal, pass: passVal };
+          msg = err.message || msg;
         }
-        
-        // إظهار المودال
-        document.getElementById("saveModal").classList.add("show");
-      } catch (err) {
-        alert("خطأ في تسجيل الدخول: " + err.message);
+        showMsg(msg, "error");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "دخول";
       }
-    };
+    });
 
-    // 2. الدخول عبر Google
-    window.loginWithGoogle = async function() {
+    // تسجيل الدخول بـ Google
+    window.loginWithGoogle = async function () {
+      clearMsg();
+      const btn = document.getElementById("googleBtn");
+      btn.disabled = true;
+
       try {
-        const result = await signInWithPopup(auth, googleProvider);
-        window.tempUserData = { 
-          email: result.user.email, 
-          name: result.user.displayName,
-          provider: "Google" 
-        };
-        
-        document.getElementById("saveModal").classList.add("show");
+        await signInWithPopup(auth, googleProvider);
+        showMsg("تم تسجيل الدخول عبر Google بنجاح.", "success");
+        // window.location.href = "index.html";
       } catch (err) {
-        alert("فشل التسجيل عبر Google: " + err.message);
-      }
-    };
-
-    // 3. التحكم في التوجيه وسلوك الـ Modal
-    window.redirectWithSave = function(shouldSave) {
-      if (shouldSave) {
-        // حفظ في save.passwords أو localStorage ثم التوجيه
-        localStorage.setItem("saved_user", JSON.stringify(window.tempUserData));
-        window.location.href = "save.passwords.html";
-      } else {
-        window.location.href = "index.html";
+        let msg = "فشل التسجيل عبر Google.";
+        if (err.code === "auth/popup-closed-by-user") {
+          msg = "تم إغلاق النافذة.";
+        } else if (err.code === "auth/popup-blocked") {
+          msg = "المتصفح منع النافذة المنبثقة.";
+        } else {
+          msg = err.message || msg;
+        }
+        showMsg(msg, "error");
+      } finally {
+        btn.disabled = false;
       }
     };
   </script>
-
 </body>
 </html>
