@@ -1405,12 +1405,12 @@ onclick="window.location.href='chat.html'">
 })();
 </script>
 
-<!-- بطاقة مباريات اليوم - نسخة محسّنة -->
+<!-- بطاقة مباريات اليوم - نسخة مصححة + أبعاد مضبوطة -->
 <div class="matches-card" id="matchesCard">
   <div class="card-header">
-    <div class="trophy">🏆</div>
+    <span class="icon">⚽</span>
     <h2>مباريات اليوم</h2>
-    <div class="ball">⚽</div>
+    <span class="icon">🏆</span>
   </div>
   
   <div class="date-line" id="todayDate">جاري التحميل...</div>
@@ -1427,84 +1427,81 @@ onclick="window.location.href='chat.html'">
 <style>
   .matches-card {
     background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
-    border-radius: 18px;
-    padding: 20px;
-    max-width: 440px;
-    margin: 20px auto;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,215,0,0.15);
+    border-radius: 20px;
+    padding: 16px;
+    width: 100%;
+    max-width: 340px;          /* نفس تقريباً عرض بطاقة الطقس */
+    margin: 12px auto;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
     font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
     color: #f0f0f0;
     direction: rtl;
+    box-sizing: border-box;
   }
 
   .card-header {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    margin-bottom: 6px;
+    gap: 10px;
+    margin-bottom: 4px;
   }
 
   .card-header h2 {
     margin: 0;
-    font-size: 1.4rem;
+    font-size: 1.25rem;
     font-weight: 700;
     background: linear-gradient(90deg, #ffd700, #ffaa00);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
-  .trophy, .ball { font-size: 1.6rem; }
+  .icon {
+    font-size: 1.3rem;
+  }
 
   .date-line {
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     color: #aaa;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   .matches-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    max-height: 500px;
+    gap: 10px;
+    max-height: 380px;
     overflow-y: auto;
-    padding-left: 4px;
   }
 
   .match-item {
     background: #161616;
     border-radius: 12px;
-    padding: 12px 14px;
+    padding: 10px 12px;
     border: 1px solid #2a2a2a;
-    transition: 0.2s;
-  }
-
-  .match-item:hover {
-    border-color: #ffd70055;
-    background: #1c1c1c;
   }
 
   .competition {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: #ffd700;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .teams {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: 6px;
   }
 
   .team {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     flex: 1;
     min-width: 0;
   }
@@ -1513,8 +1510,8 @@ onclick="window.location.href='chat.html'">
   .team.away { justify-content: flex-end; }
 
   .team img {
-    width: 26px;
-    height: 26px;
+    width: 22px;
+    height: 22px;
     object-fit: contain;
     border-radius: 50%;
     background: #222;
@@ -1522,7 +1519,7 @@ onclick="window.location.href='chat.html'">
   }
 
   .team-name {
-    font-size: 0.9rem;
+    font-size: 0.84rem;
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
@@ -1530,98 +1527,165 @@ onclick="window.location.href='chat.html'">
   }
 
   .score-box {
-    min-width: 68px;
+    min-width: 58px;
     text-align: center;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1rem;
     flex-shrink: 0;
   }
 
-  .score-box .score { color: #fff; }
+  .score-box .score {
+    color: #fff;
+  }
 
   .score-box .status {
     display: block;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 500;
-    margin-top: 2px;
+    margin-top: 1px;
   }
 
   .status.finished { color: #4caf50; }
-  .status.live { color: #ff4444; animation: pulse 1.4s infinite; }
+  .status.live { color: #ff4444; }
   .status.upcoming { color: #aaa; }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.45; }
-  }
 
   .loading, .error {
     text-align: center;
-    padding: 30px 10px;
+    padding: 24px 8px;
     color: #888;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .error { color: #ff6b6b; }
 
   .card-footer {
-    margin-top: 16px;
+    margin-top: 12px;
     text-align: center;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
 
   .card-footer a {
     color: #666;
     text-decoration: none;
   }
-  .card-footer a:hover { color: #ffd700; }
 
-  .matches-list::-webkit-scrollbar { width: 6px; }
-  .matches-list::-webkit-scrollbar-track { background: #111; }
-  .matches-list::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+  .matches-list::-webkit-scrollbar {
+    width: 5px;
+  }
+  .matches-list::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 3px;
+  }
 </style>
 
 <script>
+  function createMatchElement(match) {
+    const isFinished = match.status === 'finished';
+    const isLive = match.status === 'live';
+
+    const scoreText = (isFinished || isLive)
+      ? (match.home_score || '0') + ' - ' + (match.away_score || '0')
+      : 'vs';
+
+    let statusClass = 'upcoming';
+    let statusText = 'قادمة';
+
+    if (isFinished) {
+      statusClass = 'finished';
+      statusText = 'انتهت';
+    } else if (isLive) {
+      statusClass = 'live';
+      statusText = 'مباشر';
+    }
+
+    const item = document.createElement('div');
+    item.className = 'match-item';
+
+    // الدوري
+    const comp = document.createElement('div');
+    comp.className = 'competition';
+    comp.textContent = match.competition || 'دوري';
+    item.appendChild(comp);
+
+    // الفرق
+    const teams = document.createElement('div');
+    teams.className = 'teams';
+
+    // الفريق المضيف
+    const home = document.createElement('div');
+    home.className = 'team home';
+    if (match.home_logo) {
+      const img = document.createElement('img');
+      img.src = match.home_logo;
+      img.alt = '';
+      img.onerror = function() { this.style.display = 'none'; };
+      home.appendChild(img);
+    }
+    const homeName = document.createElement('span');
+    homeName.className = 'team-name';
+    homeName.textContent = match.home || '';
+    home.appendChild(homeName);
+
+    // النتيجة
+    const scoreBox = document.createElement('div');
+    scoreBox.className = 'score-box';
+    const scoreSpan = document.createElement('span');
+    scoreSpan.className = 'score';
+    scoreSpan.textContent = scoreText;
+    const statusSpan = document.createElement('span');
+    statusSpan.className = 'status ' + statusClass;
+    statusSpan.textContent = statusText;
+    scoreBox.appendChild(scoreSpan);
+    scoreBox.appendChild(statusSpan);
+
+    // الفريق الضيف
+    const away = document.createElement('div');
+    away.className = 'team away';
+    const awayName = document.createElement('span');
+    awayName.className = 'team-name';
+    awayName.textContent = match.away || '';
+    away.appendChild(awayName);
+    if (match.away_logo) {
+      const img = document.createElement('img');
+      img.src = match.away_logo;
+      img.alt = '';
+      img.onerror = function() { this.style.display = 'none'; };
+      away.appendChild(img);
+    }
+
+    teams.appendChild(home);
+    teams.appendChild(scoreBox);
+    teams.appendChild(away);
+    item.appendChild(teams);
+
+    return item;
+  }
+
   async function loadTodayMatches() {
     const list = document.getElementById('matchesList');
     const dateEl = document.getElementById('todayDate');
 
-    // تاريخ محلي صحيح
     const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    const today = `\( {year}- \){month}-${day}`;
+    const today = now.getFullYear() + '-' + 
+                  String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                  String(now.getDate()).padStart(2, '0');
 
-    // عرض التاريخ
     dateEl.textContent = now.toLocaleDateString('ar-EG', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
 
     list.innerHTML = '<div class="loading">جاري جلب المباريات...</div>';
 
     try {
-      // نجرب أولاً endpoint التاريخ
-      let url = `https://sportscore.com/api/v1/fixtures/?sport=football&date=${today}&limit=50`;
-      console.log('Fetching:', url);
-
-      let res = await fetch(url);
+      let res = await fetch('https://sportscore.com/api/v1/fixtures/?sport=football&date=' + today + '&limit=40');
       
       if (!res.ok) {
-        // لو فشل، نجرب الـ widget
-        console.warn('Fixtures endpoint failed, trying widget...');
-        url = `https://sportscore.com/api/widget/matches/?sport=football&limit=40`;
-        res = await fetch(url);
+        res = await fetch('https://sportscore.com/api/widget/matches/?sport=football&limit=30');
       }
 
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) throw new Error('فشل الاتصال');
 
       const data = await res.json();
-      console.log('API Response:', data);
-
       const matches = data.matches || [];
 
       if (matches.length === 0) {
@@ -1629,80 +1693,27 @@ onclick="window.location.href='chat.html'">
         return;
       }
 
-      // ترتيب: حي → منتهية → قادمة
-      const sorted = matches.sort((a, b) => {
+      // ترتيب
+      matches.sort(function(a, b) {
         const order = { live: 0, finished: 1, upcoming: 2 };
-        return (order[a.status] ?? 3) - (order[b.status] ?? 3);
+        return (order[a.status] || 3) - (order[b.status] || 3);
       });
 
-      list.innerHTML = sorted.map(match => {
-        const isFinished = match.status === 'finished';
-        const isLive = match.status === 'live';
-
-        const scoreText = (isFinished || isLive)
-          ? `${match.home_score ?? '0'} - ${match.away_score ?? '0'}`
-          : 'vs';
-
-        let statusClass = 'upcoming';
-        let statusText = 'قادمة';
-
-        if (isFinished) {
-          statusClass = 'finished';
-          statusText = 'انتهت';
-        } else if (isLive) {
-          statusClass = 'live';
-          statusText = 'مباشر';
-        }
-
-        const homeLogo = match.home_logo 
-          ? `<img src="${match.home_logo}" alt="" onerror="this.style.display='none'">` 
-          : '';
-        const awayLogo = match.away_logo 
-          ? `<img src="${match.away_logo}" alt="" onerror="this.style.display='none'">` 
-          : '';
-
-        return `
-          <div class="match-item">
-            <div class="competition">
-              ${match.competition || 'دوري غير معروف'}
-            </div>
-            <div class="teams">
-              <div class="team home">
-                ${homeLogo}
-                <span class="team-name" title="\( {match.home}"> \){match.home}</span>
-              </div>
-              
-              <div class="score-box">
-                <span class="score">${scoreText}</span>
-                <span class="status \( {statusClass}"> \){statusText}</span>
-              </div>
-              
-              <div class="team away">
-                <span class="team-name" title="\( {match.away}"> \){match.away}</span>
-                ${awayLogo}
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
+      list.innerHTML = '';
+      matches.forEach(function(match) {
+        list.appendChild(createMatchElement(match));
+      });
 
     } catch (err) {
-      console.error('Error loading matches:', err);
-      list.innerHTML = `
-        <div class="error">
-          فشل تحميل المباريات<br>
-          <small style="color:#666">${err.message}</small>
-        </div>
-      `;
+      console.error(err);
+      list.innerHTML = '<div class="error">فشل تحميل المباريات</div>';
     }
   }
 
-  // تشغيل أول مرة
   loadTodayMatches();
-
-  // تحديث كل 3 دقائق
   setInterval(loadTodayMatches, 3 * 60 * 1000);
 </script>
+
 
 <!-- بطاقة Outhub -->
 <div class="promo-card outhub" style="background-color: #87CEEB; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
