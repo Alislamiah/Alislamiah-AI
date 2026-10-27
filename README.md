@@ -1405,7 +1405,7 @@ onclick="window.location.href='chat.html'">
 })();
 </script>
 
-<!-- بطاقة مباريات اليوم - كرة القدم -->
+<!-- بطاقة مباريات اليوم - نسخة محسّنة -->
 <div class="matches-card" id="matchesCard">
   <div class="card-header">
     <div class="trophy">🏆</div>
@@ -1413,10 +1413,10 @@ onclick="window.location.href='chat.html'">
     <div class="ball">⚽</div>
   </div>
   
-  <div class="date-line" id="todayDate"></div>
+  <div class="date-line" id="todayDate">جاري التحميل...</div>
   
   <div class="matches-list" id="matchesList">
-    <div class="loading">جاري تحميل المباريات...</div>
+    <div class="loading">جاري جلب المباريات...</div>
   </div>
   
   <div class="card-footer">
@@ -1429,7 +1429,7 @@ onclick="window.location.href='chat.html'">
     background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
     border-radius: 18px;
     padding: 20px;
-    max-width: 420px;
+    max-width: 440px;
     margin: 20px auto;
     box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,215,0,0.15);
     font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
@@ -1442,7 +1442,7 @@ onclick="window.location.href='chat.html'">
     align-items: center;
     justify-content: center;
     gap: 12px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .card-header h2 {
@@ -1454,9 +1454,7 @@ onclick="window.location.href='chat.html'">
     -webkit-text-fill-color: transparent;
   }
 
-  .trophy, .ball {
-    font-size: 1.6rem;
-  }
+  .trophy, .ball { font-size: 1.6rem; }
 
   .date-line {
     text-align: center;
@@ -1469,9 +1467,9 @@ onclick="window.location.href='chat.html'">
     display: flex;
     flex-direction: column;
     gap: 12px;
-    max-height: 480px;
+    max-height: 500px;
     overflow-y: auto;
-    padding-right: 4px;
+    padding-left: 4px;
   }
 
   .match-item {
@@ -1500,7 +1498,7 @@ onclick="window.location.href='chat.html'">
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
+    gap: 8px;
   }
 
   .team {
@@ -1508,38 +1506,38 @@ onclick="window.location.href='chat.html'">
     align-items: center;
     gap: 8px;
     flex: 1;
+    min-width: 0;
   }
 
   .team.home { justify-content: flex-start; }
-  .team.away { justify-content: flex-end; text-align: left; }
+  .team.away { justify-content: flex-end; }
 
   .team img {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     object-fit: contain;
     border-radius: 50%;
     background: #222;
+    flex-shrink: 0;
   }
 
   .team-name {
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 110px;
   }
 
   .score-box {
-    min-width: 70px;
+    min-width: 68px;
     text-align: center;
     font-weight: 700;
-    font-size: 1.15rem;
+    font-size: 1.1rem;
+    flex-shrink: 0;
   }
 
-  .score-box .score {
-    color: #fff;
-  }
+  .score-box .score { color: #fff; }
 
   .score-box .status {
     display: block;
@@ -1549,19 +1547,22 @@ onclick="window.location.href='chat.html'">
   }
 
   .status.finished { color: #4caf50; }
-  .status.live { color: #ff4444; animation: pulse 1.5s infinite; }
+  .status.live { color: #ff4444; animation: pulse 1.4s infinite; }
   .status.upcoming { color: #aaa; }
 
   @keyframes pulse {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+    50% { opacity: 0.45; }
   }
 
   .loading, .error {
     text-align: center;
-    padding: 30px;
+    padding: 30px 10px;
     color: #888;
+    font-size: 0.95rem;
   }
+
+  .error { color: #ff6b6b; }
 
   .card-footer {
     margin-top: 16px;
@@ -1573,22 +1574,11 @@ onclick="window.location.href='chat.html'">
     color: #666;
     text-decoration: none;
   }
+  .card-footer a:hover { color: #ffd700; }
 
-  .card-footer a:hover {
-    color: #ffd700;
-  }
-
-  /* سكرول بار جميل */
-  .matches-list::-webkit-scrollbar {
-    width: 6px;
-  }
-  .matches-list::-webkit-scrollbar-track {
-    background: #111;
-  }
-  .matches-list::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 3px;
-  }
+  .matches-list::-webkit-scrollbar { width: 6px; }
+  .matches-list::-webkit-scrollbar-track { background: #111; }
+  .matches-list::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
 </style>
 
 <script>
@@ -1596,37 +1586,66 @@ onclick="window.location.href='chat.html'">
     const list = document.getElementById('matchesList');
     const dateEl = document.getElementById('todayDate');
 
-    // تاريخ اليوم بتوقيت UTC
-    const today = new Date().toISOString().slice(0, 10);
-    
-    // عرض التاريخ بالعربية
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    dateEl.textContent = new Date().toLocaleDateString('ar-EG', options);
+    // تاريخ محلي صحيح
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const today = `\( {year}- \){month}-${day}`;
+
+    // عرض التاريخ
+    dateEl.textContent = now.toLocaleDateString('ar-EG', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    list.innerHTML = '<div class="loading">جاري جلب المباريات...</div>';
 
     try {
-      const res = await fetch(`https://sportscore.com/api/v1/fixtures/?sport=football&date=${today}&limit=40`);
-      const data = await res.json();
+      // نجرب أولاً endpoint التاريخ
+      let url = `https://sportscore.com/api/v1/fixtures/?sport=football&date=${today}&limit=50`;
+      console.log('Fetching:', url);
 
-      if (!data.matches || data.matches.length === 0) {
+      let res = await fetch(url);
+      
+      if (!res.ok) {
+        // لو فشل، نجرب الـ widget
+        console.warn('Fixtures endpoint failed, trying widget...');
+        url = `https://sportscore.com/api/widget/matches/?sport=football&limit=40`;
+        res = await fetch(url);
+      }
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const data = await res.json();
+      console.log('API Response:', data);
+
+      const matches = data.matches || [];
+
+      if (matches.length === 0) {
         list.innerHTML = '<div class="error">لا توجد مباريات اليوم</div>';
         return;
       }
 
-      // ترتيب: الحيّة أولاً، ثم المنتهية، ثم القادمة
-      const sorted = data.matches.sort((a, b) => {
+      // ترتيب: حي → منتهية → قادمة
+      const sorted = matches.sort((a, b) => {
         const order = { live: 0, finished: 1, upcoming: 2 };
-        return (order[a.status] || 3) - (order[b.status] || 3);
+        return (order[a.status] ?? 3) - (order[b.status] ?? 3);
       });
 
       list.innerHTML = sorted.map(match => {
         const isFinished = match.status === 'finished';
         const isLive = match.status === 'live';
-        const scoreText = (isFinished || isLive) 
-          ? `${match.home_score ?? 0} - ${match.away_score ?? 0}` 
+
+        const scoreText = (isFinished || isLive)
+          ? `${match.home_score ?? '0'} - ${match.away_score ?? '0'}`
           : 'vs';
 
         let statusClass = 'upcoming';
-        let statusText = match.status_text || 'قادمة';
+        let statusText = 'قادمة';
+
         if (isFinished) {
           statusClass = 'finished';
           statusText = 'انتهت';
@@ -1635,16 +1654,22 @@ onclick="window.location.href='chat.html'">
           statusText = 'مباشر';
         }
 
+        const homeLogo = match.home_logo 
+          ? `<img src="${match.home_logo}" alt="" onerror="this.style.display='none'">` 
+          : '';
+        const awayLogo = match.away_logo 
+          ? `<img src="${match.away_logo}" alt="" onerror="this.style.display='none'">` 
+          : '';
+
         return `
           <div class="match-item">
             <div class="competition">
-              \( {match.competition_logo ? `<img src=" \){match.competition_logo}" width="16" height="16" style="border-radius:3px">` : ''}
               ${match.competition || 'دوري غير معروف'}
             </div>
             <div class="teams">
               <div class="team home">
-                \( {match.home_logo ? `<img src=" \){match.home_logo}" alt="">` : ''}
-                <span class="team-name">${match.home}</span>
+                ${homeLogo}
+                <span class="team-name" title="\( {match.home}"> \){match.home}</span>
               </div>
               
               <div class="score-box">
@@ -1653,8 +1678,8 @@ onclick="window.location.href='chat.html'">
               </div>
               
               <div class="team away">
-                <span class="team-name">${match.away}</span>
-                \( {match.away_logo ? `<img src=" \){match.away_logo}" alt="">` : ''}
+                <span class="team-name" title="\( {match.away}"> \){match.away}</span>
+                ${awayLogo}
               </div>
             </div>
           </div>
@@ -1662,15 +1687,20 @@ onclick="window.location.href='chat.html'">
       }).join('');
 
     } catch (err) {
-      console.error(err);
-      list.innerHTML = '<div class="error">فشل تحميل المباريات. حاول مرة أخرى لاحقاً</div>';
+      console.error('Error loading matches:', err);
+      list.innerHTML = `
+        <div class="error">
+          فشل تحميل المباريات<br>
+          <small style="color:#666">${err.message}</small>
+        </div>
+      `;
     }
   }
 
-  // تحميل أول مرة
+  // تشغيل أول مرة
   loadTodayMatches();
 
-  // تحديث تلقائي كل 3 دقائق
+  // تحديث كل 3 دقائق
   setInterval(loadTodayMatches, 3 * 60 * 1000);
 </script>
 
