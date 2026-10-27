@@ -1405,7 +1405,6 @@ onclick="window.location.href='chat.html'">
 })();
 </script>
 
-<!-- بطاقة مباريات اليوم - نسخة مصححة + أبعاد مضبوطة -->
 <div class="matches-card" id="matchesCard">
   <div class="card-header">
     <span class="icon">⚽</span>
@@ -1420,7 +1419,7 @@ onclick="window.location.href='chat.html'">
   </div>
   
   <div class="card-footer">
-    <a href="https://sportscore.com/" target="_blank" rel="noopener dofollow">Powered by SportScore</a>
+    <a href="https://sportscore.com/" target="_blank" rel="noopener">Powered by SportScore</a>
   </div>
 </div>
 
@@ -1430,7 +1429,7 @@ onclick="window.location.href='chat.html'">
     border-radius: 20px;
     padding: 16px;
     width: 100%;
-    max-width: 340px;          /* نفس تقريباً عرض بطاقة الطقس */
+    max-width: 340px;
     margin: 12px auto;
     box-shadow: 0 8px 24px rgba(0,0,0,0.5);
     font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
@@ -1438,7 +1437,6 @@ onclick="window.location.href='chat.html'">
     direction: rtl;
     box-sizing: border-box;
   }
-
   .card-header {
     display: flex;
     align-items: center;
@@ -1446,7 +1444,6 @@ onclick="window.location.href='chat.html'">
     gap: 10px;
     margin-bottom: 4px;
   }
-
   .card-header h2 {
     margin: 0;
     font-size: 1.25rem;
@@ -1455,18 +1452,13 @@ onclick="window.location.href='chat.html'">
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-
-  .icon {
-    font-size: 1.3rem;
-  }
-
+  .icon { font-size: 1.3rem; }
   .date-line {
     text-align: center;
     font-size: 0.82rem;
     color: #aaa;
     margin-bottom: 12px;
   }
-
   .matches-list {
     display: flex;
     flex-direction: column;
@@ -1474,14 +1466,12 @@ onclick="window.location.href='chat.html'">
     max-height: 380px;
     overflow-y: auto;
   }
-
   .match-item {
     background: #161616;
     border-radius: 12px;
     padding: 10px 12px;
     border: 1px solid #2a2a2a;
   }
-
   .competition {
     font-size: 0.72rem;
     color: #ffd700;
@@ -1490,14 +1480,12 @@ onclick="window.location.href='chat.html'">
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
   .teams {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 6px;
   }
-
   .team {
     display: flex;
     align-items: center;
@@ -1505,10 +1493,8 @@ onclick="window.location.href='chat.html'">
     flex: 1;
     min-width: 0;
   }
-
   .team.home { justify-content: flex-start; }
   .team.away { justify-content: flex-end; }
-
   .team img {
     width: 22px;
     height: 22px;
@@ -1517,7 +1503,6 @@ onclick="window.location.href='chat.html'">
     background: #222;
     flex-shrink: 0;
   }
-
   .team-name {
     font-size: 0.84rem;
     font-weight: 600;
@@ -1525,7 +1510,6 @@ onclick="window.location.href='chat.html'">
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
   .score-box {
     min-width: 58px;
     text-align: center;
@@ -1533,187 +1517,145 @@ onclick="window.location.href='chat.html'">
     font-size: 1rem;
     flex-shrink: 0;
   }
-
-  .score-box .score {
-    color: #fff;
-  }
-
+  .score-box .score { color: #fff; }
   .score-box .status {
     display: block;
     font-size: 0.68rem;
     font-weight: 500;
     margin-top: 1px;
   }
-
   .status.finished { color: #4caf50; }
   .status.live { color: #ff4444; }
   .status.upcoming { color: #aaa; }
-
   .loading, .error {
     text-align: center;
     padding: 24px 8px;
     color: #888;
     font-size: 0.9rem;
   }
-
   .error { color: #ff6b6b; }
-
   .card-footer {
     margin-top: 12px;
     text-align: center;
     font-size: 0.7rem;
   }
-
-  .card-footer a {
-    color: #666;
-    text-decoration: none;
-  }
-
-  .matches-list::-webkit-scrollbar {
-    width: 5px;
-  }
-  .matches-list::-webkit-scrollbar-thumb {
-    background: #444;
-    border-radius: 3px;
-  }
+  .card-footer a { color: #666; text-decoration: none; }
 </style>
 
 <script>
-  function createMatchElement(match) {
-    const isFinished = match.status === 'finished';
-    const isLive = match.status === 'live';
+(function() {
+  function loadMatches() {
+    var list = document.getElementById('matchesList');
+    var dateEl = document.getElementById('todayDate');
+    if (!list || !dateEl) return;
 
-    const scoreText = (isFinished || isLive)
-      ? (match.home_score || '0') + ' - ' + (match.away_score || '0')
-      : 'vs';
+    var now = new Date();
+    var y = now.getFullYear();
+    var m = ('0' + (now.getMonth() + 1)).slice(-2);
+    var d = ('0' + now.getDate()).slice(-2);
+    var today = y + '-' + m + '-' + d;
 
-    let statusClass = 'upcoming';
-    let statusText = 'قادمة';
-
-    if (isFinished) {
-      statusClass = 'finished';
-      statusText = 'انتهت';
-    } else if (isLive) {
-      statusClass = 'live';
-      statusText = 'مباشر';
-    }
-
-    const item = document.createElement('div');
-    item.className = 'match-item';
-
-    // الدوري
-    const comp = document.createElement('div');
-    comp.className = 'competition';
-    comp.textContent = match.competition || 'دوري';
-    item.appendChild(comp);
-
-    // الفرق
-    const teams = document.createElement('div');
-    teams.className = 'teams';
-
-    // الفريق المضيف
-    const home = document.createElement('div');
-    home.className = 'team home';
-    if (match.home_logo) {
-      const img = document.createElement('img');
-      img.src = match.home_logo;
-      img.alt = '';
-      img.onerror = function() { this.style.display = 'none'; };
-      home.appendChild(img);
-    }
-    const homeName = document.createElement('span');
-    homeName.className = 'team-name';
-    homeName.textContent = match.home || '';
-    home.appendChild(homeName);
-
-    // النتيجة
-    const scoreBox = document.createElement('div');
-    scoreBox.className = 'score-box';
-    const scoreSpan = document.createElement('span');
-    scoreSpan.className = 'score';
-    scoreSpan.textContent = scoreText;
-    const statusSpan = document.createElement('span');
-    statusSpan.className = 'status ' + statusClass;
-    statusSpan.textContent = statusText;
-    scoreBox.appendChild(scoreSpan);
-    scoreBox.appendChild(statusSpan);
-
-    // الفريق الضيف
-    const away = document.createElement('div');
-    away.className = 'team away';
-    const awayName = document.createElement('span');
-    awayName.className = 'team-name';
-    awayName.textContent = match.away || '';
-    away.appendChild(awayName);
-    if (match.away_logo) {
-      const img = document.createElement('img');
-      img.src = match.away_logo;
-      img.alt = '';
-      img.onerror = function() { this.style.display = 'none'; };
-      away.appendChild(img);
-    }
-
-    teams.appendChild(home);
-    teams.appendChild(scoreBox);
-    teams.appendChild(away);
-    item.appendChild(teams);
-
-    return item;
-  }
-
-  async function loadTodayMatches() {
-    const list = document.getElementById('matchesList');
-    const dateEl = document.getElementById('todayDate');
-
-    const now = new Date();
-    const today = now.getFullYear() + '-' + 
-                  String(now.getMonth() + 1).padStart(2, '0') + '-' + 
-                  String(now.getDate()).padStart(2, '0');
-
-    dateEl.textContent = now.toLocaleDateString('ar-EG', {
+    dateEl.innerHTML = now.toLocaleDateString('ar-EG', {
       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
 
     list.innerHTML = '<div class="loading">جاري جلب المباريات...</div>';
 
-    try {
-      let res = await fetch('https://sportscore.com/api/v1/fixtures/?sport=football&date=' + today + '&limit=40');
-      
-      if (!res.ok) {
-        res = await fetch('https://sportscore.com/api/widget/matches/?sport=football&limit=30');
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://sportscore.com/api/v1/fixtures/?sport=football&date=' + today + '&limit=30', true);
+    xhr.timeout = 12000;
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          try {
+            var data = JSON.parse(xhr.responseText);
+            if (data.matches && data.matches.length > 0) {
+              render(data.matches);
+            } else {
+              loadFallback();
+            }
+          } catch(e) {
+            loadFallback();
+          }
+        } else {
+          loadFallback();
+        }
       }
+    };
 
-      if (!res.ok) throw new Error('فشل الاتصال');
-
-      const data = await res.json();
-      const matches = data.matches || [];
-
-      if (matches.length === 0) {
-        list.innerHTML = '<div class="error">لا توجد مباريات اليوم</div>';
-        return;
-      }
-
-      // ترتيب
-      matches.sort(function(a, b) {
-        const order = { live: 0, finished: 1, upcoming: 2 };
-        return (order[a.status] || 3) - (order[b.status] || 3);
-      });
-
-      list.innerHTML = '';
-      matches.forEach(function(match) {
-        list.appendChild(createMatchElement(match));
-      });
-
-    } catch (err) {
-      console.error(err);
-      list.innerHTML = '<div class="error">فشل تحميل المباريات</div>';
-    }
+    xhr.onerror = loadFallback;
+    xhr.ontimeout = loadFallback;
+    xhr.send();
   }
 
-  loadTodayMatches();
-  setInterval(loadTodayMatches, 3 * 60 * 1000);
-</script>
+  function loadFallback() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://sportscore.com/api/widget/matches/?sport=football&limit=25', true);
+    xhr.timeout = 10000;
 
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          try {
+            var data = JSON.parse(xhr.responseText);
+            if (data.matches && data.matches.length > 0) {
+              render(data.matches);
+            } else {
+              document.getElementById('matchesList').innerHTML = '<div class="error">لا توجد مباريات</div>';
+            }
+          } catch(e) {
+            document.getElementById('matchesList').innerHTML = '<div class="error">خطأ في البيانات</div>';
+          }
+        } else {
+          document.getElementById('matchesList').innerHTML = '<div class="error">فشل الاتصال</div>';
+        }
+      }
+    };
+    xhr.send();
+  }
+
+  function render(matches) {
+    var list = document.getElementById('matchesList');
+    matches.sort(function(a, b) {
+      var o = {live:0, finished:1, upcoming:2};
+      return (o[a.status]||3) - (o[b.status]||3);
+    });
+
+    var html = '';
+    for (var i = 0; i < matches.length; i++) {
+      var m = matches[i];
+      var finished = m.status === 'finished';
+      var live = m.status === 'live';
+      var score = (finished || live) ? (m.home_score||'0') + ' - ' + (m.away_score||'0') : 'vs';
+      var stClass = finished ? 'finished' : (live ? 'live' : 'upcoming');
+      var stText = finished ? 'انتهت' : (live ? 'مباشر' : 'قادمة');
+
+      html += '<div class="match-item">' +
+        '<div class="competition">' + (m.competition || 'دوري') + '</div>' +
+        '<div class="teams">' +
+          '<div class="team home">' +
+            (m.home_logo ? '<img src="'+m.home_logo+'" onerror="this.style.display=\'none\'">' : '') +
+            '<span class="team-name">' + (m.home||'') + '</span>' +
+          '</div>' +
+          '<div class="score-box">' +
+            '<span class="score">' + score + '</span>' +
+            '<span class="status ' + stClass + '">' + stText + '</span>' +
+          '</div>' +
+          '<div class="team away">' +
+            '<span class="team-name">' + (m.away||'') + '</span>' +
+            (m.away_logo ? '<img src="'+m.away_logo+'" onerror="this.style.display=\'none\'">' : '') +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }
+    list.innerHTML = html;
+  }
+
+  setTimeout(loadMatches, 400);
+  setInterval(loadMatches, 180000);
+})();
+</script>
 
 <!-- بطاقة Outhub -->
 <div class="promo-card outhub" style="background-color: #87CEEB; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
