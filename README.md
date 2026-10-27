@@ -1405,6 +1405,275 @@ onclick="window.location.href='chat.html'">
 })();
 </script>
 
+<!-- بطاقة مباريات اليوم - كرة القدم -->
+<div class="matches-card" id="matchesCard">
+  <div class="card-header">
+    <div class="trophy">🏆</div>
+    <h2>مباريات اليوم</h2>
+    <div class="ball">⚽</div>
+  </div>
+  
+  <div class="date-line" id="todayDate"></div>
+  
+  <div class="matches-list" id="matchesList">
+    <div class="loading">جاري تحميل المباريات...</div>
+  </div>
+  
+  <div class="card-footer">
+    <a href="https://sportscore.com/" target="_blank" rel="noopener dofollow">Powered by SportScore</a>
+  </div>
+</div>
+
+<style>
+  .matches-card {
+    background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
+    border-radius: 18px;
+    padding: 20px;
+    max-width: 420px;
+    margin: 20px auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,215,0,0.15);
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    color: #f0f0f0;
+    direction: rtl;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .card-header h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #ffd700, #ffaa00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .trophy, .ball {
+    font-size: 1.6rem;
+  }
+
+  .date-line {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-bottom: 16px;
+  }
+
+  .matches-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 480px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+
+  .match-item {
+    background: #161616;
+    border-radius: 12px;
+    padding: 12px 14px;
+    border: 1px solid #2a2a2a;
+    transition: 0.2s;
+  }
+
+  .match-item:hover {
+    border-color: #ffd70055;
+    background: #1c1c1c;
+  }
+
+  .competition {
+    font-size: 0.75rem;
+    color: #ffd700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .teams {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .team {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .team.home { justify-content: flex-start; }
+  .team.away { justify-content: flex-end; text-align: left; }
+
+  .team img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: #222;
+  }
+
+  .team-name {
+    font-size: 0.92rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 110px;
+  }
+
+  .score-box {
+    min-width: 70px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.15rem;
+  }
+
+  .score-box .score {
+    color: #fff;
+  }
+
+  .score-box .status {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  .status.finished { color: #4caf50; }
+  .status.live { color: #ff4444; animation: pulse 1.5s infinite; }
+  .status.upcoming { color: #aaa; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .loading, .error {
+    text-align: center;
+    padding: 30px;
+    color: #888;
+  }
+
+  .card-footer {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 0.75rem;
+  }
+
+  .card-footer a {
+    color: #666;
+    text-decoration: none;
+  }
+
+  .card-footer a:hover {
+    color: #ffd700;
+  }
+
+  /* سكرول بار جميل */
+  .matches-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  .matches-list::-webkit-scrollbar-track {
+    background: #111;
+  }
+  .matches-list::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 3px;
+  }
+</style>
+
+<script>
+  async function loadTodayMatches() {
+    const list = document.getElementById('matchesList');
+    const dateEl = document.getElementById('todayDate');
+
+    // تاريخ اليوم بتوقيت UTC
+    const today = new Date().toISOString().slice(0, 10);
+    
+    // عرض التاريخ بالعربية
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    dateEl.textContent = new Date().toLocaleDateString('ar-EG', options);
+
+    try {
+      const res = await fetch(`https://sportscore.com/api/v1/fixtures/?sport=football&date=${today}&limit=40`);
+      const data = await res.json();
+
+      if (!data.matches || data.matches.length === 0) {
+        list.innerHTML = '<div class="error">لا توجد مباريات اليوم</div>';
+        return;
+      }
+
+      // ترتيب: الحيّة أولاً، ثم المنتهية، ثم القادمة
+      const sorted = data.matches.sort((a, b) => {
+        const order = { live: 0, finished: 1, upcoming: 2 };
+        return (order[a.status] || 3) - (order[b.status] || 3);
+      });
+
+      list.innerHTML = sorted.map(match => {
+        const isFinished = match.status === 'finished';
+        const isLive = match.status === 'live';
+        const scoreText = (isFinished || isLive) 
+          ? `${match.home_score ?? 0} - ${match.away_score ?? 0}` 
+          : 'vs';
+
+        let statusClass = 'upcoming';
+        let statusText = match.status_text || 'قادمة';
+        if (isFinished) {
+          statusClass = 'finished';
+          statusText = 'انتهت';
+        } else if (isLive) {
+          statusClass = 'live';
+          statusText = 'مباشر';
+        }
+
+        return `
+          <div class="match-item">
+            <div class="competition">
+              \( {match.competition_logo ? `<img src=" \){match.competition_logo}" width="16" height="16" style="border-radius:3px">` : ''}
+              ${match.competition || 'دوري غير معروف'}
+            </div>
+            <div class="teams">
+              <div class="team home">
+                \( {match.home_logo ? `<img src=" \){match.home_logo}" alt="">` : ''}
+                <span class="team-name">${match.home}</span>
+              </div>
+              
+              <div class="score-box">
+                <span class="score">${scoreText}</span>
+                <span class="status \( {statusClass}"> \){statusText}</span>
+              </div>
+              
+              <div class="team away">
+                <span class="team-name">${match.away}</span>
+                \( {match.away_logo ? `<img src=" \){match.away_logo}" alt="">` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+    } catch (err) {
+      console.error(err);
+      list.innerHTML = '<div class="error">فشل تحميل المباريات. حاول مرة أخرى لاحقاً</div>';
+    }
+  }
+
+  // تحميل أول مرة
+  loadTodayMatches();
+
+  // تحديث تلقائي كل 3 دقائق
+  setInterval(loadTodayMatches, 3 * 60 * 1000);
+</script>
+
 <!-- بطاقة Outhub -->
 <div class="promo-card outhub" style="background-color: #87CEEB; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
   <div class="card-image">
