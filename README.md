@@ -1720,6 +1720,324 @@ onclick="window.location.href='chat.html'">
 
     </div>
 
+<div class="news-wrapper">
+
+  <div class="news-card">
+    <div class="news-header">
+      <span class="icon">🌍</span>
+      <h2>أخبار عالمية</h2>
+    </div>
+    <div class="news-list" id="worldNews">
+      <div class="loading">جاري التحميل...</div>
+    </div>
+  </div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <span class="icon">📰</span>
+      <h2>أخبار عربية</h2>
+    </div>
+    <div class="news-list" id="arabNews">
+      <div class="loading">جاري التحميل...</div>
+    </div>
+  </div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <span class="icon">🇸🇦</span>
+      <h2>أخبار السعودية</h2>
+    </div>
+    <div class="news-list" id="saudiNews">
+      <div class="loading">جاري التحميل...</div>
+    </div>
+  </div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <span class="icon">🇩🇿</span>
+      <h2>أخبار الجزائر</h2>
+    </div>
+    <div class="news-list" id="algeriaNews">
+      <div class="loading">جاري التحميل...</div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+  .news-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+  .news-card {
+    background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
+    border-radius: 20px;
+    padding: 16px;
+    width: 100%;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    color: #f0f0f0;
+    direction: rtl;
+    box-sizing: border-box;
+  }
+  .news-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .news-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #ffd700, #ffaa00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .news-header .icon { font-size: 1.25rem; }
+  .news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .news-item {
+    background: #161616;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #2a2a2a;
+  }
+  .news-item a {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+  }
+  .news-image {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+    background: #222;
+  }
+  .news-content {
+    padding: 11px 12px;
+  }
+  .news-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 5px;
+  }
+  .news-meta {
+    font-size: 0.7rem;
+    color: #888;
+  }
+  .loading, .error {
+    text-align: center;
+    padding: 22px 8px;
+    color: #888;
+    font-size: 0.88rem;
+  }
+  .error { color: #ff6b6b; }
+</style>
+
+<script>
+(function() {
+  var sources = {
+    world: [
+      'https://feeds.bbci.co.uk/arabic/rss.xml',
+      'https://www.france24.com/ar/rss',
+      'https://www.skynewsarabia.com/rss'
+    ],
+    arab: [
+      'https://feeds.bbci.co.uk/arabic/rss.xml',
+      'https://www.france24.com/ar/rss',
+      'https://www.skynewsarabia.com/rss'
+    ],
+    saudi: [
+      'https://feeds.bbci.co.uk/arabic/rss.xml',
+      'https://www.france24.com/ar/rss'
+    ],
+    algeria: [
+      'https://www.echoroukonline.com/feed'
+    ]
+  };
+
+  var CORX_KEY = 'corx_wurhkSx9Z5GkXBs85bu8iyqJ-963qATW';
+
+  function loadSection(id, urls) {
+    var list = document.getElementById(id);
+    if (!list) return;
+    list.innerHTML = '<div class="loading">جاري التحميل...</div>';
+
+    var allItems = [];
+    var finished = 0;
+
+    function done() {
+      finished++;
+      if (finished < urls.length) return;
+
+      if (allItems.length === 0) {
+        list.innerHTML = '<div class="error">فشل جلب الأخبار</div>';
+        return;
+      }
+
+      var unique = [];
+      var seen = {};
+      for (var i = 0; i < allItems.length; i++) {
+        var t = allItems[i].title;
+        if (!seen[t]) {
+          seen[t] = true;
+          unique.push(allItems[i]);
+        }
+      }
+
+      unique.sort(function(a, b) {
+        return new Date(b.date) - new Date(a.date);
+      });
+
+      renderItems(list, unique);
+    }
+
+    for (var i = 0; i < urls.length; i++) {
+      fetchRss(urls[i], function(items) {
+        if (items && items.length) allItems = allItems.concat(items);
+        done();
+      });
+    }
+  }
+
+  function getImage(item) {
+    // 1. enclosure
+    var enc = item.querySelector('enclosure');
+    if (enc) {
+      var type = enc.getAttribute('type') || '';
+      var url = enc.getAttribute('url') || '';
+      if (url && (type.indexOf('image') !== -1 || url.match(/\.(jpg|jpeg|png|webp|gif)/i))) {
+        return url;
+      }
+    }
+
+    // 2. media:content أو media:thumbnail
+    var media = item.getElementsByTagName('media:content')[0] || 
+                item.getElementsByTagName('media:thumbnail')[0] ||
+                item.querySelector('content');
+    if (media) {
+      var murl = media.getAttribute('url') || media.getAttribute('src');
+      if (murl) return murl;
+    }
+
+    // 3. من الوصف (description أو content:encoded)
+    var desc = '';
+    var d1 = item.querySelector('description');
+    var d2 = item.getElementsByTagName('content:encoded')[0];
+    if (d1) desc += d1.textContent || '';
+    if (d2) desc += d2.textContent || '';
+
+    // ابحث عن أول صورة
+    var match = desc.match(/<img[^>]+src=["']([^"']+)["']/i);
+    if (match && match[1]) return match[1];
+
+    // ابحث عن روابط صور مباشرة
+    match = desc.match(/(https?:\/\/[^\s"'<>]+\.(jpg|jpeg|png|webp|gif))/i);
+    if (match) return match[1];
+
+    return '';
+  }
+
+  function fetchRss(rssUrl, callback) {
+    var proxyUrl = 'https://corx.envx.cn/fetch?url=' + encodeURIComponent(rssUrl) + '&corx-key=' + CORX_KEY;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', proxyUrl, true);
+    xhr.timeout = 14000;
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200 && xhr.responseText && xhr.responseText.length > 100) {
+          try {
+            var parser = new DOMParser();
+            var xml = parser.parseFromString(xhr.responseText, 'text/xml');
+            var items = xml.querySelectorAll('item');
+            if (!items.length) items = xml.querySelectorAll('entry');
+
+            if (items.length > 0) {
+              var result = [];
+              for (var i = 0; i < Math.min(items.length, 10); i++) {
+                var item = items[i];
+                var title = (item.querySelector('title') || {}).textContent || '';
+                var linkEl = item.querySelector('link');
+                var link = linkEl ? (linkEl.textContent || linkEl.getAttribute('href') || '#') : '#';
+                var dateEl = item.querySelector('pubDate') || item.querySelector('published') || item.querySelector('updated');
+                var date = dateEl ? dateEl.textContent : '';
+                var image = getImage(item);
+
+                if (title) {
+                  result.push({
+                    title: title.trim(),
+                    link: link.trim(),
+                    date: date,
+                    image: image
+                  });
+                }
+              }
+              callback(result);
+              return;
+            }
+          } catch(e) {}
+        }
+        callback([]);
+      }
+    };
+
+    xhr.onerror = function() { callback([]); };
+    xhr.ontimeout = function() { callback([]); };
+    xhr.send();
+  }
+
+  function renderItems(list, items) {
+    var html = '';
+    var max = Math.min(items.length, 8);
+    for (var i = 0; i < max; i++) {
+      var item = items[i];
+      var dateStr = '';
+      if (item.date) {
+        try {
+          dateStr = new Date(item.date).toLocaleDateString('ar-EG', {
+            day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+          });
+        } catch(e) {}
+      }
+
+      html += '<div class="news-item">' +
+        '<a href="' + item.link + '" target="_blank" rel="noopener">';
+
+      if (item.image) {
+        html += '<img class="news-image" src="' + item.image + '" onerror="this.style.display=\'none\'" loading="lazy">';
+      }
+
+      html += '<div class="news-content">' +
+          '<div class="news-title">' + item.title + '</div>' +
+          '<div class="news-meta">' + dateStr + '</div>' +
+        '</div>' +
+        '</a>' +
+      '</div>';
+    }
+    list.innerHTML = html;
+  }
+
+  setTimeout(function() {
+    loadSection('worldNews', sources.world);
+    loadSection('arabNews', sources.arab);
+    loadSection('saudiNews', sources.saudi);
+    loadSection('algeriaNews', sources.algeria);
+  }, 500);
+})();
+</script>
+
     <!-- FOOTER -->
     <div class="footer">
         <strong>Alislamiah AI Browser</strong><br>2026 ©
