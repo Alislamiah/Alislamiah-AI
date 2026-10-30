@@ -3,290 +3,240 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alislamiah AI - Search</title>
+<meta name="theme-color" content="#07111f">
+<title>Search — Alislamiah AI</title>
 <link rel="icon" href="icon.png">
 
 <style>
 *{box-sizing:border-box}
 
 :root{
-    --bg:#050b18;
-    --panel:#0b172b;
-    --panel2:#10213a;
-    --blue:#1676e9;
-    --cyan:#28c5e8;
-    --text:#f4f8ff;
+    --bg:#07111f;
+    --panel:#0e1b2d;
+    --panel2:#12243b;
+    --border:rgba(130,170,220,.16);
+    --text:#f4f7ff;
     --muted:#91a5c2;
-    --border:rgba(130,170,220,.14);
+    --accent:#2497f3;
 }
 
 body{
     margin:0;
     min-height:100vh;
-    padding-bottom:90px;
-    font-family:Arial,sans-serif;
+    padding-bottom:85px;
+    background:var(--bg);
     color:var(--text);
-    background:
-      radial-gradient(circle at 50% 0%,rgba(24,92,180,.2),transparent 40%),
-      linear-gradient(145deg,#050b18,#071225 55%,#030813);
+    font-family:Arial,sans-serif;
 }
 
 button,input{font:inherit}
 
-/* Welcome screen */
-#welcomeScreen{
-    position:fixed;
-    inset:0;
-    z-index:1000;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#050b18;
-    transition:.5s;
-}
-
-#welcomeScreen.hide{
-    opacity:0;
-    visibility:hidden;
-}
-
-#welcomeScreen img{
-    width:105px;
-    height:105px;
-    object-fit:contain;
-}
-
-#pageContent{display:none}
-#pageContent.show{display:block}
-
-/* Header */
-.top-header{
-    height:66px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 18px;
-    border-bottom:1px solid var(--border);
-    background:rgba(5,11,24,.9);
-}
-
-.brand{
-    display:flex;
-    align-items:center;
-    gap:11px;
-    font-size:17px;
-    font-weight:bold;
-}
-
-.brand img{
-    width:36px;
-    height:36px;
-    object-fit:contain;
-    border-radius:10px;
-}
-
-.menu-button{
-    width:42px;
-    height:42px;
-    border:1px solid var(--border);
-    border-radius:13px;
-    background:var(--panel);
-    color:white;
-    font-size:23px;
-    cursor:pointer;
-}
-
-/* Main */
-.container{
-    width:min(850px,100%);
-    margin:auto;
-    padding:28px 17px;
-}
-
-.hero{
-    text-align:center;
-    padding:25px 10px;
-}
-
-.main-ai-logo{
-    width:90px;
-    height:90px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin:0 auto 19px;
-    border-radius:27px;
-    background:linear-gradient(145deg,#102b50,#09172b);
-    border:1px solid rgba(74,158,255,.2);
-    box-shadow:0 12px 40px rgba(0,0,0,.3);
-}
-
-.main-ai-logo img{
-    width:70px;
-    height:70px;
-    object-fit:contain;
-}
-
-.hero h1{
-    margin:0;
-    font-size:30px;
-}
-
-.hero p{
-    color:var(--muted);
-    margin:12px 0 0;
-    font-size:14px;
-}
-
-/* Sticky search */
-.search-area{
+/* شريط البحث المثبت */
+.topbar{
     position:sticky;
     top:0;
-    z-index:50;
-    padding:12px 0;
-    background:rgba(5,11,24,.95);
-    backdrop-filter:blur(15px);
-}
-
-.search-box{
+    z-index:100;
     display:flex;
     align-items:center;
-    gap:12px;
-    min-height:60px;
-    padding:8px 13px;
-    background:linear-gradient(145deg,#10213b,#0a172a);
-    border:1px solid rgba(85,151,220,.24);
-    border-radius:18px;
-    box-shadow:0 10px 30px rgba(0,0,0,.2);
+    gap:10px;
+    padding:12px 14px;
+    background:rgba(7,17,31,.97);
+    border-bottom:1px solid var(--border);
+    backdrop-filter:blur(14px);
 }
 
-.search-logo{
-    width:35px;
-    height:35px;
+.back-button{
+    width:38px;
+    height:42px;
     display:flex;
     align-items:center;
     justify-content:center;
     flex-shrink:0;
-}
-
-.search-logo img{
-    width:30px;
-    height:30px;
-    object-fit:contain;
-}
-
-.search-box input{
-    flex:1;
-    min-width:0;
-    border:0;
-    outline:0;
     color:white;
-    background:transparent;
-    font-size:16px;
-}
-
-.search-box input::placeholder{color:#8296b3}
-
-.search-submit{
-    width:43px;
-    height:43px;
-    border:0;
-    border-radius:13px;
-    background:linear-gradient(135deg,#1676e9,#19b7d8);
-    color:white;
-    font-size:23px;
-    cursor:pointer;
-}
-
-/* Engine information */
-.engine-card{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    margin-top:20px;
-    padding:16px;
-    background:linear-gradient(135deg,#0e1d34,#0a1425);
+    background:var(--panel);
     border:1px solid var(--border);
-    border-radius:17px;
+    border-radius:12px;
+    text-decoration:none;
+    font-size:23px;
 }
 
-.engine-logo{
-    width:48px;
-    height:48px;
+#mainAiLogo{
+    width:34px;
+    height:38px;
+    flex-shrink:0;
     display:flex;
     align-items:center;
     justify-content:center;
-    border-radius:14px;
-    background:#132744;
 }
 
-.engine-logo img{
-    width:34px;
-    height:34px;
+#mainAiLogo img{
+    width:32px;
+    height:32px;
     object-fit:contain;
 }
 
-.engine-info strong{
-    display:block;
+.search-wrapper{
+    position:relative;
+    flex:1;
+    min-width:0;
+}
+
+.search-box{
+    position:relative;
+    z-index:102;
+    display:flex;
+    align-items:center;
+    gap:9px;
+    height:46px;
+    padding:0 10px;
+    background:var(--panel);
+    border:1px solid rgba(65,151,240,.35);
+    border-radius:14px;
+}
+
+#searchInput{
+    flex:1;
+    width:100%;
+    min-width:0;
+    height:100%;
+    color:white;
+    background:transparent;
+    border:0;
+    outline:none;
     font-size:15px;
 }
 
-.engine-info span{
-    display:block;
-    margin-top:5px;
+#searchInput::placeholder{color:var(--muted)}
+
+.clear-button{
+    display:none;
+    width:27px;
+    height:30px;
+    border:0;
+    background:transparent;
     color:var(--muted);
-    font-size:12px;
-}
-
-/* Shortcuts */
-.shortcuts{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:12px;
-    margin-top:27px;
-}
-
-.shortcut{
-    text-align:center;
-    padding:15px 5px;
-    background:linear-gradient(145deg,#10213a,#0a1526);
-    border:1px solid var(--border);
-    border-radius:16px;
+    font-size:19px;
     cursor:pointer;
 }
 
-.shortcut-icon{
-    width:43px;
-    height:43px;
-    margin:0 auto 9px;
+.search-button{
+    width:34px;
+    height:34px;
+    flex-shrink:0;
+    border:0;
+    border-radius:10px;
+    background:var(--accent);
+    color:white;
+    cursor:pointer;
+    font-size:20px;
+}
+
+/* اقتراحات البحث */
+.suggestions{
+    position:absolute;
+    top:calc(100% + 8px);
+    left:0;
+    right:0;
+    z-index:101;
+    display:none;
+    overflow:hidden;
+    background:#0c192b;
+    border:1px solid rgba(100,155,220,.23);
+    border-radius:15px;
+    box-shadow:0 15px 35px rgba(0,0,0,.45);
+}
+
+.suggestions.show{display:block}
+
+.suggestion-heading{
+    padding:12px 14px 8px;
+    color:var(--muted);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.suggestion-item{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    min-height:45px;
+    padding:10px 14px;
+    cursor:pointer;
+    border-top:1px solid rgba(130,170,220,.08);
+}
+
+.suggestion-item:hover,
+.suggestion-item:focus{
+    outline:none;
+    background:#142944;
+}
+
+.suggestion-icon{
+    width:29px;
+    height:29px;
+    flex-shrink:0;
     display:flex;
     align-items:center;
     justify-content:center;
-    border-radius:13px;
-    background:#173153;
-    font-size:21px;
+    background:#172a43;
+    border-radius:9px;
+    color:#80caff;
 }
 
-.shortcut span{
-    font-size:12px;
-    color:#dceaff;
+.suggestion-text{
+    flex:1;
+    min-width:0;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    font-size:14px;
 }
 
-/* History */
-.section-title{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin:32px 2px 15px;
-}
-
-.section-title h2{
+.suggestion-arrow{
+    color:var(--muted);
     font-size:17px;
-    margin:0;
 }
 
-.section-title a{
-    color:#4cb9ef;
+.suggestion-empty{
+    padding:16px;
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* خلفية عند فتح الاقتراحات */
+.suggestion-backdrop{
+    position:fixed;
+    inset:0;
+    z-index:90;
+    display:none;
+    background:rgba(0,0,0,.2);
+}
+
+.suggestion-backdrop.show{display:block}
+
+/* سجل البحث */
+.content{
+    width:min(800px,100%);
+    margin:auto;
+    padding:20px 15px;
+}
+
+.section-heading{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:16px;
+}
+
+.section-heading h2{
+    margin:0;
+    font-size:17px;
+}
+
+.section-heading a{
+    color:#58baff;
     text-decoration:none;
     font-size:13px;
 }
@@ -301,36 +251,39 @@ button,input{font:inherit}
     display:flex;
     align-items:center;
     gap:13px;
-    padding:13px;
-    background:linear-gradient(135deg,#0d1b30,#091526);
+    min-height:63px;
+    padding:12px;
+    background:var(--panel);
     border:1px solid var(--border);
-    border-radius:15px;
+    border-radius:14px;
     cursor:pointer;
 }
 
 .history-icon{
     width:39px;
     height:39px;
+    flex-shrink:0;
     display:flex;
     align-items:center;
     justify-content:center;
-    background:#142743;
-    border-radius:12px;
-    flex-shrink:0;
+    background:var(--panel2);
+    border-radius:11px;
+    color:#b9d9ff;
+    overflow:hidden;
 }
 
 .history-icon img{
-    width:25px;
-    height:25px;
+    width:26px;
+    height:26px;
     object-fit:contain;
 }
 
-.history-text{
+.history-info{
     flex:1;
     min-width:0;
 }
 
-.history-text strong{
+.history-title{
     display:block;
     overflow:hidden;
     white-space:nowrap;
@@ -338,50 +291,53 @@ button,input{font:inherit}
     font-size:14px;
 }
 
-.history-text span{
+.history-time{
     display:block;
+    margin-top:5px;
     color:var(--muted);
     font-size:11px;
-    margin-top:5px;
 }
 
-.empty-history{
+.empty-state{
+    padding:25px 15px;
     text-align:center;
-    padding:28px 12px;
     color:var(--muted);
     background:var(--panel);
     border:1px solid var(--border);
-    border-radius:15px;
-    font-size:13px;
+    border-radius:14px;
+    font-size:14px;
 }
 
-/* Bottom navigation */
+/* القائمة السفلية */
 .bottom-nav{
     position:fixed;
+    z-index:120;
     bottom:0;
     left:0;
     right:0;
-    z-index:100;
+    min-height:67px;
+    padding:8px 4px calc(8px + env(safe-area-inset-bottom));
     display:flex;
-    justify-content:space-around;
     align-items:center;
-    height:70px;
-    padding-bottom:env(safe-area-inset-bottom);
-    background:rgba(5,12,25,.97);
+    justify-content:space-around;
+    background:rgba(7,17,31,.98);
     border-top:1px solid var(--border);
-    backdrop-filter:blur(15px);
 }
 
 .nav-item{
+    min-width:0;
+    flex:1;
     display:flex;
     flex-direction:column;
     align-items:center;
+    justify-content:center;
     gap:5px;
-    color:#8fa3c0;
+    color:var(--muted);
     text-decoration:none;
     font-size:10px;
-    min-width:55px;
 }
+
+.nav-item.active{color:#47b7ff}
 
 .nav-icon{
     width:25px;
@@ -398,161 +354,64 @@ button,input{font:inherit}
     object-fit:contain;
 }
 
-.nav-item.active{color:#42c4ed}
-
-/* Menu */
-.menu-overlay{
-    position:fixed;
-    inset:0;
-    z-index:200;
-    background:rgba(0,0,0,.65);
-    opacity:0;
-    visibility:hidden;
-    transition:.25s;
-}
-
-.menu-overlay.show{
-    opacity:1;
-    visibility:visible;
-}
-
-.menu-panel{
-    position:absolute;
-    top:0;
-    bottom:0;
-    right:0;
-    width:min(300px,85%);
-    padding:25px 18px;
-    background:#091629;
-    border-left:1px solid var(--border);
-    transform:translateX(100%);
-    transition:.25s;
-}
-
-[dir="rtl"] .menu-panel{
-    right:auto;
-    left:0;
-    transform:translateX(-100%);
-    border-left:0;
-    border-right:1px solid var(--border);
-}
-
-.menu-overlay.show .menu-panel{transform:translateX(0)}
-
-.menu-heading{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:25px;
-    font-weight:bold;
-}
-
-.menu-close{
-    border:0;
-    color:white;
-    background:transparent;
-    font-size:25px;
-    cursor:pointer;
-}
-
-.menu-link{
-    display:block;
-    padding:15px;
-    margin-bottom:9px;
-    color:#e5efff;
-    text-decoration:none;
-    background:#10213a;
-    border:1px solid var(--border);
-    border-radius:13px;
-}
-
-@media(max-width:480px){
-    .container{padding:20px 14px}
-    .hero h1{font-size:25px}
-    .shortcuts{gap:8px}
-    .shortcut{padding:12px 3px}
+@media(min-width:700px){
+    .topbar{
+        padding-left:max(18px,calc((100% - 800px)/2));
+        padding-right:max(18px,calc((100% - 800px)/2));
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div id="welcomeScreen">
-    <img src="icon.png" alt="Alislamiah">
-</div>
+<div class="suggestion-backdrop" id="suggestionBackdrop"></div>
 
-<div id="pageContent">
+<header class="topbar">
+    <a class="back-button" href="index.html" aria-label="Home">‹</a>
 
-<header class="top-header">
-    <div class="brand">
-        <img src="icon.png" alt="Alislamiah">
-        <span>Alislamiah</span>
+    <div id="mainAiLogo">
+        <img src="icon.png" alt="Alislamiah AI">
     </div>
-    <button class="menu-button" onclick="openMenu()">☰</button>
+
+    <div class="search-wrapper">
+        <div class="search-box">
+            <input
+                id="searchInput"
+                type="search"
+                placeholder="Search..."
+                autocomplete="off"
+                aria-label="Search"
+                aria-controls="suggestions"
+                aria-expanded="false">
+
+            <button
+                class="clear-button"
+                id="clearButton"
+                type="button"
+                aria-label="Clear search">×</button>
+
+            <button
+                class="search-button"
+                id="searchButton"
+                type="button"
+                aria-label="Search">⌕</button>
+        </div>
+
+        <div class="suggestions" id="suggestions" role="listbox"></div>
+    </div>
 </header>
 
-<main class="container">
-
-    <section class="hero">
-        <div class="main-ai-logo" id="mainAiLogo"></div>
-        <h1>Alislamiah Search</h1>
-        <p>Discover the world with Alislamiah</p>
-    </section>
-
-    <div class="search-area">
-        <div class="search-box">
-            <div class="search-logo" id="searchLogo"></div>
-            <input
-                type="search"
-                id="searchInput"
-                placeholder="Search Alislamiah..."
-                onkeydown="handleSearchKey(event)"
-                autocomplete="off">
-            <button class="search-submit" onclick="performSearch()">⌕</button>
-        </div>
-    </div>
-
-    <div class="engine-card">
-        <div class="engine-logo" id="selectedEngineLogo"></div>
-        <div class="engine-info">
-            <strong id="selectedEngineName">Alislamiah AI</strong>
-            <span>Search engine selected from Settings</span>
-        </div>
-    </div>
-
-    <div class="shortcuts">
-        <div class="shortcut" onclick="searchShortcut('Quran','📖')">
-            <div class="shortcut-icon">📖</div>
-            <span>Quran</span>
-        </div>
-
-        <div class="shortcut" onclick="searchShortcut('Islamic','☪️')">
-            <div class="shortcut-icon">☪️</div>
-            <span>Islamic</span>
-        </div>
-
-        <div class="shortcut" onclick="searchShortcut('News','📰')">
-            <div class="shortcut-icon">📰</div>
-            <span>News</span>
-        </div>
-
-        <div class="shortcut" onclick="searchShortcut('Technology','💻')">
-            <div class="shortcut-icon">💻</div>
-            <span>Technology</span>
-        </div>
-    </div>
-
-    <div class="section-title">
+<main class="content">
+    <div class="section-heading">
         <h2>Recent searches</h2>
-        <a href="history.html">View all</a>
+        <a href="history.html">View all history</a>
     </div>
 
     <div class="history-list" id="historyList"></div>
-
 </main>
 
 <nav class="bottom-nav">
-
     <a class="nav-item" href="index.html">
         <span class="nav-icon">⌂</span>
         <span>Home</span>
@@ -574,39 +433,20 @@ button,input{font:inherit}
         <span class="nav-icon">⚙</span>
         <span>Settings</span>
     </a>
-
 </nav>
 
-</div>
-
-<div class="menu-overlay" id="menuOverlay" onclick="closeMenu(event)">
-    <div class="menu-panel">
-
-        <div class="menu-heading">
-            <span>Alislamiah Menu</span>
-            <button class="menu-close" onclick="closeMenu()">×</button>
-        </div>
-
-        <a class="menu-link" href="index.html">Home</a>
-        <a class="menu-link" href="search.html">Search</a>
-        <a class="menu-link" href="history.html">Search History</a>
-        <a class="menu-link" href="chat.html">Alislamiah AI</a>
-        <a class="menu-link" href="Settings.html">Settings</a>
-
-    </div>
-</div>
-
 <script>
-
-/* =========================================
-   إعدادات الصفحة
-========================================= */
-
 const RESULTS_PAGE = "results.html";
 const HISTORY_KEY = "alislamiah_history";
+const SUGGESTIONS_KEY = "alislamiah_search_suggestions";
+
+const searchInput = document.getElementById("searchInput");
+const suggestionsBox = document.getElementById("suggestions");
+const clearButton = document.getElementById("clearButton");
+const backdrop = document.getElementById("suggestionBackdrop");
 
 /* =========================================
-   تحديث أيقونة AI حسب محرك البحث
+   تحديث شعار محرك البحث من الإعدادات
 ========================================= */
 
 function updateMainAiLogo() {
@@ -620,31 +460,13 @@ function updateMainAiLogo() {
     } else if (engine === "Alislamiah") {
         logoContainer.innerHTML = '<img src="icon.jpg" alt="Alislamiah">';
     } else if (engine === "Google") {
-        logoContainer.innerHTML = '<img src="https://www.google.com/favicon.ico" alt="Google" style="width:70px; height:70px; object-fit:contain;">';
+        logoContainer.innerHTML = '<img src="https://www.google.com/favicon.ico" alt="Google" style="width:70px;height:70px;object-fit:contain;">';
     } else if (engine === "Microsoft Bing") {
-        logoContainer.innerHTML = '<img src="https://www.bing.com/sa/simg/favicon-2x.ico" alt="Microsoft Bing" style="width:70px; height:70px; object-fit:contain;">';
-    }
-
-    const searchLogo = document.getElementById("searchLogo");
-    const selectedEngineLogo = document.getElementById("selectedEngineLogo");
-    const selectedEngineName = document.getElementById("selectedEngineName");
-
-    if (searchLogo) {
-        searchLogo.innerHTML = logoContainer.innerHTML;
-    }
-
-    if (selectedEngineLogo) {
-        selectedEngineLogo.innerHTML = logoContainer.innerHTML;
-    }
-
-    if (selectedEngineName) {
-        selectedEngineName.textContent = engine;
+        logoContainer.innerHTML = '<img src="https://www.bing.com/sa/simg/favicon-2x.ico" alt="Microsoft Bing" style="width:70px;height:70px;object-fit:contain;">';
     }
 }
 
-window.addEventListener("load", function() {
-    updateMainAiLogo();
-});
+window.addEventListener("load", updateMainAiLogo);
 
 window.addEventListener("storage", function(event) {
     if (event.key === "searchEngine") {
@@ -653,19 +475,17 @@ window.addEventListener("storage", function(event) {
 });
 
 /* =========================================
-   نظام سجل البحث
+   سجل البحث
+البنية متوافقة مع history.html
 ========================================= */
 
 function getHistory(){
     try{
-        return JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+        const data = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+        return Array.isArray(data) ? data : [];
     }catch(error){
         return [];
     }
-}
-
-function saveHistory(history){
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
 }
 
 function addToHistory(name, targetUrl, icon){
@@ -680,84 +500,180 @@ function addToHistory(name, targetUrl, icon){
         icon: icon
     });
 
-    saveHistory(history);
-}
-
-function renderHistory(){
-    const historyList = document.getElementById("historyList");
-    if(!historyList) return;
-
-    const history = getHistory().slice(0,10);
-
-    if(history.length === 0){
-        historyList.innerHTML =
-            '<div class="empty-history">No recent searches yet</div>';
-        return;
-    }
-
-    historyList.innerHTML = "";
-
-    history.forEach(item => {
-        const row = document.createElement("div");
-        row.className = "history-item";
-
-        const iconBox = document.createElement("div");
-        iconBox.className = "history-icon";
-
-        if(item.icon && (
-            item.icon.startsWith("http") ||
-            item.icon.endsWith(".png") ||
-            item.icon.endsWith(".jpg")
-        )){
-            const img = document.createElement("img");
-            img.src = item.icon;
-            img.alt = "";
-            iconBox.appendChild(img);
-        }else{
-            iconBox.textContent = item.icon || "⌕";
-        }
-
-        const textBox = document.createElement("div");
-        textBox.className = "history-text";
-
-        const title = document.createElement("strong");
-        title.textContent = item.title || "Search";
-
-        const time = document.createElement("span");
-        time.textContent = item.time
-            ? new Date(item.time).toLocaleString()
-            : "";
-
-        textBox.appendChild(title);
-        textBox.appendChild(time);
-
-        row.appendChild(iconBox);
-        row.appendChild(textBox);
-
-        row.addEventListener("click", function(){
-            if(item.url) window.location.href = item.url;
-        });
-
-        historyList.appendChild(row);
-    });
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
 }
 
 /* =========================================
-   البحث والاختصارات
+   حفظ كلمات البحث السابقة للاقتراحات
+========================================= */
+
+function getSavedSuggestions(){
+    try{
+        const data = JSON.parse(localStorage.getItem(SUGGESTIONS_KEY) || "[]");
+        return Array.isArray(data) ? data : [];
+    }catch(error){
+        return [];
+    }
+}
+
+function saveSuggestion(query){
+    const value = query.trim();
+    if(!value) return;
+
+    let items = getSavedSuggestions();
+
+    items = items.filter(item =>
+        String(item).toLocaleLowerCase() !== value.toLocaleLowerCase()
+    );
+
+    items.unshift(value);
+
+    localStorage.setItem(
+        SUGGESTIONS_KEY,
+        JSON.stringify(items.slice(0,50))
+    );
+}
+
+/* =========================================
+   إظهار الاقتراحات أثناء الكتابة
+========================================= */
+
+function showSuggestions(){
+    const query = searchInput.value.trim();
+    clearButton.style.display = query ? "block" : "none";
+
+    if(!query){
+        hideSuggestions();
+        return;
+    }
+
+    const normalizedQuery = query.toLocaleLowerCase();
+
+    const historyMatches = getHistory()
+        .map(item => item.title)
+        .filter(title =>
+            typeof title === "string" &&
+            title.toLocaleLowerCase().includes(normalizedQuery)
+        );
+
+    const savedMatches = getSavedSuggestions()
+        .filter(title =>
+            title.toLocaleLowerCase().includes(normalizedQuery)
+        );
+
+    const matches = [];
+    const seen = new Set();
+
+    [...historyMatches, ...savedMatches, query].forEach(value => {
+        const text = String(value).trim();
+        const key = text.toLocaleLowerCase();
+
+        if(text && !seen.has(key)){
+            seen.add(key);
+            matches.push(text);
+        }
+    });
+
+    const visibleMatches = matches.slice(0,8);
+
+    suggestionsBox.innerHTML = "";
+
+    const heading = document.createElement("div");
+    heading.className = "suggestion-heading";
+    heading.textContent = "Search suggestions";
+    suggestionsBox.appendChild(heading);
+
+    visibleMatches.forEach((text, index) => {
+        const item = document.createElement("div");
+        item.className = "suggestion-item";
+        item.setAttribute("role", "option");
+        item.setAttribute("tabindex", "0");
+
+        const icon = document.createElement("div");
+        icon.className = "suggestion-icon";
+        icon.textContent = index < historyMatches.length ? "◷" : "⌕";
+
+        const label = document.createElement("div");
+        label.className = "suggestion-text";
+        label.textContent = text;
+
+        const arrow = document.createElement("div");
+        arrow.className = "suggestion-arrow";
+        arrow.textContent = "↵";
+
+        item.appendChild(icon);
+        item.appendChild(label);
+        item.appendChild(arrow);
+
+        item.addEventListener("mousedown", function(event){
+            event.preventDefault();
+        });
+
+        item.addEventListener("click", function(){
+            searchInput.value = text;
+            performSearch();
+        });
+
+        item.addEventListener("keydown", function(event){
+            if(event.key === "Enter"){
+                event.preventDefault();
+                searchInput.value = text;
+                performSearch();
+            }
+        });
+
+        suggestionsBox.appendChild(item);
+    });
+
+    suggestionsBox.classList.add("show");
+    backdrop.classList.add("show");
+    searchInput.setAttribute("aria-expanded", "true");
+}
+
+function hideSuggestions(){
+    suggestionsBox.classList.remove("show");
+    backdrop.classList.remove("show");
+    searchInput.setAttribute("aria-expanded", "false");
+}
+
+searchInput.addEventListener("input", showSuggestions);
+searchInput.addEventListener("focus", function(){
+    if(searchInput.value.trim()) showSuggestions();
+});
+
+clearButton.addEventListener("click", function(){
+    searchInput.value = "";
+    clearButton.style.display = "none";
+    hideSuggestions();
+    searchInput.focus();
+});
+
+backdrop.addEventListener("click", hideSuggestions);
+
+document.addEventListener("click", function(event){
+    if(!event.target.closest(".search-wrapper")){
+        hideSuggestions();
+    }
+});
+
+/* =========================================
+   تنفيذ البحث
 ========================================= */
 
 function searchShortcut(name, icon){
     const targetUrl = RESULTS_PAGE + "?q=" + encodeURIComponent(name);
+
     addToHistory(name, targetUrl, icon);
+    saveSuggestion(name);
+
     window.location.href = targetUrl;
 }
 
 function performSearch(){
-    const input = document.getElementById("searchInput");
-    const query = input.value.trim();
+    const query = searchInput.value.trim();
 
     if(query === ""){
-        input.focus();
+        searchInput.focus();
         return;
     }
 
@@ -766,11 +682,17 @@ function performSearch(){
 
     let histIcon = "icon.png";
 
-    if (engine === "Google") histIcon = "https://www.google.com/favicon.ico";
-    else if (engine === "Microsoft Bing") histIcon = "https://www.bing.com/favicon.ico";
-    else if (engine === "Alislamiah") histIcon = "icon.jpg";
+    if(engine === "Google"){
+        histIcon = "https://www.google.com/favicon.ico";
+    }else if(engine === "Microsoft Bing"){
+        histIcon = "https://www.bing.com/favicon.ico";
+    }else if(engine === "Alislamiah"){
+        histIcon = "icon.jpg";
+    }
 
     addToHistory(query, targetUrl, histIcon);
+    saveSuggestion(query);
+    hideSuggestions();
 
     window.location.href = targetUrl;
 }
@@ -780,88 +702,130 @@ function handleSearchKey(event){
         event.preventDefault();
         performSearch();
     }
-}
 
-/* =========================================
-   القائمة الجانبية
-========================================= */
-
-function openMenu(){
-    const overlay = document.getElementById("menuOverlay");
-    overlay.classList.add("show");
-    document.body.style.overflow = "hidden";
-}
-
-function closeMenu(event){
-    const overlay = document.getElementById("menuOverlay");
-
-    if(event && event.target !== overlay) return;
-
-    overlay.classList.remove("show");
-    document.body.style.overflow = "";
-}
-
-document.addEventListener("keydown", function(event){
     if(event.key === "Escape"){
-        document.getElementById("menuOverlay").classList.remove("show");
-        document.body.style.overflow = "";
+        hideSuggestions();
     }
-});
+}
+
+document.getElementById("searchButton").addEventListener("click", performSearch);
 
 /* =========================================
-   كود الحماية
+   عرض آخر 10 عمليات بحث
 ========================================= */
 
-(function () {
+function renderHistory(){
+    const container = document.getElementById("historyList");
+    if(!container) return;
+
+    const history = getHistory().slice(0,10);
+
+    if(history.length === 0){
+        container.innerHTML =
+            '<div class="empty-state">No recent searches yet.</div>';
+        return;
+    }
+
+    container.innerHTML = "";
+
+    history.forEach(item => {
+        const row = document.createElement("div");
+        row.className = "history-item";
+
+        const iconBox = document.createElement("div");
+        iconBox.className = "history-icon";
+
+        const iconValue = item.icon || "⌕";
+
+        if(typeof iconValue === "string" &&
+           (iconValue.startsWith("http://") ||
+            iconValue.startsWith("https://") ||
+            iconValue.endsWith(".png") ||
+            iconValue.endsWith(".jpg"))){
+
+            const img = document.createElement("img");
+            img.src = iconValue;
+            img.alt = "";
+            iconBox.appendChild(img);
+        }else{
+            iconBox.textContent = iconValue;
+        }
+
+        const info = document.createElement("div");
+        info.className = "history-info";
+
+        const title = document.createElement("span");
+        title.className = "history-title";
+        title.textContent = item.title || "Search";
+
+        const time = document.createElement("span");
+        time.className = "history-time";
+        time.textContent = item.time
+            ? new Date(item.time).toLocaleString()
+            : "";
+
+        info.appendChild(title);
+        info.appendChild(time);
+
+        row.appendChild(iconBox);
+        row.appendChild(info);
+
+        row.addEventListener("click", function(){
+            if(item.url) window.location.href = item.url;
+        });
+
+        container.appendChild(row);
+    });
+}
+
+/* =========================================
+   الحماية
+========================================= */
+
+(function(){
     const currentUser = localStorage.getItem("alislamiah_current_user");
 
-    if (!currentUser) {
-        window.location.href = "signin.html";
+    if(!currentUser){
+        window.location.replace("signin.html");
     }
 })();
 
 /* =========================================
-   نظام اللغة الموحد - Alislamiah
+   نظام اللغة الموحد
 ========================================= */
 
-function getLanguage() {
+function getLanguage(){
     return localStorage.getItem("appLanguage") || "en";
 }
 
-function applyLanguage(lang) {
+function applyLanguage(lang){
     document.documentElement.lang = lang;
-    document.documentElement.dir = (lang === "ar") ? "rtl" : "ltr";
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function(){
     applyLanguage(getLanguage());
     renderHistory();
 });
 
-window.addEventListener("storage", function (e) {
-    if (e.key === "appLanguage") {
-        applyLanguage(e.newValue || "en");
+window.addEventListener("storage", function(event){
+    if(event.key === "appLanguage"){
+        applyLanguage(event.newValue || "en");
     }
 
-    if (e.key === HISTORY_KEY) {
+    if(event.key === HISTORY_KEY || event.key === SUGGESTIONS_KEY){
         renderHistory();
+
+        if(searchInput.value.trim()){
+            showSuggestions();
+        }
     }
 });
 
-/* تحديث عند الرجوع للصفحة */
 window.addEventListener("pageshow", function(){
     updateMainAiLogo();
     renderHistory();
 });
-
-/* شاشة الترحيب */
-window.addEventListener("load", function(){
-    setTimeout(function(){
-        document.getElementById("welcomeScreen").classList.add("hide");
-        document.getElementById("pageContent").classList.add("show");
-    }, 1500);
-});
-
 </script>
 
 </body>
