@@ -194,7 +194,7 @@ body{
     top: 0;
     z-index: 999;
     padding: 10px 0;
-    background: linear-gradient(145deg, #040a17 0%, #07142a 55%, #06172c 100%);
+    background: transparent;
 }
 
 .search-box{
