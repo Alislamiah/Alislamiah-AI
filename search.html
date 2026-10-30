@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#050b18">
+<title>Alislamiah Search</title>
+<link rel="icon" href="icon.png">
+
+<style>
+:root{
+  --bg:#050b18;
+  --panel:#0c1b33;
+  --panel2:#102441;
+  --blue:#1685ff;
+  --text:#f4f8ff;
+  --muted:#8da4c2;
+  --border:rgba(113,163,230,.15);
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+body{
+  margin:0;
+  min-height:100vh;
+  padding-bottom:85px;
+  color:var(--text);
+  background:radial-gradient(ellipse at 50% -15%,#15365e 0%,transparent 48%),var(--bg);
+  font-family:Arial,Tahoma,sans-serif;
+}
+
+button,input{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+
+/* الشريط العلوي */
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(5,11,24,.96);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(18px);
+  padding:13px 16px 15px;
+}
+
+.top-inner{max-width:800px;margin:auto}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:13px;
+}
+
+.brand img{
+  width:36px;
+  height:36px;
+  object-fit:cover;
+  border-radius:11px;
+}
+
+.brand-name{font-size:17px;font-weight:800}
+.brand-name span{color:#399cff}
+
+/* البحث */
+
+.search-box{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-height:55px;
+  padding:6px 12px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#102746,#0b1930);
+  border:1px solid rgba(65,145,255,.35);
+  transition:border-color .2s;
+}
+
+.search-box:focus-within{border-color:#258cff}
+
+.search-icon{
+  width:22px;
+  height:22px;
+  color:#64b1ff;
+  flex-shrink:0;
+}
+
+#searchInput{
+  width:100%;
+  min-width:0;
+  flex:1;
+  padding:9px 0;
+  color:#fff;
+  background:transparent;
+  border:0;
+  outline:0;
+  font-size:15px;
+}
+
+#searchInput::placeholder{color:#7890b0}
+
+.clear-btn{
+  display:none;
+  padding:4px;
+  color:#9ab1ce;
+  background:transparent;
+  border:0;
+  font-size:23px;
+}
+
+.search-submit{
+  width:43px;
+  height:41px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  border:0;
+  border-radius:12px;
+  color:white;
+  background:linear-gradient(135deg,#2995ff,#0867dc);
+}
+
+.search-submit svg{width:20px;height:20px}
+
+/* المحتوى */
+
+.container{
+  width:calc(100% - 30px);
+  max-width:720px;
+  margin:25px auto;
+}
+
+.welcome{
+  padding:21px;
+  margin-bottom:29px;
+  border:1px solid var(--border);
+  border-radius:19px;
+  background:
+    radial-gradient(circle at 95% 0%,rgba(24,133,255,.17),transparent 55%),
+    linear-gradient(135deg,#0d1e37,#091529);
+}
+
+.welcome h1{
+  margin:0 0 9px;
+  font-size:22px;
+  line-height:1.5;
+}
+
+.welcome h1 span{color:#48a5ff}
+
+.welcome p{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.9;
+}
+
+/* سجل البحث */
+
+.section-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.heading-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:16px;
+  font-weight:800;
+}
+
+.heading-icon{
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+  background:rgba(22,133,255,.12);
+  color:#55aaff;
+}
+
+.heading-icon svg{width:20px;height:20px}
+
+.delete-all{
+  border:0;
+  background:transparent;
+  color:#8bb6e8;
+  font-size:12px;
+}
+
+.history-list{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+
+.history-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-height:62px;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:15px;
+  background:linear-gradient(110deg,#0b1930,#0b172b);
+}
+
+.history-main{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex:1;
+  min-width:0;
+  cursor:pointer;
+}
+
+.history-clock{
+  display:grid;
+  place-items:center;
+  width:36px;
+  height:36px;
+  flex-shrink:0;
+  border-radius:12px;
+  background:#102644;
+  color:#80baff;
+}
+
+.history-clock svg{width:19px;height:19px}
+
+.history-text{min-width:0}
+
+.history-query{
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  font-size:14px;
+  color:#edf5ff;
+}
+
+.history-date{
+  margin-top:5px;
+  color:#7189a9;
+  font-size:11px;
+}
+
+.history-search,.history-delete{
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+  border:0;
+  background:transparent;
+}
+
+.history-search{
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  color:#80baff;
+}
+
+.history-search svg{width:19px;height:19px}
+
+.history-delete{
+  width:27px;
+  height:34px;
+  color:#7189a9;
+  font-size:21px;
+}
+
+.history-delete:active{color:#ff7777}
+
+.empty-state{
+  padding:35px 15px;
+  text-align:center;
+  border:1px dashed rgba(104,150,207,.25);
+  border-radius:18px;
+  background:rgba(11,25,47,.48);
+}
+
+.empty-icon{
+  display:grid;
+  place-items:center;
+  width:60px;
+  height:60px;
+  margin:0 auto 14px;
+  border-radius:20px;
+  background:#102442;
+  color:#55aaff;
+}
+
+.empty-icon svg{width:28px;height:28px}
+
+.empty-state h3{font-size:15px;margin:0 0 8px}
+.empty-state p{font-size:12px;color:var(--muted);line-height:1.8;margin:0}
+
+/* التنبيه */
+
+.toast{
+  position:fixed;
+  z-index:300;
+  bottom:100px;
+  left:50%;
+  max-width:calc(100% - 30px);
+  padding:12px 18px;
+  border:1px solid rgba(71,151,255,.3);
+  border-radius:13px;
+  background:#102644;
+  color:white;
+  font-size:13px;
+  text-align:center;
+  opacity:0;
+  visibility:hidden;
+  transform:translate(-50%,12px);
+  transition:.2s;
+}
+
+.toast.show{
+  opacity:1;
+  visibility:visible;
+  transform:translate(-50%,0);
+}
+
+/* التنقل السفلي */
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:150;
+  display:flex;
+  justify-content:center;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:rgba(5,11,24,.97);
+  border-top:1px solid var(--border);
+  backdrop-filter:blur(18px);
+}
+
+.nav-inner{
+  width:min(100%,450px);
+  display:flex;
+  justify-content:space-around;
+}
+
+.nav-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+  min-width:75px;
+  padding:3px 10px;
+  color:#7188a7;
+  font-size:11px;
+}
+
+.nav-item svg{width:22px;height:22px}
+.nav-item.active{color:#4da5ff}
+
+@media(min-width:650px){
+  .topbar{padding:16px 25px 18px}
+  .container{margin-top:32px}
+  .welcome{padding:25px}
+  .welcome h1{font-size:24px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="top-inner">
+
+    <div class="brand">
+      <img src="icon.png" alt="Alislamiah"
+           onerror="this.style.display='none'">
+      <div class="brand-name"><span>Alislamiah</span> Search</div>
+    </div>
+
+    <form class="search-box" id="searchForm" role="search">
+
+      <svg class="search-icon" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="10.8" cy="10.8" r="7.2"/>
+        <path d="m16.2 16.2 4.3 4.3"/>
+      </svg>
+
+      <input id="searchInput"
+             type="search"
+             placeholder="ابحث في الإسلامية..."
+             autocomplete="off"
+             enterkeyhint="search"
+             aria-label="البحث">
+
+      <button class="clear-btn" type="button"
+              id="clearInput" aria-label="مسح">×</button>
+
+      <button class="search-submit" type="submit"
+              aria-label="بحث">
+        <svg viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.2">
+          <circle cx="10.8" cy="10.8" r="7.2"/>
+          <path d="m16.2 16.2 4.3 4.3"/>
+        </svg>
+      </button>
+
+    </form>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="welcome">
+    <h1>ابحث واكتشف مع <span>Alislamiah</span></h1>
+    <p>
+      كل ما تبحث عنه في مكان واحد.
+      يمكنك الرجوع إلى عمليات البحث الأخيرة في أي وقت.
+    </p>
+  </section>
+
+  <section aria-labelledby="historyTitle">
+
+    <div class="section-heading">
+
+      <div class="heading-title" id="historyTitle">
+        <span class="heading-icon">
+          <svg viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 7v5l3.5 2"/>
+            <path d="M4 5v4h4"/>
+          </svg>
+        </span>
+        عمليات البحث مؤخراً
+      </div>
+
+      <button class="delete-all" id="deleteAll"
+              type="button">مسح الكل</button>
+
+    </div>
+
+    <div class="history-list" id="historyList"></div>
+
+  </section>
+
+</main>
+
+<div class="toast" id="toast" role="status"></div>
+
+<nav class="bottom-nav" aria-label="التنقل الرئيسي">
+  <div class="nav-inner">
+
+    <a class="nav-item" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="1.8">
+        <path d="m3 10 9-7 9 7"/>
+        <path d="M5 9v12h14V9M9 21v-7h6v7"/>
+      </svg>
+      <span>الرئيسية</span>
+    </a>
+
+    <a class="nav-item active" href="search.html"
+       aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2">
+        <circle cx="10.8" cy="10.8" r="7.2"/>
+        <path d="m16.2 16.2 4.3 4.3"/>
+      </svg>
+      <span>البحث</span>
+    </a>
+
+    <a class="nav-item" href="Settings.html">
+      <svg viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="1.8">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="m19.4 15 .1.1 1.2.9-1.5 2.6-1.4-.6a8 8 0 0 1-1.6.9l-.2 1.6h-3l-.2-1.6a8 8 0 0 1-1.6-.9l-1.4.6-1.5-2.6 1.3-.9a8 8 0 0 1 0-1.9l-1.3-.9 1.5-2.6 1.4.6a8 8 0 0 1 1.6-.9l.2-1.6h3l.2 1.6a8 8 0 0 1 1.6.9l1.4-.6 1.5 2.6-1.3.9a8 8 0 0 1 0 1.8Z"/>
+      </svg>
+      <span>الإعدادات</span>
+    </a>
+
+  </div>
+</nav>
+
+<script>
+(function(){
+
+  const input = document.getElementById("searchInput");
+  const form = document.getElementById("searchForm");
+  const clearBtn = document.getElementById("clearInput");
+  const historyList = document.getElementById("historyList");
+  const deleteAllBtn = document.getElementById("deleteAll");
+  const toast = document.getElementById("toast");
+
+  const STORAGE_KEY = "alislamiah_search_history";
+  let toastTimer;
+
+  function getHistory(){
+    try{
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      return Array.isArray(data) ? data : [];
+    }catch(e){
+      return [];
+    }
+  }
+
+  function saveHistory(items){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    }catch(e){
+      showToast("تعذر حفظ سجل البحث على هذا الجهاز");
+    }
+  }
+
+  function showToast(message){
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){
+      toast.classList.remove("show");
+    },2300);
+  }
+
+  function escapeHTML(value){
+    return String(value).replace(/[&<>"']/g,function(char){
+      return {
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[char];
+    });
+  }
+
+  function updateClearButton(){
+    clearBtn.style.display = input.value ? "block" : "none";
+  }
+
+  function formatDate(timestamp){
+    const date = new Date(timestamp);
+    if(Number.isNaN(date.getTime())) return "";
+
+    return date.toLocaleString("ar-DZ",{
+      day:"numeric",
+      month:"short",
+      hour:"2-digit",
+      minute:"2-digit"
+    });
+  }
+
+  // جميع عمليات البحث تتجه إلى results.html
+  function performSearch(value){
+    const query = String(value || "").trim();
+
+    if(!query){
+      input.focus();
+      showToast("اكتب ما تريد البحث عنه أولاً");
+      return;
+    }
+
+    const history = getHistory().filter(function(item){
+      return typeof item.query === "string" &&
+        item.query.toLocaleLowerCase() !== query.toLocaleLowerCase();
+    });
+
+    history.unshift({
+      query:query,
+      time:Date.now()
+    });
+
+    saveHistory(history.slice(0,30));
+
+    window.location.href =
+      "results.html?q=" + encodeURIComponent(query);
+  }
+
+  function renderHistory(){
+    const history = getHistory();
+
+    if(history.length === 0){
+      historyList.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.8">
+              <circle cx="10.8" cy="10.8" r="7.2"/>
+              <path d="m16.2 16.2 4.3 4.3"/>
+            </svg>
+          </div>
+          <h3>لا توجد عمليات بحث بعد</h3>
+          <p>ستظهر عمليات البحث الأخيرة هنا تلقائياً.</p>
+        </div>
+      `;
+
+      deleteAllBtn.style.display = "none";
+      return;
+    }
+
+    deleteAllBtn.style.display = "block";
+
+    historyList.innerHTML = history.map(function(item,index){
+      if(!item || typeof item.query !== "string") return "";
+
+      return `
+        <div class="history-item">
+
+          <div class="history-main" data-search="${index}">
+            <span class="history-clock">
+              <svg viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M12 7v5l3 2"/>
+              </svg>
+            </span>
+
+            <div class="history-text">
+              <div class="history-query">${escapeHTML(item.query)}</div>
+              <div class="history-date">${formatDate(item.time)}</div>
+            </div>
+          </div>
+
+          <button class="history-search" type="button"
+                  data-search="${index}" aria-label="إعادة البحث">
+            <svg viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2">
+              <circle cx="10.8" cy="10.8" r="7.2"/>
+              <path d="m16.2 16.2 4.3 4.3"/>
+            </svg>
+          </button>
+
+          <button class="history-delete" type="button"
+                  data-delete="${index}" aria-label="حذف">×</button>
+
+        </div>
+      `;
+    }).join("");
+  }
+
+  form.addEventListener("submit",function(event){
+    event.preventDefault();
+    performSearch(input.value);
+  });
+
+  input.addEventListener("input",updateClearButton);
+
+  clearBtn.addEventListener("click",function(){
+    input.value = "";
+    updateClearButton();
+    input.focus();
+  });
+
+  historyList.addEventListener("click",function(event){
+    const searchButton = event.target.closest("[data-search]");
+    const deleteButton = event.target.closest("[data-delete]");
+
+    if(searchButton){
+      const index = Number(searchButton.dataset.search);
+      const item = getHistory()[index];
+
+      if(item) performSearch(item.query);
+      return;
+    }
+
+    if(deleteButton){
+      const index = Number(deleteButton.dataset.delete);
+      const history = getHistory();
+
+      history.splice(index,1);
+      saveHistory(history);
+      renderHistory();
+      showToast("تم حذف عملية البحث");
+    }
+  });
+
+  deleteAllBtn.addEventListener("click",function(){
+    const history = getHistory();
+
+    if(history.length === 0) return;
+
+    if(!confirm("هل تريد مسح جميع عمليات البحث الأخيرة؟")){
+      return;
+    }
+
+    saveHistory([]);
+    renderHistory();
+    showToast("تم مسح سجل البحث");
+  });
+
+  renderHistory();
+  updateClearButton();
+
+})();
+</script>
+
+</body>
+</html>
