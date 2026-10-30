@@ -190,6 +190,11 @@ body{
 .search-area{
     width:100%;
     margin-top:23px;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    padding: 10px 0;
+    background: linear-gradient(145deg, #040a17 0%, #07142a 55%, #06172c 100%);
 }
 
 .search-box{
