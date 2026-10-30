@@ -545,9 +545,9 @@ body{
 
     <!-- SEARCH -->
     <div class="search-area">
-        <div class="search-box">
-            <button class="search-button" type="button" onclick="performSearch()">🔍</button>
-            <input id="searchInput" class="search-input" type="text" autocomplete="off" placeholder="ابحث في الويب أو اطرح سؤالاً..." onkeydown="handleSearchKey(event)">
+        <div class="search-box" onclick="window.location.href='search.html'" style="cursor:pointer;">
+            <button class="search-button" type="button">🔍</button>
+            <input id="searchInput" class="search-input" type="text" autocomplete="off" placeholder="ابحث في الويب أو اطرح سؤالاً..." readonly style="pointer-events:none;">
         </div>
     </div>
 
