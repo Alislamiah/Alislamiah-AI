@@ -886,7 +886,7 @@ body{
                 </a>
 
                 <a class="app-item" href="https://alislamiah.github.io/Alislamiah-For-Developpers/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Alislamiah-for-Developpers.png" alt="Alislamiah-For-Developpers">
+                    <img class="app-icon-img" src="Alislamiah-for-Devloppers.png" alt="Alislamiah-For-Developpers">
                     <div class="app-name">Alislamiah-For-Developpers</div>
                 </a>
 
