@@ -508,6 +508,282 @@ body{
 .menu-item:active{
     background: rgba(20,130,255,.20);
 }
+
+
+/* =====================================================
+   APPS PANEL (مثل كروم)
+===================================================== */
+.apps-btn {
+    font-size: 22px !important;
+}
+
+.apps-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    z-index: 2000;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 60px;
+}
+
+.apps-overlay.show {
+    display: flex;
+}
+
+.apps-panel {
+    width: 92%;
+    max-width: 380px;
+    max-height: 75vh;
+    overflow-y: auto;
+    background: linear-gradient(160deg, #0d1a30, #0a1424);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 22px;
+    padding: 18px 16px 22px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.45);
+    direction: rtl;
+}
+
+.apps-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding: 0 4px;
+}
+
+.apps-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.apps-close {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 10px;
+    background: rgba(255,255,255,.06);
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.apps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.app-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 6px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+    text-decoration: none;
+    color: #fff;
+    transition: .15s;
+}
+
+.app-item:active {
+    transform: scale(.94);
+    background: rgba(8,127,255,.18);
+}
+
+.app-icon {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.app-name {
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.3;
+}
+
+
+/* ===================== APPS BUTTON & PANEL ===================== */
+.apps-btn {
+  font-size: 22px !important;
+}
+
+.apps-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+  z-index: 2000;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 70px;
+  backdrop-filter: blur(4px);
+}
+
+.apps-overlay.show {
+  display: flex;
+}
+
+.apps-panel {
+  width: 92%;
+  max-width: 380px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: linear-gradient(160deg, #0b1930, #07101f);
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 20px 50px rgba(0,0,0,.5);
+  padding: 18px 16px 22px;
+}
+
+.apps-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding: 0 6px;
+}
+
+.apps-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+}
+
+.close-apps {
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 12px;
+  background: rgba(255,255,255,.07);
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px 10px;
+}
+
+.app-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #e8eef8;
+  padding: 10px 4px;
+  border-radius: 16px;
+  transition: background .18s;
+}
+
+.app-item:active {
+  background: rgba(255,255,255,.08);
+}
+
+.app-item img {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  object-fit: cover;
+  background: #1a2a45;
+  box-shadow: 0 4px 12px rgba(0,0,0,.3);
+}
+
+.app-item span {
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.3;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+
+/* ===== Apps Panel ===== */
+.apps-btn { font-size: 20px !important; }
+.apps-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.65);
+  z-index: 2000; display: none;
+  align-items: flex-start; justify-content: center;
+  padding-top: 70px; backdrop-filter: blur(5px);
+}
+.apps-overlay.show { display: flex; }
+.apps-panel {
+  width: 92%; max-width: 380px; max-height: 78vh;
+  overflow-y: auto;
+  background: linear-gradient(160deg, #0b1930, #07101f);
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 20px 50px rgba(0,0,0,.5);
+  padding: 18px 14px 22px;
+}
+.apps-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px; padding: 0 4px;
+}
+.apps-header h3 { margin: 0; font-size: 19px; font-weight: 700; color: #fff; }
+.apps-close {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 11px;
+  background: rgba(255,255,255,.07);
+  color: #fff; font-size: 18px; cursor: pointer;
+}
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px 8px;
+}
+.app-item {
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  text-decoration: none; color: #e8eef8;
+  padding: 10px 4px; border-radius: 16px;
+  transition: background .15s;
+}
+.app-item:active { background: rgba(255,255,255,.09); }
+.app-icon {
+  width: 54px; height: 54px; border-radius: 15px;
+  background: linear-gradient(145deg, #1a2f55, #12253f);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0,0,0,.35);
+  color: #fff;
+}
+.app-name {
+  font-size: 11.5px; font-weight: 600;
+  text-align: center; line-height: 1.25;
+}
+
+
+.app-icon-img {
+  width: 54px;
+  height: 54px;
+  border-radius: 15px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,.35);
+  background: #1a2a45;
+}
+
 </style>
 
 </head>
@@ -522,9 +798,111 @@ body{
     <!-- TOP BAR -->
     <div class="topbar">
         <button class="top-button" type="button" onclick="openMenu()">☰</button>
+        <button class="top-button apps-btn" type="button" onclick="toggleApps()" title="Apps">⊞</button>
         <div class="top-title">Alislamiah AI</div>
+
+    <!-- Apps Panel -->
+    <div class="apps-overlay" id="appsOverlay" onclick="closeApps(event)">
+        <div class="apps-panel" onclick="event.stopPropagation()">
+            <div class="apps-header">
+                <h3>Apps</h3>
+                <button class="apps-close" type="button" onclick="closeApps()">✕</button>
+            </div>
+            <div class="apps-grid">
+
+                <a class="app-item" href="https://alislamiah.github.io/Alislamiah-_net/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Alislamiah.png" alt="Alislamiah">
+                    <div class="app-name">Alislamiah</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Alislamiah-AI/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Alislamiah-AI.png" alt="Alislamiah AI">
+                    <div class="app-name">Alislamiah AI</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Alislamiah/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Alislamiah-bing.png" alt="Alislamiah bing">
+                    <div class="app-name">Alislamiah bing</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Alislamiah-Tube/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Alislamiah-Tube.png" alt="Alislamiah Tube">
+                    <div class="app-name">Alislamiah Tube</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Alislamiah-Maps/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Alislamiah-Maps.png" alt="Alislamiah Maps">
+                    <div class="app-name">Alislamiah Maps</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Gemalot/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Gemalot.png" alt="Gemalot">
+                    <div class="app-name">Gemalot</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Eisen-mail/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Eisen-mail.png" alt="Eisen mail">
+                    <div class="app-name">Eisen mail</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Bingot/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Bingot.png" alt="Bingot">
+                    <div class="app-name">Bingot</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Eisen.Calendar/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Eisen-calandar.png" alt="Eisen.Calendar">
+                    <div class="app-name">Eisen.Calendar</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Eisen.metting/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Eisen-meeting.png" alt="Eisen.metting">
+                    <div class="app-name">Eisen.metting</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Eisen.Notepad/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Eisen-Notepad.png" alt="Eisen.Notepad">
+                    <div class="app-name">Eisen.Notepad</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Eisen.translastor/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Eisen-translator.png" alt="Eisen.translastor">
+                    <div class="app-name">Eisen.translastor</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Eisen-calculator/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Eisen-calculator.png" alt="Eisen-calculator">
+                    <div class="app-name">Eisen-calculator</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Eisen-SMS/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Eisen-SMS.png" alt="Eisen-SMS">
+                    <div class="app-name">Eisen-SMS</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Alislamiah465/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Alislamiah465.png" alt="Alislamiah 465">
+                    <div class="app-name">Alislamiah 465</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Alislamiah-For-Developpers/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Alislamiah-For-Developpers.png" alt="Alislamiah-For-Developpers">
+                    <div class="app-name">Alislamiah-For-Developpers</div>
+                </a>
+
+            </div>
+        </div>
     </div>
 
+
+    
+
+
+    
+
+    </div>
+
+    
     <!-- BRAND -->
     <div class="brand">
         <div class="brand-name">Alislamiah-AI</div>
@@ -2219,6 +2597,29 @@ window.addEventListener("storage", function (e) {
     }
 });
 
+</script>
+
+
+<script>
+
+
+</script>
+
+
+
+
+
+<script>
+function toggleApps() {
+  var el = document.getElementById('appsOverlay');
+  if (el) el.classList.toggle('show');
+}
+function closeApps(e) {
+  if (!e || e.target.id === 'appsOverlay' || (e.target && e.target.classList && e.target.classList.contains('apps-close'))) {
+    var el = document.getElementById('appsOverlay');
+    if (el) el.classList.remove('show');
+  }
+}
 </script>
 
 </body>
