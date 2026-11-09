@@ -784,6 +784,38 @@ body{
   background: #1a2a45;
 }
 
+
+/* Account button */
+.account-btn{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.13);
+    background:rgba(255,255,255,.055);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    overflow:hidden;
+    padding:0;
+    flex-shrink:0;
+    transition:.18s;
+}
+.account-btn:active{transform:scale(.92)}
+.account-avatar-img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
+}
+.account-avatar-letter{
+    font-size:17px;
+    font-weight:700;
+    line-height:1;
+    color:#fff;
+}
+
 </style>
 
 </head>
@@ -799,111 +831,14 @@ body{
     <div class="topbar">
         <button class="top-button" type="button" onclick="openMenu()">☰</button>
         <button class="top-button apps-btn" type="button" onclick="toggleApps()" title="Apps">⊞</button>
+        <button class="account-btn" type="button" id="accountBtn" onclick="goToAccount()" title="الحساب">
+            <img id="accountAvatarImg" class="account-avatar-img" src="" alt="" style="display:none;">
+            <span id="accountAvatarLetter" class="account-avatar-letter">?</span>
+        </button>
         <div class="top-title">Alislamiah AI</div>
-
-    <!-- Apps Panel -->
-    <div class="apps-overlay" id="appsOverlay" onclick="closeApps(event)">
-        <div class="apps-panel" onclick="event.stopPropagation()">
-            <div class="apps-header">
-                <h3>Apps</h3>
-                <button class="apps-close" type="button" onclick="closeApps()">✕</button>
-            </div>
-            <div class="apps-grid">
-
-                <a class="app-item" href="https://alislamiah.github.io/Alislamiah-_net/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Alislamiah.png" alt="Alislamiah">
-                    <div class="app-name">Alislamiah</div>
-                </a>
-
-                <a class="app-item" href="https://alislamiah.github.io/Alislamiah-AI/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Alislamiah-AI.png" alt="Alislamiah AI">
-                    <div class="app-name">Alislamiah AI</div>
-                </a>
-
-                <a class="app-item" href="https://alislamiah.github.io/Alislamiah/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Alislamiah-bing.png" alt="Alislamiah bing">
-                    <div class="app-name">Alislamiah bing</div>
-                </a>
-
-                <a class="app-item" href="https://alislamiah.github.io/Alislamiah-Tube/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Alislamiah-Tube.png" alt="Alislamiah Tube">
-                    <div class="app-name">Alislamiah Tube</div>
-                </a>
-
-                <a class="app-item" href="https://alislamiah.github.io/Alislamiah-Maps/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Alislamiah-Maps.png" alt="Alislamiah Maps">
-                    <div class="app-name">Alislamiah Maps</div>
-                </a>
-
-                <a class="app-item" href="https://alislamiah.github.io/Gemalot/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Gemalot.png" alt="Gemalot">
-                    <div class="app-name">Gemalot</div>
-                </a>
-
-                <a class="app-item" href="https://alislamiah.github.io/Eisen-mail/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Eisen-mail.png" alt="Eisen mail">
-                    <div class="app-name">Eisen mail</div>
-                </a>
-
-                <a class="app-item" href="https://alislamiah.github.io/Bingot/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Bingot.png" alt="Bingot">
-                    <div class="app-name">Bingot</div>
-                </a>
-
-                <a class="app-item" href="https://alislamiah.github.io/Eisen.Calendar/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Eisen-calandar.png" alt="Eisen.Calendar">
-                    <div class="app-name">Eisen.Calendar</div>
-                </a>
-
-                <a class="app-item" href="https://alislamiah.github.io/Eisen.metting/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Eisen-meeting.png" alt="Eisen.metting">
-                    <div class="app-name">Eisen.metting</div>
-                </a>
-
-                <a class="app-item" href="https://alislamiah.github.io/Eisen.Notepad/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Eisen-Notepad.png" alt="Eisen.Notepad">
-                    <div class="app-name">Eisen.Notepad</div>
-                </a>
-
-                <a class="app-item" href="https://alislamiah.github.io/Eisen.translastor/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Eisen-translator.png" alt="Eisen.translastor">
-                    <div class="app-name">Eisen.translastor</div>
-                </a>
-
-                <a class="app-item" href="https://alislamiah.github.io/Eisen-calculator/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Eisen-calculator.png" alt="Eisen-calculator">
-                    <div class="app-name">Eisen-calculator</div>
-                </a>
-
-                <a class="app-item" href="https://alislamiah.github.io/Eisen-SMS/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Eisen-SMS.png" alt="Eisen-SMS">
-                    <div class="app-name">Eisen-SMS</div>
-                </a>
-
-                <a class="app-item" href="https://alislamiah.github.io/Alislamiah465/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Alislamiah465.png" alt="Alislamiah 465">
-                    <div class="app-name">Alislamiah 465</div>
-                </a>
-
-                <a class="app-item" href="https://alislamiah.github.io/Alislamiah-For-Developpers/" target="_blank" rel="noopener">
-                    <img class="app-icon-img" src="Alislamiah-for-Devloppers.png" alt="Alislamiah-For-Developpers">
-                    <div class="app-name">Alislamiah-For-Developpers</div>
-                </a>
-
-            </div>
-        </div>
     </div>
 
-
-    
-
-
-    
-
-    </div>
-
-    
-    <!-- BRAND -->
+<!-- BRAND -->
     <div class="brand">
         <div class="brand-name">Alislamiah-AI</div>
         <div class="brand-line"></div>
@@ -2606,9 +2541,6 @@ window.addEventListener("storage", function (e) {
 </script>
 
 
-
-
-
 <script>
 function toggleApps() {
   var el = document.getElementById('appsOverlay');
@@ -2622,5 +2554,132 @@ function closeApps(e) {
 }
 </script>
 
+
+<script>
+(function(){
+  function loadAccountAvatar(){
+    var img = document.getElementById('accountAvatarImg');
+    var letter = document.getElementById('accountAvatarLetter');
+    if(!img || !letter) return;
+    try{
+      var raw = localStorage.getItem('alislamiah_current_user');
+      if(!raw){ letter.textContent='?'; letter.style.display='block'; img.style.display='none'; return; }
+      var user = JSON.parse(raw);
+      var name = (user && (user.name || user.email || '')) || '';
+      var photo = user && (user.photoURL || user.photo || user.avatar || '');
+      if(photo){
+        img.src = photo;
+        img.style.display = 'block';
+        letter.style.display = 'none';
+        img.onerror = function(){ img.style.display='none'; letter.style.display='block'; letter.textContent=(name.charAt(0)||'?').toUpperCase(); };
+      } else {
+        img.style.display='none';
+        letter.style.display='block';
+        letter.textContent=(name.charAt(0)||'?').toUpperCase();
+      }
+    }catch(e){ letter.textContent='?'; letter.style.display='block'; img.style.display='none'; }
+  }
+  window.goToAccount = function(){
+    if(localStorage.getItem('alislamiah_current_user')) window.location.href='Settings.html';
+    else window.location.href='signin.html';
+  };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', loadAccountAvatar);
+  else loadAccountAvatar();
+})();
+</script>
+
+
+<!-- Apps Panel -->
+    <div class="apps-overlay" id="appsOverlay" onclick="closeApps(event)">
+        <div class="apps-panel" onclick="event.stopPropagation()">
+            <div class="apps-header">
+                <h3>Apps</h3>
+                <button class="apps-close" type="button" onclick="closeApps()">✕</button>
+            </div>
+            <div class="apps-grid">
+
+                <a class="app-item" href="https://alislamiah.github.io/Alislamiah-_net/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Alislamiah.png" alt="Alislamiah">
+                    <div class="app-name">Alislamiah</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Alislamiah-AI/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Alislamiah-AI.png" alt="Alislamiah AI">
+                    <div class="app-name">Alislamiah AI</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Alislamiah/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Alislamiah-bing.png" alt="Alislamiah bing">
+                    <div class="app-name">Alislamiah bing</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Alislamiah-Tube/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Alislamiah-Tube.png" alt="Alislamiah Tube">
+                    <div class="app-name">Alislamiah Tube</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Alislamiah-Maps/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Alislamiah-Maps.png" alt="Alislamiah Maps">
+                    <div class="app-name">Alislamiah Maps</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Gemalot/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Gemalot.png" alt="Gemalot">
+                    <div class="app-name">Gemalot</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Eisen-mail/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Eisen-mail.png" alt="Eisen mail">
+                    <div class="app-name">Eisen mail</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Bingot/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Bingot.png" alt="Bingot">
+                    <div class="app-name">Bingot</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Eisen.Calendar/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Eisen-calandar.png" alt="Eisen.Calendar">
+                    <div class="app-name">Eisen.Calendar</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Eisen.metting/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Eisen-meeting.png" alt="Eisen.metting">
+                    <div class="app-name">Eisen.metting</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Eisen.Notepad/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Eisen-Notepad.png" alt="Eisen.Notepad">
+                    <div class="app-name">Eisen.Notepad</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Eisen.translastor/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Eisen-translator.png" alt="Eisen.translastor">
+                    <div class="app-name">Eisen.translastor</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Eisen-calculator/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Eisen-calculator.png" alt="Eisen-calculator">
+                    <div class="app-name">Eisen-calculator</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Eisen-SMS/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Eisen-SMS.png" alt="Eisen-SMS">
+                    <div class="app-name">Eisen-SMS</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Alislamiah465/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Alislamiah465.png" alt="Alislamiah 465">
+                    <div class="app-name">Alislamiah 465</div>
+                </a>
+
+                <a class="app-item" href="https://alislamiah.github.io/Alislamiah-For-Developpers/" target="_blank" rel="noopener">
+                    <img class="app-icon-img" src="Alislamiah-For-Developpers.png" alt="Alislamiah-For-Developpers">
+                    <div class="app-name">Alislamiah-For-Developpers</div>
+                </a>
+
+            </div>
+        </div>
+    </div>
 </body>
 </html>
