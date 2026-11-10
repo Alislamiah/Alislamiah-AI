@@ -2556,146 +2556,114 @@ function closeApps(e) {
 
 
 <script type="module">
-(function () {
-  function providerAvatar(email, name) {
-    email = (email || '').trim().toLowerCase();
-    name = name || (email ? email.split('@')[0] : 'U');
-    if (!email) {
-      return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=087fff&color=ffffff&size=128&bold=true';
-    }
-    var domain = email.split('@')[1] || '';
-    // Gmail / Google
-    if (domain === 'gmail.com' || domain === 'googlemail.com') {
-      // unavatar يحاول جلب صورة حساب Google المرتبطة بالإيميل
-      return 'https://unavatar.io/google/' + encodeURIComponent(email) + '?fallback=false';
-    }
-    // Outlook / Microsoft
-    if (
-      domain === 'outlook.com' ||
-      domain === 'hotmail.com' ||
-      domain === 'live.com' ||
-      domain === 'msn.com' ||
-      domain === 'outlook.fr' ||
-      domain === 'hotmail.fr'
-    ) {
-      return 'https://unavatar.io/' + encodeURIComponent(email);
-    }
-    // باقي الإيميلات: محاولة عامة ثم fallback
-    return 'https://unavatar.io/' + encodeURIComponent(email);
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBrv1ky0Br5nLb68uvdXE3o6QdzTKpIU4g",
+  authDomain: "alislamiah-ai-34202.firebaseapp.com",
+  projectId: "alislamiah-ai-34202",
+  storageBucket: "alislamiah-ai-34202.firebasestorage.app",
+  messagingSenderId: "683051452829",
+  appId: "1:683051452829:web:e96e40422c7f31e563c774",
+  measurementId: "G-LFQLND010S"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+function renderAccountAvatar(user) {
+  const img = document.getElementById("accountAvatarImg");
+  const letter = document.getElementById("accountAvatarLetter");
+  if (!img || !letter) return;
+
+  if (!user) {
+    letter.textContent = "?";
+    letter.style.display = "block";
+    img.style.display = "none";
+    img.removeAttribute("src");
+    return;
   }
 
-  function fallbackAvatar(name) {
-    return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name || 'U') + '&background=087fff&color=ffffff&size=128&bold=true';
+  const name = user.displayName || user.name || (user.email ? user.email.split("@")[0] : "U") || "U";
+  const photoURL = user.photoURL || "";
+
+  // نفس MGA-Code-Editor: صورة إن وُجدت وإلا الحرف الأول
+  if (photoURL) {
+    img.onload = function () {
+      img.style.display = "block";
+      letter.style.display = "none";
+    };
+    img.onerror = function () {
+      letter.textContent = name.charAt(0).toUpperCase();
+      letter.style.display = "block";
+      img.style.display = "none";
+    };
+    img.src = photoURL;
+  } else {
+    letter.textContent = name.charAt(0).toUpperCase();
+    letter.style.display = "block";
+    img.style.display = "none";
+    img.removeAttribute("src");
   }
 
-  function showPhoto(photoURL, name, email, fromGithub) {
-    var img = document.getElementById('accountAvatarImg');
-    var letter = document.getElementById('accountAvatarLetter');
-    if (!img || !letter) return;
+  try {
+    localStorage.setItem("alislamiah_current_user", JSON.stringify({
+      id: user.uid || user.id || "",
+      name: name,
+      email: user.email || "",
+      photoURL: photoURL
+    }));
+  } catch (e) {}
+}
 
-    var step = 0;
-    var urls = [];
-
-    // 1) GitHub / Firebase photoURL أولاً إذا موجود
-    if (photoURL) urls.push(photoURL);
-
-    // 2) حسب نوع الإيميل (Gmail / Outlook / عام)
-    if (email) urls.push(providerAvatar(email, name));
-
-    // 3) صورة مولدة من الاسم
-    urls.push(fallbackAvatar(name || email || 'U'));
-
-    function tryNext() {
-      if (step >= urls.length) {
-        letter.textContent = ((name || email || '?').charAt(0) || '?').toUpperCase();
-        letter.style.display = 'block';
-        img.style.display = 'none';
-        return;
-      }
-      var url = urls[step++];
-      img.onload = function () {
-        img.style.display = 'block';
-        letter.style.display = 'none';
-      };
-      img.onerror = tryNext;
-      img.src = url;
-    }
-
-    tryNext();
+window.goToAccount = function () {
+  if (localStorage.getItem("alislamiah_current_user") || (auth && auth.currentUser)) {
+    window.location.href = "Settings.html";
+  } else {
+    window.location.href = "signin.html";
   }
+};
 
-  function applyUser(user) {
-    if (!user) {
-      showPhoto('', '', '', false);
-      return;
-    }
-    var name = user.name || (user.email ? String(user.email).split('@')[0] : '') || '';
-    var email = user.email || '';
-    var photo = user.photoURL || user.photo || user.avatar || '';
-    var fromGithub = !!(photo && /githubusercontent\.com|github\.com/i.test(photo));
-    showPhoto(photo, name, email, fromGithub);
+// عرض سريع من التخزين المحلي
+try {
+  const raw = localStorage.getItem("alislamiah_current_user");
+  if (raw) {
+    const u = JSON.parse(raw);
+    renderAccountAvatar({
+      uid: u.id,
+      displayName: u.name,
+      email: u.email,
+      photoURL: u.photoURL || ""
+    });
   }
+} catch (e) {}
 
-  function loadFromLocal() {
+// المصدر الحقيقي: Firebase (GitHub يعطي photoURL)
+onAuthStateChanged(auth, function (user) {
+  if (user) {
+    renderAccountAvatar(user);
+  } else {
     try {
-      var raw = localStorage.getItem('alislamiah_current_user');
-      if (!raw) {
-        applyUser(null);
-        return null;
+      const raw = localStorage.getItem("alislamiah_current_user");
+      if (raw) {
+        const u = JSON.parse(raw);
+        renderAccountAvatar({
+          uid: u.id,
+          displayName: u.name,
+          email: u.email,
+          photoURL: u.photoURL || ""
+        });
+      } else {
+        renderAccountAvatar(null);
       }
-      var user = JSON.parse(raw);
-      applyUser(user);
-      return user;
     } catch (e) {
-      applyUser(null);
-      return null;
+      renderAccountAvatar(null);
     }
   }
-
-  window.goToAccount = function () {
-    if (localStorage.getItem('alislamiah_current_user')) window.location.href = 'Settings.html';
-    else window.location.href = 'signin.html';
-  };
-
-  loadFromLocal();
-
-  // Firebase: إن وُجدت جلسة
-  // - GitHub → photoURL من GitHub
-  // - إيميل → نستخدم Gmail/Outlook حسب النطاق
-  import('https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js')
-    .then(function (appMod) {
-      return import('https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js').then(function (authMod) {
-        var firebaseConfig = {
-          apiKey: 'AIzaSyBrv1ky0Br5nLb68uvdXE3o6QdzTKpIU4g',
-          authDomain: 'alislamiah-ai-34202.firebaseapp.com',
-          projectId: 'alislamiah-ai-34202',
-          storageBucket: 'alislamiah-ai-34202.firebasestorage.app',
-          messagingSenderId: '683051452829',
-          appId: '1:683051452829:web:e96e40422c7f31e563c774'
-        };
-        var app = appMod.initializeApp(firebaseConfig);
-        var auth = authMod.getAuth(app);
-        authMod.onAuthStateChanged(auth, function (fbUser) {
-          if (!fbUser) return;
-          var name = fbUser.displayName || (fbUser.email ? fbUser.email.split('@')[0] : '') || '';
-          var email = fbUser.email || '';
-          var photo = fbUser.photoURL || '';
-          try {
-            var raw = localStorage.getItem('alislamiah_current_user');
-            var u = raw ? JSON.parse(raw) : {};
-            u.id = fbUser.uid;
-            u.name = name || u.name || '';
-            u.email = email || u.email || '';
-            if (photo) u.photoURL = photo;
-            localStorage.setItem('alislamiah_current_user', JSON.stringify(u));
-          } catch (e) {}
-          applyUser({ name: name, email: email, photoURL: photo });
-        });
-      });
-    })
-    .catch(function () {});
-})();
+});
 </script>
+
 
 
 <!-- Apps Panel -->
