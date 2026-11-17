@@ -1,0 +1,385 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07111f">
+<title>Continue with Alislamiah AI</title>
+<link rel="icon" href="icon.png">
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;padding:22px;
+ display:flex;align-items:center;justify-content:center;
+ background:radial-gradient(circle at top,#153c70,transparent 45%),#050b16;
+ color:#edf5ff;font-family:Arial,sans-serif
+}
+.container{width:100%;max-width:440px}
+.brand{text-align:center;margin-bottom:25px}
+.brand img{width:65px;height:65px;object-fit:contain;border-radius:17px}
+.brand h1{font-size:23px;margin:12px 0 6px}
+.brand p{font-size:13px;color:#91a9c7}
+.panel{
+ background:#0c192c;border:1px solid #203a5c;
+ border-radius:22px;padding:24px;
+ box-shadow:0 25px 80px #0008
+}
+.step{display:none}
+.step.active{display:block}
+h2{font-size:21px;margin:0 0 10px}
+.desc{font-size:13px;color:#91a9c7;line-height:1.6;margin:0 0 22px}
+input{
+ width:100%;padding:14px;margin:8px 0 12px;
+ border:1px solid #294362;border-radius:11px;
+ background:#071321;color:white;font-size:14px;outline:none
+}
+input:focus{border-color:#3995ff}
+button{
+ width:100%;padding:14px;border:0;border-radius:11px;
+ background:linear-gradient(110deg,#1676e8,#35a2ff);
+ color:white;font-weight:bold;cursor:pointer;margin-top:9px
+}
+button.secondary{background:#142943;border:1px solid #294362}
+button:disabled{opacity:.5}
+.account,.method{
+ padding:15px;border:1px solid #294362;
+ background:#0a1729;border-radius:13px;
+ margin:10px 0;cursor:pointer
+}
+.account{display:flex;align-items:center;gap:12px}
+.account:hover,.method:hover{border-color:#3995ff}
+.avatar{
+ width:42px;height:42px;border-radius:50%;
+ display:grid;place-items:center;background:#183d68;color:#8ec5ff;
+ font-weight:bold;flex-shrink:0
+}
+.account-info{min-width:0;flex:1}
+.account-info strong,.method strong{display:block;font-size:14px}
+.account-info small,.method small{
+ display:block;color:#91a9c7;margin-top:5px;
+ overflow-wrap:anywhere;font-size:12px
+}
+.method small{line-height:1.5}
+.back{width:auto;background:none;color:#9bb9dc;padding:4px;margin:0 0 18px;text-align:left}
+.notice{font-size:12px;color:#8fa8c7;line-height:1.6;margin-top:14px}
+.status{font-size:13px;line-height:1.5;margin:12px 0;color:#ffb8c4}
+.status.good{color:#9df0bd}
+.footer{text-align:center;color:#66809f;font-size:11px;margin-top:18px}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+ <div class="brand">
+  <img src="icon.png" onerror="this.style.display='none'">
+  <h1>Alislamiah AI</h1>
+  <p>Secure account connection</p>
+ </div>
+
+ <div class="panel">
+
+  <div id="status" class="status"></div>
+
+  <!-- ACCOUNTS -->
+  <section class="step active" id="accountsStep">
+   <h2>Select your account</h2>
+   <p class="desc">Choose an account to continue.</p>
+   <div id="accountsList"></div>
+   <div id="noAccounts" style="display:none">
+    <p class="desc">No saved accounts found.</p>
+    <button onclick="show('loginStep')">Sign in</button>
+   </div>
+  </section>
+
+  <!-- LOGIN -->
+  <section class="step" id="loginStep">
+   <button class="back" onclick="show('accountsStep')">← Back</button>
+   <h2>Sign in</h2>
+   <p class="desc">Sign in with your Alislamiah AI account.</p>
+   <input id="email" type="email" placeholder="Email address">
+   <input id="password" type="password" placeholder="Password">
+   <button id="loginBtn" onclick="login()">Continue</button>
+  </section>
+
+  <!-- PASSWORD FOR SAVED ACCOUNT -->
+  <section class="step" id="passwordStep">
+   <button class="back" onclick="show('accountsStep')">← Back</button>
+   <h2>Confirm your account</h2>
+   <p class="desc" id="selectedEmail"></p>
+   <input id="accountPassword" type="password" placeholder="Account password">
+   <button onclick="loginSelected()">Continue</button>
+  </section>
+
+  <!-- VERIFICATION -->
+  <section class="step" id="methodStep">
+   <h2>2 step verification</h2>
+   <p class="desc">Choose your verification method.</p>
+
+   <div class="method" onclick="chooseMethod('mail')">
+    <strong>✉ Get verification Code at Eisen mail</strong>
+    <small>Receive your code in your Eisen Mail inbox.</small>
+   </div>
+
+   <div class="method" onclick="chooseMethod('sms')">
+    <strong>▣ Get code at Eisen SMS</strong>
+    <small>Receive your code inside Eisen SMS.</small>
+   </div>
+  </section>
+
+  <!-- DESTINATION -->
+  <section class="step" id="destinationStep">
+   <button class="back" onclick="show('methodStep')">← Back</button>
+   <h2 id="destinationTitle">Verification</h2>
+   <p class="desc" id="destinationDesc"></p>
+   <input id="destination" placeholder="">
+   <button onclick="requestCode()">Send verification code</button>
+  </section>
+
+  <!-- CODE -->
+  <section class="step" id="codeStep">
+   <button class="back" onclick="show('destinationStep')">← Back</button>
+   <h2>Enter verification code</h2>
+   <p class="desc">Enter the code sent to your selected destination.</p>
+   <input id="verificationCode" inputmode="numeric" maxlength="6" placeholder="6-digit verification code">
+   <button onclick="verifyCode()">Verify</button>
+  </section>
+
+  <!-- RETURN -->
+  <section class="step" id="returnStep">
+   <h2>You're verified!</h2>
+   <p class="desc">Your account is ready. You can return to the application.</p>
+   <button onclick="returnToApp()">Return to the app</button>
+  </section>
+
+ </div>
+
+ <div class="footer">Alislamiah AI · Secure Authentication</div>
+</div>
+
+<script type="module">
+import {initializeApp}
+ from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+
+import {
+ getAuth,onAuthStateChanged,signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+
+const firebaseConfig={
+ apiKey:"AIzaSyBrv1k0Br5nLb68uvdXE3o6QdzTKpIU4g",
+ authDomain:"alislamiah-ai-34202.firebaseapp.com",
+ projectId:"alislamiah-ai-34202",
+ storageBucket:"alislamiah-ai-34202.firebasestorage.app",
+ messagingSenderId:"683051452829",
+ appId:"1:683051452829:web:e96e40422c7f31e563c774",
+ measurementId:"G-LFQLND010S"
+};
+
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+
+const ACCOUNTS_KEY="alislamiah_known_accounts";
+
+let selectedAccount=null;
+let currentUser=null;
+let verificationMethod="";
+let verificationTarget="";
+let generatedCode="";
+let verified=false;
+
+const params=new URLSearchParams(location.search);
+const returnURL=params.get("return")||params.get("redirect")||"";
+
+function show(id){
+ document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ setStatus("");
+}
+
+function setStatus(message="",good=false){
+ const el=document.getElementById("status");
+ el.textContent=message;
+ el.className="status"+(good?" good":"");
+}
+
+function getAccounts(){
+ try{return JSON.parse(localStorage.getItem(ACCOUNTS_KEY)||"[]")}
+ catch{return []}
+}
+
+function saveAccount(user){
+ if(!user)return;
+ let accounts=getAccounts();
+ accounts=accounts.filter(a=>a.uid!==user.uid);
+ accounts.unshift({
+  uid:user.uid,
+  email:user.email||"",
+  displayName:user.displayName||"",
+  photoURL:user.photoURL||""
+ });
+ localStorage.setItem(ACCOUNTS_KEY,JSON.stringify(accounts));
+}
+
+function renderAccounts(){
+ const accounts=getAccounts();
+ const list=document.getElementById("accountsList");
+ list.innerHTML="";
+ document.getElementById("noAccounts").style.display=accounts.length?"none":"block";
+
+ accounts.forEach(account=>{
+  const item=document.createElement("div");
+  item.className="account";
+
+  const avatar=document.createElement("div");
+  avatar.className="avatar";
+  avatar.textContent=(account.displayName||account.email||"?").charAt(0).toUpperCase();
+
+  const info=document.createElement("div");
+  info.className="account-info";
+
+  const name=document.createElement("strong");
+  name.textContent=account.displayName||account.email||"Alislamiah account";
+
+  const email=document.createElement("small");
+  email.textContent=account.email;
+
+  info.append(name,email);
+  item.append(avatar,info);
+  item.onclick=()=>selectAccount(account);
+  list.appendChild(item);
+ });
+}
+
+function selectAccount(account){
+ selectedAccount=account;
+
+ if(currentUser&&currentUser.uid===account.uid){
+  beginVerification();
+  return;
+ }
+
+ document.getElementById("selectedEmail").textContent=account.email;
+ document.getElementById("accountPassword").value="";
+ show("passwordStep");
+}
+
+window.loginSelected=async function(){
+ const password=document.getElementById("accountPassword").value;
+ if(!password)return setStatus("Enter your password.");
+
+ try{
+  const result=await signInWithEmailAndPassword(
+   auth,selectedAccount.email,password
+  );
+  currentUser=result.user;
+  saveAccount(result.user);
+  beginVerification();
+ }catch(error){
+  setStatus(error.message);
+ }
+};
+
+window.login=async function(){
+ const email=document.getElementById("email").value.trim();
+ const password=document.getElementById("password").value;
+ if(!email||!password)return setStatus("Enter your email and password.");
+
+ const btn=document.getElementById("loginBtn");
+ btn.disabled=true;
+
+ try{
+  const result=await signInWithEmailAndPassword(auth,email,password);
+  currentUser=result.user;
+  saveAccount(result.user);
+  beginVerification();
+ }catch(error){
+  setStatus(error.message);
+ }finally{
+  btn.disabled=false;
+ }
+};
+
+function beginVerification(){
+ show("methodStep");
+}
+
+window.chooseMethod=function(method){
+ verificationMethod=method;
+
+ if(method==="mail"){
+  document.getElementById("destinationTitle").textContent="Eisen Mail";
+  document.getElementById("destinationDesc").textContent="Enter your Eisen Mail address.";
+  document.getElementById("destination").placeholder="Eisen Mail address";
+  document.getElementById("destination").type="email";
+ }else{
+  document.getElementById("destinationTitle").textContent="Eisen SMS";
+  document.getElementById("destinationDesc").textContent="Enter your Eisen SMS phone number.";
+  document.getElementById("destination").placeholder="Phone number";
+  document.getElementById("destination").type="tel";
+ }
+
+ document.getElementById("destination").value="";
+ show("destinationStep");
+};
+
+window.requestCode=async function(){
+ verificationTarget=document.getElementById("destination").value.trim();
+
+ if(!verificationTarget)return setStatus("Enter your destination.");
+
+ /*
+  * Eisen Mail / Eisen SMS delivery integration goes here.
+  * The supplied applications do not currently expose a cross-origin
+  * verification API to this page. Do not mark a code as sent until
+  * the receiving application confirms delivery.
+ */
+ setStatus(
+  "Delivery integration is not connected yet. Eisen Mail and Eisen SMS need a verification-message receiver."
+ );
+};
+
+window.verifyCode=function(){
+ setStatus("A real verification code has not been delivered yet. Verification cannot be completed.");
+};
+
+window.returnToApp=function(){
+ if(!verified)return;
+
+ if(returnURL){
+  try{
+   const url=new URL(returnURL);
+   if(url.protocol==="https:"||url.protocol==="http:"){
+    location.href=url.href;
+    return;
+   }
+  }catch{}
+ }
+
+ if(history.length>1)history.back();
+ else location.href="https://alislamiah.github.io/Alislamiah-AI/";
+};
+
+window.show=show;
+
+onAuthStateChanged(auth,user=>{
+ currentUser=user;
+
+ if(user){
+  saveAccount(user);
+ }
+
+ const accounts=getAccounts();
+
+ if(accounts.length===1){
+  selectAccount(accounts[0]);
+ }else{
+  renderAccounts();
+  show("accountsStep");
+ }
+});
+
+</script>
+</body>
+</html>
