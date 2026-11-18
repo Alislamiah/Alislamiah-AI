@@ -231,9 +231,10 @@ button.secondary{
   }
 
   function returnToApp() {
+    // 1. إذا جاء رابط return أو redirect في الرابط → ارجع إليه
     if (returnURL) {
       try {
-        const url = new URL(returnURL);
+        const url = new URL(returnURL, location.origin);
         if (url.protocol === "https:" || url.protocol === "http:") {
           location.href = url.href;
           return;
@@ -241,11 +242,27 @@ button.secondary{
       } catch (e) {}
     }
 
+    // 2. إذا جاء من موقع آخر (referrer) → ارجع إليه
+    if (document.referrer) {
+      try {
+        const ref = new URL(document.referrer);
+        if (ref.origin !== location.origin) {
+          location.href = document.referrer;
+          return;
+        }
+      } catch (e) {}
+    }
+
+    // 3. محاولة الرجوع في التاريخ
     if (history.length > 1) {
       history.back();
-    } else {
-      location.href = "https://alislamiah.github.io/Alislamiah-AI/";
+      return;
     }
+
+    // 4. آخر حل: إغلاق النافذة إن أمكن
+    try {
+      window.close();
+    } catch (e) {}
   }
 
   $("returnBtn").addEventListener("click", returnToApp);
